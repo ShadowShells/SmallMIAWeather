@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KMIA · Miami PWS pool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="rail">
+    <div class="rail-id">
+      <span class="rail-icao">KMIA</span>
+      <span class="rail-sub">Miami Intl PWS pool</span>
+    </div>
+    <div class="rail-right">
+      <span id="lastPoll" class="rail-sub"></span>
+      <span class="feeds">
+        <span class="feed"><i id="dot-aw" class="dot wait"></i>AW</span>
+        <span class="feed"><i id="dot-metar" class="dot wait"></i>METAR</span>
+        <span class="feed"><i id="dot-ring" class="dot wait"></i>RING</span>
+      </span>
+      <span id="clock" class="clock">--:-- ET</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- Spread board: pool vs KMIA ASOS, delta bridging them -->
+    <section class="board" aria-label="Pool versus KMIA spread">
+      <div class="side">
+        <div class="side-label pool-label">Pool · bias-corrected</div>
+        <div class="big pool-num"><span id="poolF">—</span><span class="unit">°F</span></div>
+        <div id="poolC" class="side-sub"></div>
+        <div id="poolN" class="side-sub dim">waiting for first poll…</div>
+      </div>
+      <div class="bridge">
+        <div class="bridge-label">Δ pool − KMIA</div>
+        <div id="deltaF" class="delta-num">—</div>
+        <div id="deltaP90" class="side-sub dim">Δ p90 —</div>
+      </div>
+      <div class="side right">
+        <div class="side-label off-label">Official · KMIA</div>
+        <div class="big off-num"><span id="offF">—</span><span class="unit">°F</span></div>
+        <div id="offAge" class="side-sub">ASOS via METAR</div>
+        <div id="metarLine" class="side-sub dim">METAR —</div>
+      </div>
+    </section>
+
+    <section class="chips">
+      <div class="chip">
+        <div class="chip-label">Rate °F/h · 15m</div>
+        <div id="r15" class="chip-val">—</div>
+      </div>
+      <div class="chip">
+        <div class="chip-label">30m</div>
+        <div id="r30" class="chip-val">—</div>
+      </div>
+      <div class="chip">
+        <div class="chip-label">60m</div>
+        <div id="r60" class="chip-val">—</div>
+      </div>
+      <div class="chip">
+        <div class="chip-label">METAR trend</div>
+        <div id="rMet" class="chip-val">—</div>
+      </div>
+      <div class="chip wide">
+        <div class="chip-label">Today high · KMIA</div>
+        <div id="hiOff" class="chip-val hi">—</div>
+        <div class="chip-sub"><span id="hiPool">pool —</span> · <span id="hiSpike">p90 —</span></div>
+      </div>
+    </section>
+
+    <!-- Metro ring + sea-breeze state -->
+    <section class="ring" aria-label="Sea breeze and metro METAR ring">
+      <div class="chip breezy">
+        <div class="chip-label">Sea breeze · KMIA wind</div>
+        <div id="breeze" class="chip-val">—</div>
+        <div id="breezeTag" class="chip-sub"></div>
+        <div id="burstFlag" class="chip-sub warn"></div>
+      </div>
+      <div class="chip breezy">
+        <div class="chip-label">Breeze front · east − west</div>
+        <div id="frontVal" class="chip-val">—</div>
+        <div id="frontTag" class="chip-sub"></div>
+      </div>
+      <div id="ringTiles" class="ring-tiles"></div>
+    </section>
+
+    <section class="split">
+      <div class="panel">
+        <div class="panel-head">
+          <span>Capture polygon</span>
+          <span class="legend">
+            <i class="lg pink"></i>pool
+            <i class="lg red"></i>dropped
+            <i class="lg grey"></i>stale
+            <i class="lg violet"></i>quarantine
+            <i class="lg slate"></i>outside
+          </span>
+        </div>
+        <div id="map"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <span>Today · ET</span>
+          <span class="legend">
+            <i class="lg pink"></i>pool
+            <i class="lg amber"></i>p90 hot edge
+            <i class="lg teal"></i>KMIA
+          </span>
+        </div>
+        <canvas id="chart"></canvas>
+      </div>
+    </section>
+
+    <details class="manifest">
+      <summary>
+        <span>Station manifest</span>
+        <span id="stCount" class="dim"></span>
+        <span id="healthTime" class="dim">health check pending</span>
+      </summary>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Station</th><th>E/W</th><th>km</th><th>°F</th><th>Age</th>
+              <th>Δ off</th><th>Bias</th><th>σ</th><th>Status</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="stTbody"></tbody>
+        </table>
+      </div>
+    </details>
+
+    <footer>
+      Pool: public Ambient Weather PWS inside the polygon (edit <code>CONFIG.polygon</code> in <code>app.js</code>).
+      Biscayne Bay, the beaches and the Everglades fringe are left out on purpose — different air mass. Official:
+      KMIA ASOS via aviationweather.gov METAR (hourly + specials). Settlement runs off 1-minute data, so on gusty
+      breeze-in afternoons the ASOS can print above the hourly METAR max — watch the p90 hot edge and the burst flag.
+      Ring: KFLL · KHWO · KOPF · KTMB · KHST. Stable station bias is corrected, not dropped; unstable stations are
+      quarantined by the hourly health check.
+    </footer>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js" defer></script>
+</body>
+</html>
