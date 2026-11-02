@@ -3,7 +3,7 @@
    ------------------------------------------------------------
    Pool of public Ambient Weather PWS inside a polygon around
    KMIA, QC'd and averaged, tracked against the KMIA ASOS
-   (METAR via aviationweather.gov) and a ring of five metro
+   (METAR via api.weather.gov) and a ring of five metro
    fields: KFLL · KHWO · KOPF · KTMB · KHST.
 
    EVERYTHING TUNABLE LIVES IN CONFIG BELOW.
@@ -331,6 +331,42 @@ function parseMetarRaw(raw) {
   return out;
 }
 
+/* One api.weather.gov observation -> the same row shape the AWC
+   parser emits. NWS reports wind in km/h; the dashboard runs on
+   knots everywhere, so convert. Rows without a numeric temperature
+   are useless to the pool delta and are skipped. */
+function nwsRow(props) {
+  if (!props) return null;
+  const c = props.temperature ? props.temperature.value : null;
+  if (typeof c !== "number") return null;
+  const t = Date.parse(props.timestamp || "");
+  if (!t || isNaN(t)) return null;
+  const kt = (v) => (typeof v === "number" ? Math.round(v / 1.852) : null);
+  return {
+    t, c, f: c2f(c),
+    wdir: props.windDirection && typeof props.windDirection.value === "number"
+      ? props.windDirection.value : null,
+    wspd: kt(props.windSpeed ? props.windSpeed.value : null),
+    gust: kt(props.windGust ? props.windGust.value : null),
+    raw: props.rawMessage || "",
+  };
+}
+
+/* One IEM currents row (mesonet.agron.iastate.edu) -> the same row shape.
+   IEM already reports °F and knots. Station ids come back without the
+   leading K (MIA, FLL…). Rows whose METAR has no temperature (sensor out,
+   e.g. a "$" maintenance flag) return null. */
+function iemRow(d) {
+  if (!d) return null;
+  const f = typeof d.tmpf === "number" ? d.tmpf : null;
+  if (f == null) return null;
+  const ts = String(d.utc_valid || "");
+  const t = Date.parse(/Z$|[+-]\d\d:\d\d$/.test(ts) ? ts : ts + "Z");
+  if (!t || isNaN(t)) return null;
+  const num = (v) => (typeof v === "number" ? v : null);
+  return { t, c: ((f - 32) * 5) / 9, f, wdir: num(d.drct), wspd: num(d.sknt), gust: num(d.gust), raw: d.raw || "" };
+}
+
 /* ---------- health sweep ----------
    st5: Map(id -> {name, pts:[[t, tempf], ...]})   (5-min samples, ~26 h)
    officialSeries: [{t, f}]  (KMIA, °F)
@@ -500,6 +536,36 @@ if (typeof window !== "undefined") {
         });
       }
       for (const s of by.values()) s.sort((a, b) => a.t - b.t);
+      return by;
+    }
+
+    /* NWS API fallback (api.weather.gov) — the same ASOS obs with
+       CORS enabled. Used automatically whenever aviationweather.gov
+       is unreachable from the browser or answers empty. */
+    async function fetchNwsSeries(icao, limit) {
+      const js = await jget(`https://api.weather.gov/stations/${icao}/observations?limit=${limit}`);
+      const rows = ((js && js.features) || [])
+        .map((f) => nwsRow(f && f.properties))
+        .filter(Boolean);
+      rows.sort((a, b) => a.t - b.t); // NWS returns newest first
+      return rows;
+    }
+    async function fetchNwsLatest(icao) {
+      const js = await jget(`https://api.weather.gov/stations/${icao}/observations/latest`);
+      return nwsRow(js && js.properties);
+    }
+
+    /* Iowa Environmental Mesonet: same ASOS METARs, CORS enabled, one call for
+       every field. NWS sometimes blanks a field's temperature for hours, so the
+       ring reads from here, and KMIA uses it as a backup. Returns Map(ICAO -> row). */
+    async function fetchIemLatest(icaos) {
+      const q = icaos.map((i) => "station=" + encodeURIComponent(i.replace(/^K/, ""))).join("&");
+      const js = await jget(`https://mesonet.agron.iastate.edu/api/1/currents.json?network=FL_ASOS&${q}&minutes=240`);
+      const by = new Map();
+      for (const d of (js && js.data) || []) {
+        const row = iemRow(d);
+        if (row) by.set("K" + d.station, row);
+      }
       return by;
     }
 
@@ -731,7 +797,7 @@ if (typeof window !== "undefined") {
           `<div class="chip-sub ${on ? "onshore" : ""}">` +
           (fresh
             ? `Δ ${sgn(dK)} · ${windTxt(d.wdir, d.wspd, d.gust)}`
-            : d ? `stale ${fmtAge(ageMin)}` : "…") +
+            : d ? `stale ${fmtAge(ageMin)}` : S.feeds.ring.ok === null ? "…" : "no temp reported") +
           `</div>`;
         box.appendChild(el);
       }
@@ -917,20 +983,33 @@ if (typeof window !== "undefined") {
       } catch (e) { S.feeds.aw = { ok: false, err: String(e) }; }
     }
     const ALL_IDS = [CONFIG.station.icao, ...CONFIG.ring.map((r) => r.id)].join(",");
-    async function pollMetarAll(hours = 3) {
-      try {
-        const by = await fetchMetarMulti(ALL_IDS, hours);
-        mergeKmia(by.get(CONFIG.station.icao));
-        for (const r of CONFIG.ring) {
-          const arr = by.get(r.id);
-          if (arr && arr.length) S.ring[r.id] = arr[arr.length - 1];
-        }
-        S.feeds.metar = { ok: true };
-        S.feeds.ring = { ok: true };
-      } catch (e) {
-        S.feeds.metar = { ok: false, err: String(e) };
-        S.feeds.ring = { ok: false, err: String(e) };
+    async function pollMetarAll() {
+      // aviationweather.gov sends no CORS headers, so a browser page can never read it.
+      // KMIA series: api.weather.gov. Ring + KMIA backup: Iowa Environmental Mesonet.
+      const [nws, iem] = await Promise.allSettled([
+        fetchNwsSeries(CONFIG.station.icao, 10),
+        fetchIemLatest([CONFIG.station.icao, ...CONFIG.ring.map((r) => r.id)]),
+      ]);
+      const iemBy = iem.status === "fulfilled" ? iem.value : new Map();
+      const kmia = nws.status === "fulfilled" ? nws.value : [];
+      const kmiaIem = iemBy.get(CONFIG.station.icao);
+      if (kmia.length || kmiaIem) {
+        mergeKmia(kmiaIem ? [...kmia, kmiaIem] : kmia);
+        S.feeds.metar = { ok: true, src: kmia.length ? "nws" : "iem" };
+      } else {
+        S.feeds.metar = { ok: false, err: `NWS: ${nws.reason?.message || "no rows"} · IEM: ${iem.reason?.message || "no KMIA row"}` };
       }
+      let got = 0;
+      const missing = [];
+      for (const r of CONFIG.ring) {
+        const row = iemBy.get(r.id);
+        if (row) { S.ring[r.id] = row; got++; } else missing.push(r.id);
+      }
+      if (missing.length) {
+        const rr = await Promise.allSettled(missing.map((id) => fetchNwsLatest(id)));
+        rr.forEach((p, i) => { if (p.status === "fulfilled" && p.value) { S.ring[missing[i]] = p.value; got++; } });
+      }
+      S.feeds.ring = got ? { ok: true, src: "iem" } : { ok: false, err: "ring empty from IEM and NWS" };
     }
 
     function runHealth() {
@@ -951,16 +1030,15 @@ if (typeof window !== "undefined") {
     async function boot() {
       renderFeeds();
       try {
-        const by = await fetchMetarMulti(CONFIG.station.icao, 24); // today's KMIA curve
-        mergeKmia(by.get(CONFIG.station.icao));
-        S.feeds.metar = { ok: true };
-      } catch (e) { S.feeds.metar = { ok: false, err: String(e) }; }
-      await Promise.all([pollMetarAll(3), pollAW()]);
+        mergeKmia(await fetchNwsSeries(CONFIG.station.icao, 120)); // ~24 h incl. specials: today's KMIA curve
+        S.feeds.metar = { ok: true, src: "nws" };
+      } catch (e) { S.feeds.metar = { ok: false, err: String(e) }; } // pollMetarAll below retries via IEM
+      await Promise.all([pollMetarAll(), pollAW()]);
       render(computeState(Date.now()));
       runHealth();
       render(computeState(Date.now()));
       setInterval(tick, CONFIG.pollMs);
-      setInterval(() => pollMetarAll(3), CONFIG.metarMs);
+      setInterval(() => pollMetarAll(), CONFIG.metarMs);
       setInterval(runHealth, CONFIG.health.everyMin * 60000);
       setInterval(() => setTxt("clock", etHM(Date.now()) + " ET"), 1000);
       document.addEventListener("visibilitychange", () => {
@@ -993,6 +1071,21 @@ if (typeof window === "undefined" && typeof process !== "undefined") {
   ok("Doral proper outside (tight zone)", !pointInPolygon(-80.400, 25.815, CONFIG.polygon));
   ok("Wynwood outside (tight zone)", !pointInPolygon(-80.200, 25.800, CONFIG.polygon));
   ok("Everglades fringe outside polygon", !pointInPolygon(-80.480, 25.780, CONFIG.polygon));
+
+  const np = nwsRow({
+    timestamp: "2026-08-29T14:53:00+00:00",
+    temperature: { value: 31.1 },
+    windDirection: { value: 120 },
+    windSpeed: { value: 20.52 },   // km/h
+    windGust: { value: 27.8 },     // km/h
+    rawMessage: "KMIA 291453Z 12011G15KT 31/24 A3004",
+  });
+  ok("NWS row parses temp/time", !!np && Math.abs(np.f - 88.0) < 0.1 && np.t > 0);
+  ok("NWS wind converts km/h -> kt", !!np && np.wspd === 11 && np.gust === 15);
+  const ir = iemRow({ station: "MIA", utc_valid: "2026-10-24T15:53:00Z", tmpf: 81, drct: 30, sknt: 8, gust: 15, raw: "KMIA 241553Z" });
+  ok("IEM row parses °F/kt/time", !!ir && ir.f === 81 && ir.wspd === 8 && ir.gust === 15 && ir.t === Date.parse("2026-10-24T15:53:00Z"));
+  ok("IEM sensor-out row skipped", iemRow({ station: "TMB", utc_valid: "2026-10-24T15:53:00Z", tmpf: null }) === null);
+  ok("NWS null temp skipped", nwsRow({ timestamp: "2026-08-29T14:53:00+00:00", temperature: { value: null } }) === null);
 
   // QC synthetic pool (Miami-flavored, °F)
   const now = Date.now();

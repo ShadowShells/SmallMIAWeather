@@ -16,6 +16,7 @@
     <div class="rail-id">
       <span class="rail-icao">KMIA</span>
       <span class="rail-sub">Miami Intl PWS pool</span>
+      <a class="rail-sub" href="history.html" style="color:var(--official);font-family:var(--mono)">history →</a>
     </div>
     <div class="rail-right">
       <span id="lastPoll" class="rail-sub"></span>
@@ -45,7 +46,7 @@
       <div class="side right">
         <div class="side-label off-label">Official · KMIA</div>
         <div class="big off-num"><span id="offF">—</span><span class="unit">°F</span></div>
-        <div id="offAge" class="side-sub">ASOS via METAR</div>
+        <div id="offAge" class="side-sub">ASOS via NWS</div>
         <div id="metarLine" class="side-sub dim">METAR —</div>
       </div>
     </section>
@@ -139,7 +140,7 @@
     <footer>
       Pool: public Ambient Weather PWS inside the polygon (edit <code>CONFIG.polygon</code> in <code>app.js</code>).
       Biscayne Bay, the beaches and the Everglades fringe are left out on purpose — different air mass. Official:
-      KMIA ASOS via aviationweather.gov METAR (hourly + specials). Settlement runs off 1-minute data, so on gusty
+      KMIA ASOS via the NWS API, api.weather.gov (hourly METARs + specials). Settlement runs off 1-minute data, so on gusty
       breeze-in afternoons the ASOS can print above the hourly METAR max — watch the p90 hot edge and the burst flag.
       Ring: KFLL · KHWO · KOPF · KTMB · KHST. Stable station bias is corrected, not dropped; unstable stations are
       quarantined by the hourly health check.

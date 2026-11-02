@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KMIA · Pool history</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .rail-id a { color: var(--official); font-family: var(--mono); font-size: 12px; }
+    .hnav { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 14px 0 6px; font-family: var(--mono); font-size: 12px; }
+    .hnav button, .hnav input, .tools select, .tools button, .look input {
+      background: var(--panel-2); color: var(--text); border: 1px solid var(--line); border-radius: 6px;
+      font-family: var(--mono); font-size: 12px; padding: 5px 9px; cursor: pointer; color-scheme: dark;
+    }
+    .hnav button:hover, .tools button:hover { border-color: var(--dim); }
+    .pill { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; color: var(--dim); background: var(--panel); }
+    .pill .dot { animation: none; }
+    .dayline { font-family: var(--mono); font-size: 12px; color: var(--dim); margin: 4px 0 12px; }
+    .dayline b { color: var(--text); font-weight: 500; }
+    .readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 22px; padding: 14px 18px; margin-bottom: 10px;
+               background: var(--panel); border: 1px solid var(--line); border-radius: 10px; font-family: var(--mono); font-size: 12px; color: var(--dim); min-height: 64px; }
+    .readout .when { color: var(--text); font-size: 13px; }
+    .readout .big { font-size: 38px; color: var(--pool); }
+    .readout .big .unit { font-size: 15px; }
+    .readout b { color: var(--text); font-weight: 500; }
+    .readout .off { color: var(--official); }
+    .readout .edge { color: var(--edge); }
+    .look { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+    #hchart { width: 100%; height: 340px; display: block; background: var(--panel-2); touch-action: pan-y; cursor: crosshair; }
+    .tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 14px; font-family: var(--mono); font-size: 11px; color: var(--dim); border-top: 1px solid var(--line); }
+    tr.hl td { background: rgba(255, 110, 147, 0.10); }
+    tr.mx td { color: var(--pool); }
+    tbody tr[data-t] { cursor: pointer; }
+    .manifest { margin-top: 12px; }
+    @media (max-width: 640px) { .look { margin-left: 0; } .readout .big { font-size: 32px; } #hchart { height: 280px; } }
+  </style>
+</head>
+<body>
+  <header class="rail">
+    <div class="rail-id">
+      <span class="rail-icao">KMIA</span>
+      <span class="rail-sub">Pool history</span>
+      <a href="./">← dashboard</a>
+    </div>
+    <div class="rail-right"><span id="clock" class="clock">--:-- ET</span></div>
+  </header>
+
+  <main>
+    <div class="hnav">
+      <button id="prevD" title="previous day" aria-label="previous day">‹</button>
+      <input type="date" id="dpick" aria-label="day (Miami time)" />
+      <button id="nextD" title="next day" aria-label="next day">›</button>
+      <button id="reload" title="fetch this day again">↻</button>
+      <span class="pill"><i id="dotOff" class="dot wait"></i><span id="offStat">KMIA —</span></span>
+      <span class="pill"><i id="dotPool" class="dot wait"></i><span id="poolStat">pool —</span></span>
+    </div>
+    <div id="dayline" class="dayline">—</div>
+
+    <div id="readout" class="readout"></div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <span id="chartHead">Day · ET</span>
+        <span class="legend">
+          <i class="lg pink"></i>pool (bias-corrected)
+          <i class="lg amber"></i>p90 hot edge
+          <i class="lg teal"></i>KMIA
+        </span>
+      </div>
+      <canvas id="hchart"></canvas>
+    </div>
+
+    <details class="manifest" open>
+      <summary><span>Pool table</span><span id="tblNote" class="dim"></span></summary>
+      <div class="tools">every
+        <select id="step"><option value="5">5 min</option><option value="15" selected>15 min</option><option value="30">30 min</option><option value="60">60 min</option></select>
+        <button id="csv">download CSV (5-min)</button>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Time ET</th><th>Pool</th><th>Raw mean</th><th>Median</th><th>p90</th><th>Stations</th><th>KMIA</th><th>Δ pool</th><th>Δ p90</th></tr></thead>
+          <tbody id="pbody"></tbody>
+        </table>
+      </div>
+    </details>
+
+    <footer>
+      How this is built: every public Ambient Weather station inside the capture polygon keeps 5-minute readings on
+      ambientweather.net. For the chosen day this page pulls each station's readings (plus the day before, for the bias
+      history) and KMIA's METARs from the Iowa Environmental Mesonet, then replays the dashboard's own pool code from
+      <code>app.js</code> every 5 minutes — staleness, range, gross-Δ vs KMIA, flatline and outlier QC, the hourly health
+      check (bias + quarantine), and the bias-corrected mean and p90. Your block/allow choices from the dashboard are
+      applied too. Stations that have since left the network won't appear, so a slot can differ from what the live page
+      showed by a few tenths.
+    </footer>
+  </main>
+
+<script>
+"use strict";
+const TZ = "America/New_York";
+const $ = (id) => document.getElementById(id);
+const fmtD = new Intl.DateTimeFormat("en-CA", { timeZone: TZ });
+const fmtHM = new Intl.DateTimeFormat("en-US", { timeZone: TZ, hour: "2-digit", minute: "2-digit", hour12: false });
+const hm = (t) => fmtHM.format(new Date(t)).replace(/^24:/, "00:");
+const f1 = (v) => (v == null || !isFinite(v) ? "—" : (Math.round(v * 10) / 10).toFixed(1));
+const sg = (v) => (v == null || !isFinite(v) ? "—" : (v >= 0 ? "+" : "−") + Math.abs(Math.round(v * 10) / 10).toFixed(1));
+const SLOT = 5 * 60000;
+
+function pill(dot, txtId, state, txt) { $(dot).className = "dot " + state; $(txtId).textContent = txt; }
+
+/* ---------- the dashboard's own pool engine, loaded from app.js ---------- */
+let E = null;
+async function loadEngine() {
+  const src = await fetch("app.js", { cache: "no-cache" }).then((r) => { if (!r.ok) throw new Error("app.js HTTP " + r.status); return r.text(); });
+  const end = src.lastIndexOf("/*", src.indexOf("Browser application"));
+  if (end < 0) throw new Error("app.js layout changed");
+  E = new Function(src.slice(0, end) + "\nreturn { CONFIG, qcPool, poolStats, healthSweep, pointInPolygon, bboxOf, etMidnightMs };")();
+}
+
+/* ET day bounds — DST-safe (the 23- and 25-hour days come out right) */
+const _wall = new Intl.DateTimeFormat("en-US", { timeZone: TZ, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" });
+function etOffset(ts) {
+  const p = Object.fromEntries(_wall.formatToParts(new Date(ts)).map((x) => [x.type, x.value]));
+  return Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute, +p.second) - Math.floor(ts / 1000) * 1000;
+}
+function dayStart(dstr) {
+  const [y, m, d] = dstr.split("-").map(Number), wall = Date.UTC(y, m - 1, d);
+  let t = wall - etOffset(wall); t = wall - etOffset(t); return t;
+}
+function nextDstr(dstr) { const d = new Date(dstr + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() + 1); return d.toISOString().slice(0, 10); }
+function prevDstr(dstr) { const d = new Date(dstr + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); }
+
+async function jget(url) { const r = await fetch(url, { cache: "no-store" }); if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }
+
+/* ---------- Ambient Weather: polygon stations + 5-minute history ---------- */
+let stationsP = null;
+function listStations() {
+  if (stationsP) return stationsP;
+  stationsP = (async () => {
+    const b = E.bboxOf(E.CONFIG.polygon, 0.01);
+    const p = new URLSearchParams();
+    p.set("$publicBox[0][0]", b.w); p.set("$publicBox[0][1]", b.s);
+    p.set("$publicBox[1][0]", b.e); p.set("$publicBox[1][1]", b.n);
+    p.set("$limit", "300");
+    const js = await jget("https://lightning.ambientweather.net/devices?" + p);
+    const arr = Array.isArray(js) ? js : js.data || [];
+    const out = [], seen = new Set();
+    for (const d of arr) {
+      const info = d.info || {}, cc = (info.coords && info.coords.coords) || {};
+      let lat = cc.lat, lon = cc.lon;
+      if (lat == null || lon == null) { const g = info.coords && info.coords.geo && info.coords.geo.coordinates; if (g && g.length === 2) { lon = g[0]; lat = g[1]; } }
+      const id = d.macAddress || d._id;
+      if (!d.macAddress || lat == null || lon == null || seen.has(id)) continue;
+      if (!E.pointInPolygon(+lon, +lat, E.CONFIG.polygon)) continue;
+      seen.add(id);
+      out.push({ id: String(id), mac: d.macAddress, name: String(info.name || "PWS").replace(/[",\n]/g, " ").slice(0, 34), lat: +lat, lon: +lon });
+    }
+    return out;
+  })();
+  stationsP.catch(() => { stationsP = null; });
+  return stationsP;
+}
+async function stationPts(st, start, end) {
+  const u = "https://lightning.ambientweather.net/device-data?macAddress=" + encodeURIComponent(st.mac) + "&start=" + start + "&end=" + end + "&res=5&limit=800";
+  let last;
+  for (let a = 0; a < 2; a++) {
+    try {
+      const js = await jget(u);
+      const pts = [];
+      for (const x of (js && js.data) || []) {
+        let t = typeof x.dateutc === "number" ? x.dateutc : null; if (t != null && t < 2e10) t *= 1000;
+        if (t != null && typeof x.tempf === "number" && t >= start && t < end) pts.push([t, x.tempf]);
+      }
+      pts.sort((p, q) => p[0] - q[0]);
+      return pts;
+    } catch (e) { last = e; await new Promise((r) => setTimeout(r, 800)); }
+  }
+  throw last;
+}
+
+/* ---------- KMIA (IEM ASOS archive) ---------- */
+async function kmiaDay(dstr) {
+  const js = await jget("https://mesonet.agron.iastate.edu/api/1/obhistory.json?network=FL_ASOS&station=MIA&date=" + dstr + "&full=true");
+  const out = [];
+  for (const r of (js && js.data) || []) {
+    if (typeof r.tmpf !== "number") continue;
+    let s = String(r.utc_valid || ""); if (!s) continue; s = s.replace(" ", "T"); if (!/(Z|[+-]\d\d:?\d\d)$/.test(s)) s += "Z";
+    const t = Date.parse(s); if (!isFinite(t)) continue;
+    out.push({ t, f: r.tmpf, wdir: typeof r.drct === "number" ? r.drct : null, wspd: typeof r.sknt === "number" ? r.sknt : null, raw: r.raw || "" });
+  }
+  return out;
+}
+
+/* ---------- replay the dashboard every 5 minutes ---------- */
+function forcedChoices() { try { return JSON.parse(localStorage.getItem("kmia_pws_v1_forced") || "{}") || {}; } catch (e) { return {}; } }
+
+function replay(series, official, start, end) {
+  const C = E.CONFIG, forced = forcedChoices();
+  const out = [];
+  const medHist = [];             // {t, med} — what groupSpanF reads on the live page
+  const idx = new Map();          // per-station pointer: last pt index with t <= now
+  for (const s of series) idx.set(s.id, -1);
+  let oi = -1, health = { stations: {} }, nextSweep = -Infinity;
+  const stop = Math.min(end, Date.now());
+  for (let now = start; now < stop; now += SLOT) {
+    while (oi + 1 < official.length && official[oi + 1].t <= now) oi++;
+    // hourly health sweep over the trailing 24 h (same as the dashboard's)
+    if (now >= nextSweep) {
+      const st5 = new Map();
+      for (const s of series) st5.set(s.id, { name: s.name, pts: s.pts.filter((p) => p[0] <= now && p[0] >= now - 24 * 3600e3) });
+      health = E.healthSweep(st5, official.filter((o) => o.t <= now), now, C.health, forced);
+      nextSweep = now + 3600e3;
+    }
+    const biases = {}, quarantined = new Set();
+    for (const [id, h] of Object.entries(health.stations)) {
+      if (typeof h.bias === "number") biases[id] = h.bias;
+      if (h.status === "quarantine") quarantined.add(id);
+    }
+    // each station's latest reading at this moment
+    const stations = [], fine = new Map();
+    for (const s of series) {
+      let i = idx.get(s.id);
+      while (i + 1 < s.pts.length && s.pts[i + 1][0] <= now) i++;
+      idx.set(s.id, i);
+      if (i < 0) continue;
+      const [t, f] = s.pts[i];
+      if (now - t > 6 * 3600e3) continue;       // long gone — the live device list wouldn't carry it either
+      stations.push({ id: s.id, name: s.name, lat: s.lat, lon: s.lon, tempf: f, obsMs: t });
+      const fl = [];
+      for (let k = i; k >= 0 && s.pts[k][0] >= now - (C.qc.flatWindowMin + 5) * 60000; k--) fl.push({ t: s.pts[k][0], f: s.pts[k][1] });
+      fine.set(s.id, fl.reverse());
+    }
+    const recent = medHist.filter((p) => p.t >= now - C.qc.flatWindowMin * 60000).map((p) => p.med);
+    const met = oi >= 0 ? official[oi] : null;
+    const ctx = {
+      nowMs: now,
+      officialF: met ? met.f : null,
+      officialAgeMin: met ? (now - met.t) / 60000 : null,
+      forced, quarantined, fineHist: fine,
+      groupSpanF: recent.length >= 4 ? Math.max(...recent) - Math.min(...recent) : null,
+      cfg: C.qc,
+    };
+    const { kept } = E.qcPool(stations, ctx);
+    const pool = E.poolStats(kept, biases, C.health.maxBiasCorrF);
+    if (pool.n) {
+      out.push({ t: now, corr: pool.correctedF, mean: pool.meanF, med: pool.medianF, p90: pool.p90F, top: pool.topF, topName: pool.topName,
+                 spread: pool.spreadF, n: pool.n, total: stations.length, quar: quarantined.size });
+      medHist.push({ t: now, med: pool.medianF });
+    }
+  }
+  return out;
+}
+
+/* ---------- load a day ---------- */
+const cache = new Map();
+let seq = 0;
+async function buildDay(dstr, force, mySeq) {
+  const today = fmtD.format(new Date());
+  if (!force && dstr !== today && cache.has(dstr)) return cache.get(dstr);
+  const start = dayStart(dstr), end = dayStart(nextDstr(dstr));
+  const fetchFrom = start - 24 * 3600e3, fetchTo = Math.min(end, Date.now());
+  const [sts, offA, offB] = await Promise.all([
+    listStations(),
+    kmiaDay(prevDstr(dstr)).catch(() => []),
+    kmiaDay(dstr),
+  ]);
+  const byT = new Map(); for (const o of [...offA, ...offB]) byT.set(o.t, o);
+  const official = [...byT.values()].sort((a, b) => a.t - b.t);
+  const series = []; let done = 0, failed = 0, k = 0;
+  async function worker() {
+    while (k < sts.length) {
+      const st = sts[k++];
+      try { const pts = await stationPts(st, fetchFrom, fetchTo); if (pts.length) series.push({ ...st, pts }); } catch (e) { failed++; }
+      done++; if (mySeq === seq) pill("dotPool", "poolStat", "wait", "stations " + done + "/" + sts.length);
+    }
+  }
+  await Promise.all(Array.from({ length: 6 }, worker));
+  const slots = replay(series, official, start, end);
+  const dayIds = new Set(series.filter((s) => s.pts.some((p) => p[0] >= start)).map((s) => s.id));
+  const res = { dstr, start, end, slots, official: official.filter((o) => o.t >= start && o.t < end), stations: sts.length, reporting: dayIds.size, failed };
+  if (dstr !== today) cache.set(dstr, res);
+  return res;
+}
+
+/* ---------- view ---------- */
+const V = { day: null, sel: null, hover: null, geom: null };
+function nearest(t) {
+  if (!V.day) return null; let best = null;
+  for (const p of V.day.slots) if (!best || Math.abs(p.t - t) < Math.abs(best.t - t)) best = p;
+  return best && Math.abs(best.t - t) <= SLOT * 1.5 ? best : null;
+}
+function kmiaAt(t) {
+  if (!V.day) return null; let best = null;
+  for (const o of V.day.official) { if (o.t <= t + 60000) best = o; else break; }
+  return best && t - best.t <= 75 * 60000 ? best : null;
+}
+function readout(p) {
+  const val = p ? hm(p.t) : ($("tpick") && $("tpick").value) || "";
+  const look = '<span class="look">pool at <input type="time" id="tpick" step="300" value="' + val + '" aria-label="time (ET)"></span>';
+  if (!p) {
+    $("readout").innerHTML = "<span>" + (V.day && V.day.slots.length ? "Hover or tap the chart, tap a table row, or look up a time →" : V.day ? "No pool data for this day." : "Loading…") + "</span>" + look;
+  } else {
+    const k = kmiaAt(p.t);
+    $("readout").innerHTML =
+      '<span class="when">' + hm(p.t) + " ET</span>" +
+      '<span class="big">' + f1(p.corr) + '<span class="unit">°F pool</span></span>' +
+      "<span>raw mean <b>" + f1(p.mean) + "</b> · median <b>" + f1(p.med) + '</b> · <span class="edge">p90 <b>' + f1(p.p90) + "</b></span><br><b>" + p.n + "</b> of " + p.total + " stations kept" + (p.quar ? " · " + p.quar + " quarantined" : "") + " · top " + f1(p.top) + " (" + p.topName + ")</span>" +
+      '<span class="off">KMIA <b>' + (k ? f1(k.f) + "°F</b> @ " + hm(k.t) : "—</b>") + (k ? "<br>Δ pool <b>" + sg(p.corr - k.f) + "</b> · Δ p90 <b>" + sg(p.p90 - k.f) + "</b>" : "") + "</span>" + look;
+  }
+  const el = $("tpick");
+  el.addEventListener("change", () => {
+    if (!el.value || !V.day) return;
+    const [h, m] = el.value.split(":").map(Number), want = h * 60 + m;
+    let best = null;
+    for (const s of V.day.slots) { const [sh, sm] = hm(s.t).split(":").map(Number); const d = Math.abs(sh * 60 + sm - want); if (!best || d < best.d) best = { s, d }; }
+    V.sel = best && best.d <= 10 ? best.s : null; draw(); readout(V.sel); markRow();
+  });
+}
+function draw() {
+  const cv = $("hchart"), dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  if (!W || !H) return;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const g = cv.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+  g.font = "10px 'IBM Plex Mono', monospace";
+  const D = V.day;
+  if (!D) { g.fillStyle = "#8FA0B4"; g.fillText("Loading…", 40, H / 2); V.geom = null; return; }
+  const pol = D.slots, met = D.official;
+  const vals = [...pol.map((p) => p.corr), ...pol.map((p) => p.p90), ...met.map((o) => o.f)].filter((v) => v != null);
+  if (!vals.length) { g.fillStyle = "#8FA0B4"; g.fillText("No data for this day", 40, H / 2); V.geom = null; return; }
+  let lo = Math.floor(Math.min(...vals) - 0.5), hi = Math.ceil(Math.max(...vals) + 0.5);
+  if (hi - lo < 4) hi = lo + 4;
+  const step = hi - lo > 14 ? 2 : 1;
+  const x0 = 34, x1 = W - 10, y0 = 10, y1 = H - 22;
+  const X = (t) => x0 + ((t - D.start) / (D.end - D.start)) * (x1 - x0);
+  const Y = (f) => y1 - ((f - lo) / (hi - lo)) * (y1 - y0);
+  V.geom = { x0, x1, start: D.start, end: D.end };
+  g.strokeStyle = "#223042"; g.fillStyle = "#8FA0B4"; g.lineWidth = 1;
+  for (let f = lo; f <= hi; f += step) { g.beginPath(); g.moveTo(x0, Y(f)); g.lineTo(x1, Y(f)); g.stroke(); g.fillText(String(f), 6, Y(f) + 3); }
+  for (let h = 0; h * 3600e3 <= D.end - D.start; h += 3) {
+    const t = D.start + h * 3600e3, x = X(t);
+    g.beginPath(); g.moveTo(x, y0); g.lineTo(x, y1); g.stroke();
+    g.fillText(hm(t).slice(0, 2), Math.min(x - 6, x1 - 14), H - 7);
+  }
+  const line = (pts, gv, color, w, dash) => {
+    if (pts.length < 2) return;
+    g.strokeStyle = color; g.lineWidth = w; if (dash) g.setLineDash(dash);
+    g.beginPath();
+    pts.forEach((p, i) => { const x = X(p.t), y = Y(gv(p)); (i && p.t - pts[i - 1].t <= 3 * SLOT) ? g.lineTo(x, y) : g.moveTo(x, y); });
+    g.stroke(); g.setLineDash([]);
+  };
+  line(pol, (p) => p.p90, "#FFB02E", 1.4, [3, 3]);
+  line(pol, (p) => p.corr, "#FF6E93", 2.2);
+  if (met.length > 1) {
+    g.strokeStyle = "rgba(46,211,198,.55)"; g.lineWidth = 1.2; g.beginPath();
+    met.forEach((o, i) => (i ? g.lineTo(X(o.t), Y(o.f)) : g.moveTo(X(o.t), Y(o.f)))); g.stroke();
+  }
+  g.fillStyle = "#2ED3C6"; for (const o of met) { g.beginPath(); g.arc(X(o.t), Y(o.f), 2.5, 0, 7); g.fill(); }
+  // daily highs: rings
+  const ring = (x, y, c) => { g.strokeStyle = c; g.lineWidth = 1.6; g.beginPath(); g.arc(x, y, 6, 0, 7); g.stroke(); };
+  let mm = null; for (const o of met) if (!mm || o.f > mm.f) mm = o;
+  let pm = null; for (const p of pol) if (!pm || p.corr > pm.corr) pm = p;
+  if (mm) ring(X(mm.t), Y(mm.f), "#2ED3C6");
+  if (pm) ring(X(pm.t), Y(pm.corr), "#FF6E93");
+  if (D.dstr === fmtD.format(new Date())) { g.strokeStyle = "#3A4A60"; g.beginPath(); g.moveTo(X(Date.now()), y0); g.lineTo(X(Date.now()), y1); g.stroke(); }
+  const c = V.hover || V.sel;
+  if (c) {
+    const x = X(c.t);
+    g.strokeStyle = "rgba(232,237,244,.4)"; g.lineWidth = 1; g.beginPath(); g.moveTo(x, y0); g.lineTo(x, y1); g.stroke();
+    g.fillStyle = "#E8EDF4"; g.beginPath(); g.arc(x, Y(c.corr), 3.6, 0, 7); g.fill();
+    g.fillStyle = "#FFB02E"; g.beginPath(); g.arc(x, Y(c.p90), 3, 0, 7); g.fill();
+    const k = kmiaAt(c.t); if (k) { g.fillStyle = "#2ED3C6"; g.beginPath(); g.arc(X(k.t), Y(k.f), 4, 0, 7); g.fill(); }
+  }
+}
+function tsAt(e) { if (!V.geom) return null; const r = $("hchart").getBoundingClientRect(); const x = e.clientX - r.left; return V.geom.start + ((x - V.geom.x0) / (V.geom.x1 - V.geom.x0)) * (V.geom.end - V.geom.start); }
+function table() {
+  const D = V.day, body = $("pbody");
+  if (!D || !D.slots.length) { body.innerHTML = '<tr><td colspan="9" style="text-align:left" class="dim">' + (D ? "no pool data" : "loading…") + "</td></tr>"; $("tblNote").textContent = ""; return; }
+  const step = +$("step").value;
+  let pm = null; for (const p of D.slots) if (!pm || p.corr > pm.corr) pm = p;
+  const rows = [];
+  for (const p of D.slots) {
+    const [h, m] = hm(p.t).split(":").map(Number);
+    if ((h * 60 + m) % step && p !== pm) continue;
+    const k = kmiaAt(p.t);
+    rows.push('<tr data-t="' + p.t + '"' + (p === pm ? ' class="mx" title="pool high"' : "") + '><td class="nm">' + hm(p.t) + (p === pm ? " ▲" : "") +
+      '</td><td class="num">' + f1(p.corr) + '</td><td class="num">' + f1(p.mean) + '</td><td class="num">' + f1(p.med) + '</td><td class="num">' + f1(p.p90) +
+      '</td><td class="num">' + p.n + "/" + p.total + '</td><td class="num">' + (k ? f1(k.f) : "—") + '</td><td class="num">' + (k ? sg(p.corr - k.f) : "—") + '</td><td class="num">' + (k ? sg(p.p90 - k.f) : "—") + "</td></tr>");
+  }
+  body.innerHTML = rows.reverse().join("");
+  $("tblNote").textContent = D.slots.length + " five-minute slots";
+  markRow();
+}
+function markRow() {
+  document.querySelectorAll("#pbody tr.hl").forEach((r) => r.classList.remove("hl"));
+  if (V.sel) { const r = document.querySelector('#pbody tr[data-t="' + V.sel.t + '"]'); if (r) r.classList.add("hl"); }
+}
+function dayline() {
+  const D = V.day; if (!D) return;
+  let mm = null; for (const o of D.official) if (!mm || o.f > mm.f) mm = o;
+  let pm = null, em = null; for (const p of D.slots) { if (!pm || p.corr > pm.corr) pm = p; if (!em || p.p90 > em.p90) em = p; }
+  $("dayline").innerHTML = D.dstr + " · KMIA high <b>" + (mm ? f1(mm.f) + "°F</b> @ " + hm(mm.t) : "—</b>") +
+    " · pool high <b>" + (pm ? f1(pm.corr) + "°F</b> @ " + hm(pm.t) : "—</b>") +
+    " · p90 high <b>" + (em ? f1(em.p90) + "°F</b> @ " + hm(em.t) : "—</b>") +
+    " · " + D.reporting + " of " + D.stations + " polygon stations reported" + (D.failed ? " (" + D.failed + " failed to load)" : "");
+}
+async function loadDay(dstr, force) {
+  const my = ++seq;
+  V.day = null; V.sel = null; V.hover = null;
+  $("dpick").value = dstr; $("chartHead").textContent = dstr + " · ET";
+  $("dayline").textContent = "loading " + dstr + "…"; readout(null); draw(); table();
+  pill("dotOff", "offStat", "wait", "KMIA …"); pill("dotPool", "poolStat", "wait", "stations …");
+  try {
+    const D = await buildDay(dstr, force, my);
+    if (my !== seq) return;
+    V.day = D;
+    pill("dotOff", "offStat", D.official.length ? "ok" : "err", "KMIA " + D.official.length + " obs");
+    pill("dotPool", "poolStat", D.slots.length ? "ok" : "err", "pool " + D.reporting + "/" + D.stations + " stations");
+    dayline(); readout(null); draw(); table();
+  } catch (e) {
+    if (my !== seq) return;
+    pill("dotPool", "poolStat", "err", "load failed");
+    $("dayline").textContent = "Couldn't load " + dstr + ": " + String(e.message || e).slice(0, 120);
+  }
+}
+function shift(n) {
+  const d = new Date($("dpick").value + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() + n);
+  const s = d.toISOString().slice(0, 10); if (s > $("dpick").max) return; loadDay(s);
+}
+function csv() {
+  const D = V.day; if (!D || !D.slots.length) return;
+  const L = ["time_et,utc,pool_corrected_f,pool_mean_f,pool_median_f,p90_f,top_f,top_station,stations_kept,stations_reporting,kmia_f"];
+  for (const p of D.slots) { const k = kmiaAt(p.t);
+    L.push([D.dstr + " " + hm(p.t), new Date(p.t).toISOString(), f1(p.corr), f1(p.mean), f1(p.med), f1(p.p90), f1(p.top), '"' + p.topName + '"', p.n, p.total, k ? f1(k.f) : ""].join(",")); }
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([L.join("\n") + "\n"], { type: "text/csv" }));
+  a.download = "kmia-pws-pool-" + D.dstr + ".csv"; document.body.appendChild(a); a.click(); a.remove();
+}
+
+(async function init() {
+  const tick = () => { $("clock").textContent = hm(Date.now()) + " ET"; };
+  tick(); setInterval(tick, 30000);
+  const today = fmtD.format(new Date());
+  $("dpick").max = today;
+  $("dpick").addEventListener("change", () => $("dpick").value && loadDay($("dpick").value));
+  $("prevD").addEventListener("click", () => shift(-1));
+  $("nextD").addEventListener("click", () => shift(1));
+  $("reload").addEventListener("click", () => V.day && loadDay(V.day.dstr, true));
+  $("step").addEventListener("change", table);
+  $("csv").addEventListener("click", csv);
+  const cv = $("hchart");
+  cv.addEventListener("pointermove", (e) => { const t = tsAt(e); V.hover = t != null ? nearest(t) : null; draw(); readout(V.hover || V.sel); });
+  cv.addEventListener("pointerleave", () => { V.hover = null; draw(); readout(V.sel); });
+  cv.addEventListener("click", (e) => { const t = tsAt(e); V.sel = t != null ? nearest(t) : null; draw(); readout(V.sel); markRow(); });
+  $("pbody").addEventListener("click", (e) => {
+    const tr = e.target.closest("tr[data-t]"); if (!tr || !V.day) return;
+    V.sel = V.day.slots.find((p) => p.t === +tr.dataset.t) || null; draw(); readout(V.sel); markRow();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+  window.addEventListener("resize", draw);
+  readout(null);
+  try { await loadEngine(); }
+  catch (e) { $("dayline").textContent = "Couldn't load the pool engine from app.js: " + (e.message || e); return; }
+  const want = (location.hash.match(/\d{4}-\d{2}-\d{2}/) || [])[0];
+  loadDay(want && want <= today ? want : today);
+})();
+</script>
+</body>
+</html>
