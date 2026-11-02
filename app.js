@@ -1053,6 +1053,84 @@ if (typeof window !== "undefined") {
       } finally { busy = false; }
     }
 
+    /* ---------- backfill ----------
+       The 15 / 30 / 60 min rates need an hour of pool history. A new browser, a
+       phone that slept, or a page closed for a while has none, so rebuild the
+       last ~70 minutes from each polygon station's own 5-minute history on
+       ambientweather.net, using the same QC and bias correction as a live poll. */
+    let backfilling = false;
+    async function backfillPool() {
+      if (backfilling) return 0;
+      const now = Date.now(), from = now - 70 * 60000, slot = 5 * 60000;
+      const have = S.poolSeries.filter((p) => p.t >= from);
+      const gaps = [];
+      for (let t = Math.ceil(from / slot) * slot; t < now - slot; t += slot) {
+        if (!have.some((p) => Math.abs(p.t - t) < 2.5 * 60000)) gaps.push(t);
+      }
+      if (!gaps.length) return 0;
+      const inPoly = S.stations.filter((s) => s.inPoly && /^[0-9A-F]{2}(:[0-9A-F]{2}){5}$/i.test(s.id));
+      if (!inPoly.length) return 0;
+      backfilling = true;
+      try {
+        const hist = new Map();
+        let k = 0;
+        const worker = async () => {
+          while (k < inPoly.length) {
+            const s = inPoly[k++];
+            try {
+              const js = await jget(`https://lightning.ambientweather.net/device-data?macAddress=${encodeURIComponent(s.id)}` +
+                `&start=${from - cfg.qc.flatWindowMin * 60000}&end=${now}&res=5&limit=60`);
+              const pts = ((js && js.data) || [])
+                .map((d) => ({ t: typeof d.dateutc === "number" && d.dateutc < 2e10 ? d.dateutc * 1000 : d.dateutc, f: d.tempf }))
+                .filter((p) => typeof p.f === "number" && typeof p.t === "number" && isFinite(p.t))
+                .sort((a, b) => a.t - b.t);
+              if (pts.length) hist.set(s.id, { s, pts });
+            } catch { /* skip this station */ }
+          }
+        };
+        await Promise.all(Array.from({ length: 6 }, worker));
+        if (!hist.size) return 0;
+        const biases = {}, quarantined = new Set();
+        for (const [id, h] of Object.entries(S.health.stations || {})) {
+          if (typeof h.bias === "number") biases[id] = h.bias;
+          if (h.status === "quarantine") quarantined.add(id);
+        }
+        const added = [];
+        for (const t of gaps) {
+          const stations = [], fine = new Map();
+          for (const { s, pts } of hist.values()) {
+            const upTo = pts.filter((p) => p.t <= t);
+            if (!upTo.length) continue;
+            const last = upTo[upTo.length - 1];
+            stations.push({ ...s, tempf: last.f, obsMs: last.t }); // copies: qcPool marks them
+            fine.set(s.id, upTo);
+          }
+          let met = null;
+          for (const m of S.metarSeries) { if (m.t <= t) met = m; else break; }
+          const meds = [...S.poolSeries, ...added]
+            .filter((p) => p.t <= t && p.t >= t - cfg.qc.flatWindowMin * 60000 && p.med != null).map((p) => p.med);
+          const { kept } = qcPool(stations, {
+            nowMs: t,
+            officialF: met ? met.f : null,
+            officialAgeMin: met ? (t - met.t) / 60000 : null,
+            forced: S.forced, quarantined, fineHist: fine,
+            groupSpanF: meds.length >= 4 ? Math.max(...meds) - Math.min(...meds) : null,
+            cfg: cfg.qc,
+          });
+          const pool = poolStats(kept, biases, cfg.health.maxBiasCorrF);
+          if (pool.n) {
+            added.push({ t, corr: r2(pool.correctedF), mean: r2(pool.meanF), med: r2(pool.medianF), p90: r2(pool.p90F),
+                         n: pool.n, top: r2(pool.topF), topName: pool.topName });
+          }
+        }
+        if (!added.length) return 0;
+        S.poolSeries = [...S.poolSeries, ...added].sort((a, b) => a.t - b.t);
+        lsSet(LS.pool, S.poolSeries);
+        return added.length;
+      } finally { backfilling = false; }
+    }
+    const refill = () => backfillPool().then((n) => { if (n) render(computeState(Date.now())); }).catch(() => {});
+
     async function boot() {
       renderFeeds();
       try {
@@ -1063,12 +1141,13 @@ if (typeof window !== "undefined") {
       render(computeState(Date.now()));
       runHealth();
       render(computeState(Date.now()));
+      refill();
       setInterval(tick, CONFIG.pollMs);
       setInterval(() => pollMetarAll(), CONFIG.metarMs);
       setInterval(runHealth, CONFIG.health.everyMin * 60000);
       setInterval(() => setTxt("clock", etHM(Date.now()) + " ET"), 1000);
       document.addEventListener("visibilitychange", () => {
-        if (!document.hidden) tick();
+        if (!document.hidden) { tick(); refill(); }
       });
       window.addEventListener("resize", () => render(computeState(Date.now())));
     }
