@@ -195,7 +195,7 @@ async function kmiaDay(dstr) {
 }
 
 /* ---------- replay the dashboard every 5 minutes ---------- */
-function forcedChoices() { try { return JSON.parse(localStorage.getItem("kmia_pws_v1_forced") || "{}") || {}; } catch (e) { return {}; } }
+function forcedChoices() { try { return JSON.parse(localStorage.getItem((E.CONFIG.storagePrefix || "kmia_pws_v1") + "_forced") || "{}") || {}; } catch (e) { return {}; } }
 
 function replay(series, official, start, end) {
   const C = E.CONFIG, forced = forcedChoices();

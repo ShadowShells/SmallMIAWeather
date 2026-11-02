@@ -58,6 +58,10 @@ const CONFIG = {
     { id: "KHST", lab: "S 34 km",  lat: 25.4886, lon: -80.3836 },
   ],
 
+  // localStorage name prefix. Every dashboard on shadowshells.github.io shares one
+  // browser storage, so each site needs its own prefix or they overwrite each other.
+  storagePrefix: "smia_pws_v1",
+
   bboxPadDeg: 0.15,      // fetch this far beyond the polygon; extras shown grey
   pollMs: 60 * 1000,     // AW pool poll
   metarMs: 5 * 60 * 1000,
@@ -313,7 +317,12 @@ function etMidnightMs(ms) {
   const p = etParts(ms);
   const wallAsUtc = Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute);
   const offset = wallAsUtc - Math.floor(ms / 60000) * 60000; // ET = UTC + offset
-  return Date.UTC(+p.year, +p.month - 1, +p.day) - offset;
+  // On DST-change days midnight sits on the other side of the switch, so re-check
+  // the offset at the first guess (else the day starts an hour off twice a year).
+  const guess = Date.UTC(+p.year, +p.month - 1, +p.day) - offset;
+  const q = etParts(guess);
+  const off2 = Date.UTC(+q.year, +q.month - 1, +q.day, +q.hour, +q.minute) - Math.floor(guess / 60000) * 60000;
+  return Date.UTC(+p.year, +p.month - 1, +p.day) - off2;
 }
 
 /* ---------- METAR raw fallback parser ---------- */
@@ -435,16 +444,26 @@ if (typeof window !== "undefined") {
 
     /* ---------- persistence ---------- */
     const LS = {
-      pool: "kmia_pws_v1_pool",
-      st5: "kmia_pws_v1_st5",
-      health: "kmia_pws_v1_health",
-      forced: "kmia_pws_v1_forced",
+      pool: `${cfg.storagePrefix}_pool`,
+      st5: `${cfg.storagePrefix}_st5`,
+      health: `${cfg.storagePrefix}_health`,
+      forced: `${cfg.storagePrefix}_forced`,
     };
     const lsGet = (k, fb) => {
       try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fb; }
       catch { return fb; }
     };
     const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* quota — skip */ } };
+    // One-time carry-over from the storage names every dashboard shared before
+    // storagePrefix existed: station history and block/allow choices only.
+    if (cfg.storagePrefix !== "kmia_pws_v1") {
+      for (const k of ["st5", "forced"]) {
+        try {
+          const old = localStorage.getItem("kmia_pws_v1_" + k);
+          if (old && localStorage.getItem(LS[k]) == null) localStorage.setItem(LS[k], old);
+        } catch { /* storage blocked — start fresh */ }
+      }
+    }
 
     /* ---------- state ---------- */
     const S = {
@@ -664,20 +683,27 @@ if (typeof window !== "undefined") {
         if (p.top != null && (!spikeMax || p.top > spikeMax.v)) spikeMax = { v: p.top, t: p.t, name: p.topName };
       }
 
-      // sea breeze + gust-mix burst watch
+      // sea breeze + gust-mix burst watch. KMIA's 5-minute ASOS rows often carry no
+      // wind, so read wind from the newest row that has it (up to 90 min old).
+      let windOb = null;
+      for (let i = S.metarSeries.length - 1; i >= 0; i--) {
+        const p = S.metarSeries[i];
+        if (p.wspd != null) { if (nowMs - p.t <= 90 * 60000) windOb = p; break; }
+      }
       let breeze = null;
-      if (metLatest && metLatest.wdir != null && metLatest.wspd != null) {
-        const on = metLatest.wdir >= cfg.breeze.onshoreDeg[0] &&
-                   metLatest.wdir <= cfg.breeze.onshoreDeg[1] &&
-                   metLatest.wspd >= cfg.breeze.onshoreMinKt;
-        const burst = on && (metLatest.wspd >= cfg.breeze.burstKt ||
-                             (metLatest.gust || 0) >= cfg.breeze.burstGustKt);
-        breeze = { dir: metLatest.wdir, kt: metLatest.wspd, gust: metLatest.gust, onshore: on, burst };
+      if (windOb) {
+        const on = windOb.wdir != null &&
+                   windOb.wdir >= cfg.breeze.onshoreDeg[0] &&
+                   windOb.wdir <= cfg.breeze.onshoreDeg[1] &&
+                   windOb.wspd >= cfg.breeze.onshoreMinKt;
+        const burst = on && (windOb.wspd >= cfg.breeze.burstKt ||
+                             (windOb.gust || 0) >= cfg.breeze.burstGustKt);
+        breeze = { dir: windOb.wdir, kt: windOb.wspd, gust: windOb.gust, onshore: on, burst, t: windOb.t };
       }
 
       return {
         nowMs, inPoly, kept, pool, cohorts,
-        metar: metLatest ? { f: metLatest.f, c: metLatest.c, t: metLatest.t, ageMin: (nowMs - metLatest.t) / 60000, wdir: metLatest.wdir, wspd: metLatest.wspd, gust: metLatest.gust } : null,
+        metar: metLatest ? { f: metLatest.f, c: metLatest.c, t: metLatest.t, ageMin: (nowMs - metLatest.t) / 60000, wdir: windOb ? windOb.wdir : null, wspd: windOb ? windOb.wspd : null, gust: windOb ? windOb.gust : null } : null,
         dMetar: pool.n && metLatest ? pool.correctedF - metLatest.f : null,
         dP90: pool.n && metLatest && pool.p90F != null ? pool.p90F - metLatest.f : null,
         rates,
@@ -1148,6 +1174,8 @@ if (typeof window === "undefined" && typeof process !== "undefined") {
   ok("ET midnight in July", etMidnightMs(Date.UTC(2026, 6, 31, 15, 0)) === Date.UTC(2026, 6, 31, 4, 0));
   ok("ET midnight in January", etMidnightMs(Date.UTC(2026, 0, 15, 15, 0)) === Date.UTC(2026, 0, 15, 5, 0));
   ok("ET clock string", etHM(Date.UTC(2026, 6, 31, 4, 0)) === "00:00");
+  ok("ET midnight on fall-back day (25 h)", etMidnightMs(Date.UTC(2026, 10, 1, 17, 0)) === Date.UTC(2026, 10, 1, 4, 0));
+  ok("ET midnight on spring-forward day (23 h)", etMidnightMs(Date.UTC(2026, 2, 8, 17, 0)) === Date.UTC(2026, 2, 8, 5, 0));
 
   // health sweep computes a °F bias
   const sweep = healthSweep(
