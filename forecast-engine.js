@@ -323,10 +323,13 @@ export function obsToday(obs, day) {
   const td = obs.filter((o) => o.t.getTime() >= a && o.t.getTime() < a + 86400e3 && o.tC != null);
   if (!td.length) return null;
   let mx = -999, src = "", hiT = null;
-  for (const o of td) { const f = r1(c2f(o.tC)); if (f > mx) { mx = f; hiT = o.t; src = o.fromMetar === false ? "5-min obs" : "METAR"; } }
+  // whole-°C 5-min readings only prove the low end of their range (23 °C -> at least 72.5 °F)
+  for (const o of td) { const f = o.floorF ?? (o.fromMetar === false ? r1(c2f(o.tC - 0.5)) : r1(c2f(o.tC))); if (f > mx) { mx = f; hiT = o.t; src = o.src || (o.fromMetar === false ? "5-min obs" : "METAR"); } }
   for (const o of td) if (o.max6C != null && o.t.getUTCHours() >= 6) { const f = r1(c2f(o.max6C)); if (f > mx) { mx = f; hiT = o.t; src = `6-h max group (${hm(o.t)})`; } }
   const last = td[td.length - 1];
-  return { maxSoFar: mx, maxSrc: src, maxTime: hiT ? hm(hiT) : null, nowF: r1(c2f(last.tC)), nowT: last.t, nowTime: hm(last.t) + " EST",
+  const whole = last.fromMetar === false;
+  return { maxSoFar: mx, maxSrc: src, maxTime: hiT ? hm(hiT) : null, nowF: r1(c2f(last.tC)), nowRange: whole ? `${Math.round(c2f(last.tC - 0.5))}–${Math.round(c2f(last.tC + 0.5) - 0.01)}` : null,
+    nowSrc: last.src || (whole ? "5-min" : "METAR"), nowT: last.t, nowTime: hm(last.t) + " EST",
     dewF: last.dewC != null ? Math.round(c2f(last.dewC)) : null,
     wind: `${last.wdir ?? "—"}${last.wspd != null ? " @ " + last.wspd : ""}${last.wgst ? "G" + last.wgst : ""} kt`, wx: last.wx || "", sky: last.sky, raw: last.raw,
     series: td.map((o) => ({ h: o.t.getUTCHours() + o.t.getUTCMinutes() / 60, f: r1(c2f(o.tC)) })) };
@@ -464,6 +467,17 @@ export async function runForecast({ inBrowser, kalshi, learned, wethr }) {
     safe("nws", fetchNws(), {}), safe("history", fetchHistory(tomorrow), []),
   ]);
   const { times, series } = mod;
+  // merge wethr's 5-min obs (fresher than the NWS API) into the METAR list
+  if (wethr?.obs?.length) {
+    const have = new Set(obs.map((o) => Math.round(o.t.getTime() / 60e3)));
+    for (const w of wethr.obs) {
+      const t = new Date(Date.parse(w.t) + OFF);
+      if (w.c == null || have.has(Math.round(t.getTime() / 60e3))) continue;
+      obs.push({ t, tC: w.c, dewC: w.dew, wdir: w.wd ?? "VRB", wspd: w.ws, wgst: w.wg, sky: "", wx: "", raw: "", fromMetar: false,
+        floorF: w.lo != null ? w.lo - 0.5 : r1(c2f(w.c - 0.5)), src: "wethr 5-min" });
+    }
+    obs.sort((a, b) => a.t - b.t);
+  }
   const scores = scoreModels(times, series, cli, today);
   const out = { station: STATION, generated: now, generatedTxt: `${hm(now)} EST`, scores, cli, errors };
   for (const [lab, day] of [["today", today], ["tomorrow", tomorrow]]) {

@@ -56,12 +56,20 @@ if (KEY) {
     for (const o of [j, j?.data, j?.result, Array.isArray(j?.data) ? j.data[0] : null]) if (o && typeof o === "object") for (const [k, v] of Object.entries(o)) if (typeof v === "string" && /time|source/i.test(k)) (wethr.extra ||= {})[k] = v;
     console.log("wethr high:", high, "potential:", potential);
   } catch (e) { wethr = { date: todayS, fetched_utc: new Date().toISOString(), error: e.message }; console.log("wethr failed:", e.message); }
-  // latest observation (newer than the NWS API, which lags ~20 min and rounds to whole °C)
+  // today's 5-min (HF-METAR) + METAR obs: ~2 min behind, vs ~20-30 min for the NWS API
   try {
-    const r = await fetch(`https://wethr.net/api/v2/observations.php?station_code=${STATION.icao}&start_time=${encodeURIComponent(new Date(Date.now() - 90 * 60e3).toISOString().slice(0, 19).replace("T", " "))}&end_time=${encodeURIComponent(new Date().toISOString().slice(0, 19).replace("T", " "))}`, { headers: { Authorization: `Bearer ${KEY}`, "X-API-Key": KEY, Accept: "application/json" } });
+    const r = await fetch(`https://wethr.net/api/v2/observations.php?station_code=${STATION.icao}&start_time=${encodeURIComponent(new Date(today.getTime() - STATION.utcOffset * 3600e3).toISOString().slice(0, 19).replace("T", " "))}&end_time=${encodeURIComponent(new Date().toISOString().slice(0, 19).replace("T", " "))}`, { headers: { Authorization: `Bearer ${KEY}`, "X-API-Key": KEY, Accept: "application/json" } });
     const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch { /* */ }
-    wethr.latestRaw = r.ok ? (j ?? t.slice(0, 3000)) : `HTTP ${r.status} ${t.slice(0, 200)}`;
-  } catch (e) { wethr.latestRaw = e.message; }
+    if (!r.ok || !Array.isArray(j)) throw new Error(`HTTP ${r.status} ${t.slice(0, 200)}`);
+    const num = (x) => (x == null || x === "" || x === "NA" ? null : +x);
+    // compact 5-min / METAR series for today (observation_time is UTC)
+    wethr.obs = j.filter((o) => o.temperature != null).map((o) => ({
+      t: o.observation_time.replace(" ", "T") + "Z", c: num(o.temperature), f: num(o.temperature_display),
+      lo: num(o.lowest_probable_f), hi: num(o.highest_probable_f), dew: num(o.dew_point),
+      wd: num(o.wind_direction), ws: num(o.wind_speed), wg: num(o.wind_gust), metar: !!o.metar_received_at,
+    }));
+    console.log("wethr obs:", wethr.obs.length, "latest", wethr.obs.at(-1)?.t, wethr.obs.at(-1)?.f);
+  } catch (e) { wethr.obsError = e.message; console.log("wethr obs failed:", e.message); }
   writeFileSync("wethr.json", JSON.stringify(wethr, null, 1));
 } else console.log("no WETHR_API_KEY secret: skipping wethr");
 

@@ -59,7 +59,8 @@ function render() {
   $("f-nws").textContent = f.nws?.high != null ? `${f.nws.high}` : "—";
   const o = f.obs;
   $("f-floor").textContent = f.wethr ? `${f.wethr.high} wethr` : o ? `${o.maxSoFar} @ ${o.maxTime}` : "—";
-  $("f-now").textContent = o ? `${o.nowF}° ${o.nowTime.replace(" EST", "")}` : "—";
+  $("f-now").textContent = o ? `${o.nowRange ? o.nowRange : o.nowF + "°"} ${o.nowTime.replace(" EST", "")}` : "—";
+  $("f-now").title = o ? `${o.nowF}° from ${o.nowSrc}${o.nowRange ? " (whole °C, true value " + o.nowRange + " °F)" : ""}` : "";
   $("f-reg").textContent = `${reg.sector || "—"} ${reg.windTxt || ""} ${reg.windKt ?? ""}kt`;
   $("f-storm").textContent = reg.storm || "—";
   $("summary").textContent = f.summary || "";
