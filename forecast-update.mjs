@@ -2,8 +2,9 @@
 // 1. Pulls Kalshi odds for today + tomorrow -> kalshi.json (the browser can't call Kalshi: no CORS).
 // 2. Runs the full engine server-side -> forecast.json (fallback snapshot for the page).
 // 3. Keeps forecast_log.json: first / morning / latest call per day + the CLI actual.
-import { writeFileSync, readFileSync } from "node:fs";
-import { fetchKalshiDirect, runForecast, estNow, fetchCliHighs } from "./forecast-engine.js";
+import { writeFileSync, readFileSync, existsSync } from "node:fs";
+import { fetchKalshiDirect, runForecast, estNow, fetchCliHighs, STATION } from "./forecast-engine.js";
+import { train } from "./forecast-train.mjs";
 
 const now = estNow();
 const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
@@ -15,9 +16,50 @@ for (const [k, d] of [["today", today], ["tomorrow", tomorrow]]) {
 writeFileSync("kalshi.json", JSON.stringify(kalshi, null, 1));
 console.log("kalshi:", kalshi.today.peak, "|", kalshi.tomorrow.peak);
 
+// ---- learning: retrain once a day (pacing table, 1-min spike, self-correction) ----
+let learned = null;
+try { learned = JSON.parse(readFileSync("forecast_learned.json", "utf8")); } catch { /* none */ }
+const todayS = today.toISOString().slice(0, 10);
+const trainedDay = learned ? new Date(Date.parse(learned.trained) + STATION.utcOffset * 3600e3).toISOString().slice(0, 10) : null;
+if (!learned || trainedDay !== todayS || process.env.FORCE_TRAIN) {
+  try { learned = await train(); writeFileSync("forecast_learned.json", JSON.stringify(learned)); console.log("retrained on", learned.daysUsed, "days"); }
+  catch (e) { console.log("train failed (kept old):", e.message); }
+}
+
+// ---- wethr.net: Wethr High with NWS logic (includes the 1-minute data) ----
+// The key lives in the repo secret WETHR_API_KEY, never in the code.
+let wethr = null;
+const KEY = process.env.WETHR_API_KEY;
+if (KEY) {
+  const url = `https://wethr.net/api/v2/observations.php?station_code=${STATION.icao}&mode=wethr_high&logic=nws`;
+  try {
+    const r = await fetch(url, { headers: { Authorization: `Bearer ${KEY}`, "X-API-Key": KEY, Accept: "application/json" } });
+    const body = await r.text();
+    let j = null; try { j = JSON.parse(body); } catch { /* not json */ }
+    if (!r.ok) throw new Error(`HTTP ${r.status} ${body.slice(0, 120)}`);
+    // find the running high in the response, whatever it is nested under
+    const found = {};
+    (function walk(o, path) {
+      if (o && typeof o === "object") for (const [k, v] of Object.entries(o)) {
+        const kp = path ? path + "." + k : k;
+        if (typeof v === "number" || (typeof v === "string" && /^-?\d+(\.\d+)?$/.test(v))) { if (!(k in found)) found[k] = { v: +v, path: kp }; }
+        else walk(v, kp);
+      }
+    })(j, "");
+    const pick = (...names) => { for (const n of names) if (found[n]) return found[n].v; return null; };
+    let high = pick("wethr_high", "high", "high_f", "max_temp_f", "max_temp", "temperature_high", "value");
+    const potential = pick("potential_high", "potential_high_f");
+    const timeKey = Object.keys(found).find((k) => /time/i.test(k));
+    wethr = { date: todayS, fetched_utc: new Date().toISOString(), high, potential, time: null, raw: j ?? body.slice(0, 2000) };
+    for (const o of [j, j?.data, j?.result, Array.isArray(j?.data) ? j.data[0] : null]) if (o && typeof o === "object") for (const [k, v] of Object.entries(o)) if (typeof v === "string" && /time|source/i.test(k)) (wethr.extra ||= {})[k] = v;
+    console.log("wethr high:", high, "potential:", potential);
+  } catch (e) { wethr = { date: todayS, fetched_utc: new Date().toISOString(), error: e.message }; console.log("wethr failed:", e.message); }
+  writeFileSync("wethr.json", JSON.stringify(wethr, null, 1));
+} else console.log("no WETHR_API_KEY secret: skipping wethr");
+
 let fc = null;
 try {
-  fc = await runForecast({ inBrowser: false, kalshi });
+  fc = await runForecast({ inBrowser: false, kalshi, learned, wethr: wethr && !wethr.error ? wethr : null });
   writeFileSync("forecast.json", JSON.stringify(fc, null, 1));
   console.log("today:", fc.today.summary);
   console.log("tomorrow:", fc.tomorrow.summary);
@@ -33,7 +75,7 @@ if (fc) {
     const f = fc[k];
     if (!f || f.error) continue;
     const e = (log[f.date] ||= {});
-    const snap = { at: `${now.toISOString().slice(5, 10)} ${fc.generatedTxt}`, point: f.point, call: f.call, mean: f.mean, kalshi_peak: f.kalshi.peak };
+    const snap = { at: `${now.toISOString().slice(5, 10)} ${fc.generatedTxt}`, point: f.point, call: f.call, mean: f.mean, meanRaw: f.meanRaw, sector: f.regime?.sector, kalshi_peak: f.kalshi.peak };
     e.first ||= snap;
     if (k === "today" && now.getUTCHours() < 11) e.morning = snap;
     e.latest = snap;

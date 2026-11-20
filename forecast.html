@@ -114,6 +114,21 @@
     </section>
 
     <section class="grid2">
+      <div class="panel" id="pace-panel">
+        <div class="panel-head"><span>Pacing check · learned from history</span><span id="pace-h" class="legend"></span></div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Reaches</th><th>History</th><th>Final</th></tr></thead>
+          <tbody id="tb-pace"></tbody>
+        </table></div>
+        <div class="pbody" id="pace-note" style="font-size:12.5px;color:var(--dim)"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><span>What it has learned</span><span class="legend">retrains daily</span></div>
+        <div class="pbody"><ul id="learned" class="notes"></ul></div>
+      </div>
+    </section>
+
+    <section class="grid2">
       <div class="panel">
         <div class="panel-head"><span>Setup · soundings &amp; maps in numbers</span><span class="legend">10 AM–4 PM model mean</span></div>
         <div class="pbody">
@@ -167,7 +182,7 @@
       forecast for the last 7 CLI days and corrected for that bias; observations are KMIA METARs (T-groups and 6-h max
       groups); NWS point forecast; similar days from the IEM ASOS archive. Kalshi odds are pulled by a scheduled job about
       every 30 min (Kalshi doesn't allow direct browser calls). The CLI high settles off 1-minute data, so gusty afternoons
-      can print above the hourly METARs. Engine: <code>forecast-engine.js</code>. Not trading advice.
+      can print above the hourly METARs. Pacing table, 1-minute spike stats and self-correction come from <code>forecast-train.mjs</code> (12 years of KMIA hourly obs vs the CLI, plus this page's own track record), retrained daily. wethr.net's Wethr High is pulled by the scheduled job when the <code>WETHR_API_KEY</code> secret is set. Engine: <code>forecast-engine.js</code>. Not trading advice.
     </footer>
   </main>
 

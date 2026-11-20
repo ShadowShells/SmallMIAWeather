@@ -18,9 +18,15 @@ async function load() {
   let kalshi = null, log = {};
   try { kalshi = await getJSON("kalshi.json"); dot("dot-kalshi", true); } catch { dot("dot-kalshi", false); }
   try { log = await getJSON("forecast_log.json"); } catch { /* none yet */ }
+  let learned = null, wethr = null;
+  try { learned = await getJSON("forecast_learned.json"); } catch { /* not trained yet */ }
+  try {
+    wethr = await getJSON("wethr.json");
+    if (wethr.error || Date.now() - Date.parse(wethr.fetched_utc) > 90 * 60e3) wethr = { ...wethr, stale: true };
+  } catch { /* no key set */ }
   let live = true;
   try {
-    DATA = await runForecast({ inBrowser: true, kalshi: kalshi || {} });
+    DATA = await runForecast({ inBrowser: true, kalshi: kalshi || {}, learned, wethr: wethr && !wethr.stale ? wethr : null });
     dot("dot-models", true);
   } catch (e) {
     live = false; dot("dot-models", false);
@@ -28,7 +34,7 @@ async function load() {
   }
   if (!DATA) { $("meta").textContent = "No data — models and snapshot both unavailable."; return; }
   dot("dot-obs", !!DATA.today?.obs);
-  DATA.log = log; DATA.kalshiAt = kalshi?.fetched_utc;
+  DATA.log = log; DATA.kalshiAt = kalshi?.fetched_utc; DATA.learned = learned; DATA.wethrFile = wethr;
   const w = [];
   if (!live) w.push("Live model feed unavailable — showing the last scheduled snapshot.");
   if (!kalshi) w.push("Kalshi odds file missing — the scheduled job may not have run yet.");
@@ -52,7 +58,7 @@ function render() {
   $("f-kimp").textContent = f.kalshi?.implied ?? "—";
   $("f-nws").textContent = f.nws?.high != null ? `${f.nws.high}` : "—";
   const o = f.obs;
-  $("f-floor").textContent = o ? `${o.maxSoFar} @ ${o.maxTime}` : "—";
+  $("f-floor").textContent = f.wethr ? `${f.wethr.high} wethr` : o ? `${o.maxSoFar} @ ${o.maxTime}` : "—";
   $("f-now").textContent = o ? `${o.nowF}° ${o.nowTime.replace(" EST", "")}` : "—";
   $("f-reg").textContent = `${reg.sector || "—"} ${reg.windTxt || ""} ${reg.windKt ?? ""}kt`;
   $("f-storm").textContent = reg.storm || "—";
@@ -69,6 +75,33 @@ function render() {
       <td class="${b.edge >= 0.08 ? "pos" : b.edge <= -0.08 ? "neg" : ""}">${b.edge == null ? "—" : (b.edge >= 0 ? "+" : "") + Math.round(b.edge * 100)}</td>
       <td class="dim">${b.bid != null ? Math.round(b.bid * 100) : "—"} / ${b.ask != null ? Math.round(b.ask * 100) : "—"}</td>
     </tr>`).join("") || `<tr><td colspan="5" class="dim">No Kalshi market found for ${esc(f.kalshi?.event || f.date)}.</td></tr>`;
+
+  // pacing check (learned from history)
+  const pc = f.pacing, Ln = DATA.learned, hl = (h) => (h > 12 ? `${h - 12} PM` : h === 12 ? "12 PM" : `${h} AM`);
+  $("pace-panel").style.display = DAY === "today" ? "" : "none";
+  if (pc) {
+    $("pace-h").textContent = `${pc.n} ${pc.sector} days · through ${hl(pc.hour)} · weight ${Math.round(pc.weight * 100)}%`;
+    const fin = Object.fromEntries((f.dist || []).map((d) => [d.k, d.p]));
+    $("tb-pace").innerHTML = (pc.reach || []).map((r) => {
+      const fm = Object.entries(fin).filter(([k]) => +k >= r.lo).reduce((s2, [, p]) => s2 + p, 0);
+      return `<tr class="${r.label === f.call ? "callrow" : ""}"><td>≥ ${r.lo} <span class="dim">(${esc(r.label)})</span></td><td>${pct(r.hist)}</td><td><b>${pct(fm)}</b></td></tr>`;
+    }).join("");
+    $("pace-note").innerHTML = `Hourly high so far <b>${pc.base}</b> at ${hl(pc.hour)}. On past ${esc(pc.sector)} days in this season, from this point the CLI high ended on average <b>+${pc.meanRise} °F</b> higher. ` +
+      `"History" = how often it reached each line from here; "Final" = the call after blending history with the models (history counts more as the day goes on).`;
+  } else {
+    $("tb-pace").innerHTML = "";
+    $("pace-note").textContent = Ln ? "Starts once today's first METAR is in (6 AM onward)." : "Not trained yet — the scheduled job builds forecast_learned.json once a day.";
+  }
+  const lrn = [];
+  if (f.spike) lrn.push(`<li><b>1-minute spike:</b> on ${esc(f.regime?.sector || "all")} days the CLI high beat the highest hourly METAR by ≥1 °F <b>${pct(f.spike.ge1)}</b> of the time (avg +${f.spike.mean}). The pacing table already counts this.</li>`);
+  const sc = f.selfcal;
+  if (sc) lrn.push(sc.n >= 5 ? `<li><b>Self-correction:</b> last ${sc.n} ${DAY === "today" ? "morning" : "night-before"} calls missed by ${sc.bias > 0 ? "+" : ""}${sc.bias} °F on average → adjusting ${f.selfAdj > 0 ? "+" : ""}${f.selfAdj} °F.</li>`
+    : `<li><b>Self-correction:</b> ${sc.n} graded day${sc.n === 1 ? "" : "s"} so far; switches on at 5.</li>`);
+  const wf = DATA.wethrFile;
+  lrn.push(f.wethr ? `<li><b>wethr High (NWS logic, incl. 1-min):</b> ${f.wethr.high}${f.wethr.potential != null ? ` · potential ${f.wethr.potential}` : ""} — used as the floor.</li>`
+    : wf?.error ? `<li><b>wethr:</b> ${esc(wf.error.slice(0, 90))}</li>` : `<li><b>wethr:</b> not connected (add the <code>WETHR_API_KEY</code> repo secret).</li>`);
+  if (Ln) lrn.push(`<li class="dim">Trained ${esc(new Date(Ln.trained).toISOString().slice(0, 16).replace("T", " "))}Z on ${Ln.daysUsed} days (${esc(Ln.window)}).</li>`);
+  $("learned").innerHTML = lrn.join("");
 
   // models
   $("tb-mod").innerHTML = (f.models || []).map((m) => `

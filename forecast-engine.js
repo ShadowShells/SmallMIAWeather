@@ -332,7 +332,19 @@ export function obsToday(obs, day) {
     series: td.map((o) => ({ h: o.t.getUTCHours() + o.t.getUTCMinutes() / 60, f: r1(c2f(o.tC)) })) };
 }
 
-export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana }) {
+/* ---------------- learning (forecast_learned.json from forecast-train.mjs) ---------------- */
+/** Empirical pacing: given the hourly-METAR high so far at this hour and today's wind sector, the
+ *  historical distribution of the final CLI high (whole °F). */
+export function pacingDist(learned, sector, hour, maxSoFar) {
+  const P = learned?.pacing; if (!P || maxSoFar == null) return null;
+  const h = Math.min(17, Math.max(6, hour));
+  const own = P[sector]?.[h], tab = own && own.n >= 60 ? own : P.all?.[h]; if (!tab) return null;
+  const base = Math.floor(maxSoFar + 0.5), dist = {};
+  for (const [r, p] of Object.entries(tab.p)) if (p > 0) dist[base + +r] = (dist[base + +r] || 0) + p;
+  return { hour: h, sector: tab === own ? sector : "all", n: tab.n, base, meanRise: tab.mean, dist };
+}
+
+export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana, learned, reg, wethr }) {
   const idx = cliIdx(times, day), isToday = ymd(day) === ymd(now);
   const hourNow = new Date(Math.floor(now.getTime() / 3600e3) * 3600e3);
   const rows = [];
@@ -362,20 +374,45 @@ export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana
   const vals = rows.map((r) => r.corr), ws = rows.map((r) => r.w);
   let mu = wmean(vals, ws); const blend = r1(mu);
   const n = nws[ymd(day)] || {};
+  const sc0 = learned?.selfcal?.[isToday ? "today" : "tomorrow"];
   const hNow = now.getUTCHours() + now.getUTCMinutes() / 60;
   if (n.high != null && !(isToday && hNow >= 16)) mu = (1 - CFG.nwsWeight) * mu + CFG.nwsWeight * n.high;
   if (ana) { const a = isToday ? CFG.analogWeightToday : CFG.analogWeightTomorrow; mu = (1 - a) * mu + a * ana.median; }
+  const meanRaw = r1(mu);
+  // self-correction: the dashboard's own recent average miss (shrunk, ±2 °F max)
+  const hourObs = isToday && ob ? ob.nowT.getUTCHours() : null;
+  const wEmp = hourObs == null ? 0 : Math.max(0, Math.min(0.5, 0.08 * (hourObs - 8)));
+  const selfAdj = sc0?.adj ? sc0.adj * (1 - wEmp) : 0;
+  mu += selfAdj;
   const v = wmean(vals.map((x) => (x - mu) ** 2), ws);
   let base = CFG.sdTomorrow;
   if (isToday) { const left = Math.max(0, CFG.peakHour - hNow); base = hNow >= 16 ? 0.35 : 0.45 + 1.15 * Math.min(1, left / 8); }
   const sd = Math.max(0.5, Math.sqrt(v * (isToday ? 0.6 : 1) + base ** 2));
-  const floor = isToday && ob ? ob.maxSoFar : null;
+  let floor = isToday && ob ? ob.maxSoFar : null;
+  const wh = isToday && wethr?.date === ymd(day) && wethr.high != null ? wethr.high : null;
+  if (wh != null && (floor == null || wh > floor)) floor = wh;
   const pLess = (x) => (floor != null && x <= floor ? 0 : ncdf((x - mu) / sd));
   let lo = Math.floor(mu - 6 * sd) - 2, hi = Math.ceil(mu + 6 * sd) + 2;
   if (floor != null) lo = Math.min(lo, Math.floor(floor) - 1);
   const dist = {}; let tot = 0;
   for (let k = lo; k <= hi; k++) { const p = Math.max(0, pLess(k + 0.5) - pLess(k - 0.5)); dist[k] = p; tot += p; }
   for (const k in dist) dist[k] /= tot || 1;
+  // blend in the empirical pacing distribution (history: where the high ended from here)
+  let pacing = null;
+  if (isToday && ob && learned) {
+    const pd = pacingDist(learned, reg?.sector || "all", hourObs, ob.maxSoFar);
+    if (pd) {
+      const fi = floor != null ? Math.floor(floor + 0.5) : -999;
+      const emp = {}; let et = 0;
+      for (const [k, p] of Object.entries(pd.dist)) if (+k >= fi) { emp[k] = p; et += p; }
+      for (const k in emp) emp[k] /= et || 1;
+      const keys = new Set([...Object.keys(dist), ...Object.keys(emp)]);
+      if (et > 0 && wEmp > 0) for (const k of keys) dist[k] = (1 - wEmp) * (dist[k] || 0) + wEmp * (emp[k] || 0);
+      const reach = (kal?.brackets || []).filter((b) => b.lo != null).map((b) => ({ label: b.label, lo: b.lo,
+        hist: Object.entries(emp).filter(([k]) => +k >= b.lo).reduce((s, [, p]) => s + p, 0) }));
+      pacing = { ...pd, weight: wEmp, emp, reach, maxSoFar: ob.maxSoFar };
+    }
+  }
   const point = +Object.entries(dist).reduce((a, b) => (b[1] > a[1] ? b : a))[0];
   const expected = Object.entries(dist).reduce((s, [k, p]) => s + k * p, 0);
   const brackets = (kal?.brackets || []).map((b) => {
@@ -394,7 +431,8 @@ export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana
     const need = b.lo - 0.5, tc = Math.ceil(((need - 32) * 5 / 9) * 10 - 1e-9) / 10;
     return { bracket: b.label, needF: need, tgroup: `T${tc < 0 ? 1 : 0}${String(Math.abs(Math.round(tc * 10))).padStart(3, "0")}`, oneMinC: Math.round(tc) - 0.5 >= tc ? Math.round(tc) : Math.ceil(tc) };
   });
-  return { date: ymd(day), isToday, call: call?.label ?? null, callP: call?.model_p ?? null, point, mean: r1(mu), blend, expected: r1(expected), sd: Math.round(sd * 100) / 100, floor, models: rows, nws: n,
+  const spike = learned?.spike?.[reg?.sector] || learned?.spike?.all || null;
+  return { date: ymd(day), isToday, call: call?.label ?? null, callP: call?.model_p ?? null, point, mean: r1(mu), meanRaw, selfAdj: r1(selfAdj), selfcal: sc0 || null, pacing, spike, wethr: wh != null ? wethr : null, blend, expected: r1(expected), sd: Math.round(sd * 100) / 100, floor, models: rows, nws: n,
     dist: Object.entries(dist).filter(([, p]) => p >= 0.004).map(([k, p]) => ({ k: +k, p })), brackets, kalshi: { event: kal?.event, noMarket: kal?.noMarket, peak: kal?.peak, window: kal?.window, implied: kal?.implied, error: kal?.error }, checkpoints: cps, tgroups: tg };
 }
 
@@ -404,7 +442,12 @@ export function summarize(fc, reg) {
   if (fc.kalshi.noMarket) parts.push("Kalshi market not trading yet.");
   else if (fc.kalshi.peak) parts.push(`Kalshi peak ${fc.kalshi.peak}, implied ~${fc.kalshi.implied}.`);
   parts.push(`Bias-corrected blend ${fc.mean} ± ${fc.sd} °F.`);
-  if (fc.floor != null) parts.push(`Observed high so far ${fc.floor} °F.`);
+  if (fc.floor != null) parts.push(`Observed high so far ${fc.floor} °F${fc.wethr ? " (wethr, incl. 1-min)" : ""}.`);
+  if (fc.pacing) {
+    const pc = fc.pacing, up1 = Object.entries(pc.emp).filter(([k]) => +k >= pc.base + 1).reduce((s, [, p]) => s + p, 0);
+    parts.push(`Pacing history (${pc.n} ${pc.sector} days, ${pc.hour > 12 ? pc.hour - 12 + " PM" : pc.hour + " AM"}): from ${pc.base} so far the CLI ended higher ${Math.round(up1 * 100)}% of the time, avg +${pc.meanRise}.`);
+  }
+  if (fc.selfAdj) parts.push(`Self-correction ${fc.selfAdj > 0 ? "+" : ""}${fc.selfAdj} °F from recent misses.`);
   const by = fc.brackets.filter((b) => b.edge != null).sort((a, b) => b.edge - a.edge);
   if (by[0] && by[0].edge >= 0.08) parts.push(`Cheap: ${by[0].label} (${Math.round(by[0].model_p * 100)}% vs market ${Math.round(by[0].p * 100)}%).`);
   const w = by[by.length - 1];
@@ -413,7 +456,7 @@ export function summarize(fc, reg) {
 }
 
 /* ---------------- one-shot run ---------------- */
-export async function runForecast({ inBrowser, kalshi }) {
+export async function runForecast({ inBrowser, kalshi, learned, wethr }) {
   const now = estNow(), today = dayStart(now), tomorrow = addDays(today, 1), errors = [];
   const safe = async (name, p, dflt) => { try { return await p; } catch (e) { errors.push(`${name}: ${e.message}`); return dflt; } };
   const [mod, cli, obs, nws, hist] = await Promise.all([
@@ -428,7 +471,7 @@ export async function runForecast({ inBrowser, kalshi }) {
     const reg = regime(times, series, day);
     const ana = analogs(hist, day, reg);
     const ob = lab === "today" ? obsToday(obs, day) : null;
-    const fc = forecastDay({ day, now, times, series, scores, nws, kal, ob, ana });
+    const fc = forecastDay({ day, now, times, series, scores, nws, kal, ob, ana, learned, reg, wethr });
     Object.assign(fc, { regime: reg, analogs: ana, obs: ob, summary: summarize(fc, reg) });
     out[lab] = fc;
   }
