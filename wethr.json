@@ -1,13 +1,14 @@
 {
  "date": "2026-11-20",
- "fetched_utc": "2026-11-20T19:56:00.798Z",
+ "fetched_utc": "2026-11-20T20:14:51.194Z",
  "high": 82,
  "potential": 82,
- "time": "2:53 PM",
+ "time": "3:10 PM",
  "sources": [
   "omo",
   "hf_metar",
-  "metar"
+  "metar",
+  "dsm"
  ],
  "low": 72,
  "lowTime": "8:26 AM",
@@ -16,11 +17,11 @@
   "date": "2026-11-20",
   "wethr_high": 82,
   "wethr_low": 72,
-  "time_of_high_utc": "2026-11-20 19:53:00",
+  "time_of_high_utc": "2026-11-20 20:10:00",
   "time_of_low_utc": "2026-11-20 13:26:00",
   "potential_high": 82,
   "potential_low": 72,
-  "potential_high_time_utc": "2026-11-20 19:53:00",
+  "potential_high_time_utc": "2026-11-20 20:10:00",
   "potential_low_time_utc": "2026-11-20 13:26:00",
   "divergence": {
    "high": false,
@@ -29,25 +30,31 @@
   "wethr_high_sources": [
    "omo",
    "hf_metar",
-   "metar"
+   "metar",
+   "dsm"
   ],
   "wethr_low_sources": [
    "omo",
    "hf_metar",
    "metar",
-   "six_hour_low"
+   "six_hour_low",
+   "dsm"
   ],
   "wethr_high_source_detail": {
    "omo": {
     "first_confirmed_utc": "2026-11-20 19:38:00",
-    "count": 16
+    "count": 24
    },
    "hf_metar": {
     "first_confirmed_utc": "2026-11-20 19:40:00",
-    "count": 3
+    "count": 5
    },
    "metar": {
     "first_confirmed_utc": "2026-11-20 19:53:00",
+    "count": 1
+   },
+   "dsm": {
+    "first_confirmed_utc": "2026-11-20 19:57:00",
     "count": 1
    }
   },
@@ -67,6 +74,10 @@
    "six_hour_low": {
     "first_confirmed_utc": "2026-11-20 11:53:00",
     "count": 2
+   },
+   "dsm": {
+    "first_confirmed_utc": "2026-11-20 13:26:00",
+    "count": 1
    }
   },
   "calculation_logic": "nws",
@@ -80,9 +91,9 @@
   }
  },
  "extra": {
-  "time_of_high_utc": "2026-11-20 19:53:00",
+  "time_of_high_utc": "2026-11-20 20:10:00",
   "time_of_low_utc": "2026-11-20 13:26:00",
-  "potential_high_time_utc": "2026-11-20 19:53:00",
+  "potential_high_time_utc": "2026-11-20 20:10:00",
   "potential_low_time_utc": "2026-11-20 13:26:00"
  },
  "obs": [
@@ -2449,6 +2460,66 @@
    "ws": 6,
    "wg": null,
    "metar": true
+  },
+  {
+   "t": "2026-11-20T19:55:00Z",
+   "c": 28,
+   "f": 82.4,
+   "lo": 82,
+   "hi": 83,
+   "dew": 22,
+   "wd": 190,
+   "ws": 6,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-20T19:57:00Z",
+   "c": 27.78,
+   "f": 82,
+   "lo": 82,
+   "hi": 82,
+   "dew": null,
+   "wd": null,
+   "ws": null,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-20T20:00:00Z",
+   "c": 27,
+   "f": 80.6,
+   "lo": 80,
+   "hi": 81,
+   "dew": 22,
+   "wd": 200,
+   "ws": 7,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-20T20:05:00Z",
+   "c": 27,
+   "f": 80.6,
+   "lo": 80,
+   "hi": 81,
+   "dew": 21,
+   "wd": 180,
+   "ws": 4,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-20T20:10:00Z",
+   "c": 28,
+   "f": 82.4,
+   "lo": 82,
+   "hi": 83,
+   "dew": 22,
+   "wd": 150,
+   "ws": 6,
+   "wg": null,
+   "metar": false
   }
  ]
 }
