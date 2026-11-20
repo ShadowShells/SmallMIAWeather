@@ -1,0 +1,36 @@
+name: KMIA forecast update
+
+# Pulls Kalshi odds (browsers can't call Kalshi directly) and refreshes the
+# forecast snapshot + call log that forecast.html reads.
+on:
+  schedule:
+    - cron: "7,37 * * * *"   # about every 30 min (GitHub may delay scheduled runs)
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: forecast-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Run forecast engine
+        run: node forecast-update.mjs
+      - name: Commit data files
+        run: |
+          git config user.name "forecast-bot"
+          git config user.email "forecast-bot@users.noreply.github.com"
+          git add kalshi.json forecast_log.json
+          [ -f forecast.json ] && git add forecast.json
+          if git diff --cached --quiet; then echo "no changes"; exit 0; fi
+          git commit -m "forecast data $(date -u +%Y-%m-%dT%H:%MZ)"
+          for i in 1 2 3; do git pull --rebase -q && git push && break; sleep 5; done

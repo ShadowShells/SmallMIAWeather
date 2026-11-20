@@ -1,0 +1,40 @@
+{
+ "2026-11-20": {
+  "first": {
+   "at": "11-20 8:02 AM EST",
+   "point": 82,
+   "call": "82° to 83°",
+   "mean": 82.1,
+   "kalshi_peak": "82° to 83°"
+  },
+  "morning": {
+   "at": "11-20 8:03 AM EST",
+   "point": 83,
+   "call": "82° to 83°",
+   "mean": 82.7,
+   "kalshi_peak": "82° to 83°"
+  },
+  "latest": {
+   "at": "11-20 8:03 AM EST",
+   "point": 83,
+   "call": "82° to 83°",
+   "mean": 82.7,
+   "kalshi_peak": "82° to 83°"
+  }
+ },
+ "2026-11-21": {
+  "first": {
+   "at": "11-20 8:02 AM EST",
+   "point": 83,
+   "call": "82° to 83°",
+   "mean": 82.6,
+   "kalshi_peak": "79° or below"
+  },
+  "latest": {
+   "at": "11-20 8:03 AM EST",
+   "point": 83,
+   "call": "82° to 83°",
+   "mean": 83.1
+  }
+ }
+}

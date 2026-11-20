@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KMIA · High forecast</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .tabs { display: flex; gap: 6px; margin: 14px 0 10px; }
+    .tabs button {
+      background: var(--panel); border: 1px solid var(--line); color: var(--dim); border-radius: 7px;
+      font-family: var(--mono); font-size: 13px; padding: 6px 14px; cursor: pointer;
+    }
+    .tabs button.on { color: var(--text); border-color: var(--official); }
+    .tabs .meta { margin-left: auto; align-self: center; font-family: var(--mono); font-size: 11px; color: var(--dim); text-align: right; }
+    .hero { display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: center; background: var(--panel);
+      border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; margin-bottom: 10px; }
+    .callbox { text-align: center; padding-right: 22px; border-right: 1px dashed var(--line); min-width: 200px; }
+    .callbox .lab { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--official); }
+    .callbox .pt { font-family: var(--mono); font-weight: 700; font-size: 56px; line-height: 1; color: var(--official); }
+    .callbox .br { font-family: var(--mono); font-size: 15px; margin-top: 6px; }
+    .callbox .pr { font-family: var(--mono); font-size: 12px; color: var(--dim); }
+    .facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+    .fact .k { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); }
+    .fact .v { font-family: var(--mono); font-size: 17px; margin-top: 2px; font-variant-numeric: tabular-nums; }
+    .summary { grid-column: 1 / -1; font-size: 13.5px; color: var(--text); border-top: 1px solid var(--line); padding-top: 10px; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .pbody { padding: 10px 12px; }
+    .bar { height: 8px; border-radius: 4px; display: inline-block; vertical-align: middle; }
+    .bar.k { background: var(--edge); } .bar.m { background: var(--official); }
+    td .barcell { display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
+    tr.callrow td { background: rgba(46, 211, 198, .08); }
+    tr.callrow td:first-child { color: var(--official); font-weight: 700; }
+    .pos { color: var(--good); } .neg { color: var(--bad); }
+    .notes { margin: 6px 0 0; padding-left: 18px; font-size: 13px; }
+    .notes li { margin-bottom: 4px; }
+    .kv { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .raw { font-family: var(--mono); font-size: 11px; color: var(--dim); word-break: break-all; margin-top: 8px; }
+    #spark { width: 100%; height: 150px; display: block; }
+    .links a { color: var(--official); font-family: var(--mono); font-size: 12px; margin-right: 14px; display: inline-block; margin-bottom: 6px; }
+    .warnbox { background: #2A1A12; border: 1px solid #5A3420; color: #FFC9A8; border-radius: 8px; padding: 8px 12px; font-size: 12.5px; margin-bottom: 10px; display: none; }
+    .hit { color: var(--good); } .miss { color: var(--bad); }
+    @media (max-width: 940px) {
+      .hero { grid-template-columns: 1fr; } .callbox { border-right: none; border-bottom: 1px dashed var(--line); padding: 0 0 12px; }
+      .facts { grid-template-columns: repeat(2, 1fr); } .grid2 { grid-template-columns: 1fr; } .kv { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="rail">
+    <div class="rail-id">
+      <span class="rail-icao">KMIA</span>
+      <span class="rail-sub">Daily-high forecast</span>
+      <a class="rail-sub" href="index.html" style="color:var(--official);font-family:var(--mono)">← live pool</a>
+      <a class="rail-sub" href="history.html" style="color:var(--official);font-family:var(--mono)">history</a>
+    </div>
+    <div class="rail-right">
+      <span class="feeds">
+        <span class="feed"><i id="dot-models" class="dot wait"></i>MODELS</span>
+        <span class="feed"><i id="dot-obs" class="dot wait"></i>OBS</span>
+        <span class="feed"><i id="dot-kalshi" class="dot wait"></i>KALSHI</span>
+      </span>
+      <span id="clock" class="clock">--:-- EST</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="tabs">
+      <button data-day="today" class="on">Today</button>
+      <button data-day="tomorrow">Tomorrow</button>
+      <span id="meta" class="meta">loading…</span>
+    </div>
+    <div id="warn" class="warnbox"></div>
+
+    <section class="hero">
+      <div class="callbox">
+        <div class="lab">Call</div>
+        <div class="pt"><span id="point">—</span><span class="unit">°F</span></div>
+        <div id="bracket" class="br">—</div>
+        <div id="callp" class="pr"></div>
+      </div>
+      <div class="facts">
+        <div class="fact"><div class="k">Blend ± spread</div><div id="f-mean" class="v">—</div></div>
+        <div class="fact"><div class="k">Kalshi peak</div><div id="f-kpeak" class="v">—</div></div>
+        <div class="fact"><div class="k">Kalshi implied</div><div id="f-kimp" class="v">—</div></div>
+        <div class="fact"><div class="k">NWS high</div><div id="f-nws" class="v">—</div></div>
+        <div class="fact"><div class="k">High so far</div><div id="f-floor" class="v">—</div></div>
+        <div class="fact"><div class="k">Now</div><div id="f-now" class="v">—</div></div>
+        <div class="fact"><div class="k">Regime</div><div id="f-reg" class="v">—</div></div>
+        <div class="fact"><div class="k">Storm risk</div><div id="f-storm" class="v">—</div></div>
+        <div id="summary" class="summary"></div>
+      </div>
+    </section>
+
+    <section class="grid2">
+      <div class="panel">
+        <div class="panel-head"><span>Brackets · market vs model</span><span id="kwin" class="legend"></span></div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Bracket</th><th>Kalshi</th><th>Model</th><th>Edge</th><th>Bid / Ask</th></tr></thead>
+          <tbody id="tb-br"></tbody>
+        </table></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><span>Models · bias-corrected</span><span class="legend">7-day score vs CLI</span></div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Model</th><th>Raw</th><th>Peak</th><th>Bias</th><th>Err</th><th>Pace</th><th>Corr</th><th>Wt</th></tr></thead>
+          <tbody id="tb-mod"></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <section class="grid2">
+      <div class="panel">
+        <div class="panel-head"><span>Setup · soundings &amp; maps in numbers</span><span class="legend">10 AM–4 PM model mean</span></div>
+        <div class="pbody">
+          <div class="kv" id="kv-reg"></div>
+          <ul id="notes" class="notes"></ul>
+        </div>
+      </div>
+      <div class="panel" id="obs-panel">
+        <div class="panel-head"><span>Observations · KMIA</span><span id="obs-src" class="legend"></span></div>
+        <div class="pbody">
+          <canvas id="spark"></canvas>
+          <div id="raw" class="raw"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid2">
+      <div class="panel">
+        <div class="panel-head"><span>Checkpoints</span><span class="legend">1-min whole °C → °F</span></div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>1-min °C</th><th>Shows</th><th>True range °F</th><th>Settles</th></tr></thead>
+          <tbody id="tb-cp"></tbody>
+        </table></div>
+        <div class="pbody" id="tgroups" style="font-family:var(--mono);font-size:12px"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><span>Similar days</span><span id="ana-h" class="legend"></span></div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Date</th><th>High</th><th>Wind</th><th>Rain</th><th>Dew</th></tr></thead>
+          <tbody id="tb-ana"></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <section class="grid2">
+      <div class="panel">
+        <div class="panel-head"><span>Track record</span><span class="legend">call vs CLI</span></div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Date</th><th>Night before</th><th>Morning</th><th>Last</th><th>Kalshi peak</th><th>Actual</th></tr></thead>
+          <tbody id="tb-log"></tbody>
+        </table></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><span>Charts &amp; links</span></div>
+        <div class="pbody links" id="links"></div>
+      </div>
+    </section>
+
+    <footer>
+      Refreshes every 10 min. Models from Open-Meteo (HRRR, GFS, NBM, ECMWF, ICON, GEM, UKMO), each scored on its day-ahead
+      forecast for the last 7 CLI days and corrected for that bias; observations are KMIA METARs (T-groups and 6-h max
+      groups); NWS point forecast; similar days from the IEM ASOS archive. Kalshi odds are pulled by a scheduled job about
+      every 30 min (Kalshi doesn't allow direct browser calls). The CLI high settles off 1-minute data, so gusty afternoons
+      can print above the hourly METARs. Engine: <code>forecast-engine.js</code>. Not trading advice.
+    </footer>
+  </main>
+
+  <script type="module" src="forecast-ui.js"></script>
+</body>
+</html>

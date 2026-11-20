@@ -1,0 +1,5295 @@
+{
+ "station": {
+  "icao": "KMIA",
+  "name": "Miami Intl",
+  "lat": 25.7906,
+  "lon": -80.3164,
+  "kalshi": "KXHIGHMIA",
+  "iemNetwork": "FL_ASOS",
+  "iemId": "MIA",
+  "nwsGrid": "MFL/105,51",
+  "utcOffset": -5
+ },
+ "generated": "2026-11-20T08:03:15.110Z",
+ "generatedTxt": "8:03 AM EST",
+ "scores": {
+  "ncep_hrrr_conus": {
+   "bias": 1,
+   "mae": 1.8,
+   "n": 7,
+   "days": [
+    {
+     "date": "2026-11-19",
+     "fc": 77.5,
+     "act": 82,
+     "err": 4.5
+    },
+    {
+     "date": "2026-11-18",
+     "fc": 78.5,
+     "act": 78,
+     "err": -0.5
+    },
+    {
+     "date": "2026-11-17",
+     "fc": 77.6,
+     "act": 81,
+     "err": 3.4
+    },
+    {
+     "date": "2026-11-16",
+     "fc": 82.2,
+     "act": 81,
+     "err": -1.2
+    },
+    {
+     "date": "2026-11-15",
+     "fc": 78.4,
+     "act": 80,
+     "err": 1.6
+    },
+    {
+     "date": "2026-11-14",
+     "fc": 69.4,
+     "act": 71,
+     "err": 1.6
+    },
+    {
+     "date": "2026-11-13",
+     "fc": 81.5,
+     "act": 81,
+     "err": -0.5
+    }
+   ]
+  },
+  "gfs_global": {
+   "bias": 0.4,
+   "mae": 1.8,
+   "n": 7,
+   "days": [
+    {
+     "date": "2026-11-19",
+     "fc": 81,
+     "act": 82,
+     "err": 1
+    },
+    {
+     "date": "2026-11-18",
+     "fc": 77.7,
+     "act": 78,
+     "err": 0.3
+    },
+    {
+     "date": "2026-11-17",
+     "fc": 77.8,
+     "act": 81,
+     "err": 3.2
+    },
+    {
+     "date": "2026-11-16",
+     "fc": 78.4,
+     "act": 81,
+     "err": 2.6
+    },
+    {
+     "date": "2026-11-15",
+     "fc": 78.3,
+     "act": 80,
+     "err": 1.7
+    },
+    {
+     "date": "2026-11-14",
+     "fc": 74.7,
+     "act": 71,
+     "err": -3.7
+    },
+    {
+     "date": "2026-11-13",
+     "fc": 82,
+     "act": 81,
+     "err": -1
+    }
+   ]
+  },
+  "ncep_nbm_conus": {
+   "bias": 1,
+   "mae": 1.4,
+   "n": 7,
+   "days": [
+    {
+     "date": "2026-11-19",
+     "fc": 80.1,
+     "act": 82,
+     "err": 1.9
+    },
+    {
+     "date": "2026-11-18",
+     "fc": 78.1,
+     "act": 78,
+     "err": -0.1
+    },
+    {
+     "date": "2026-11-17",
+     "fc": 76.9,
+     "act": 81,
+     "err": 4.1
+    },
+    {
+     "date": "2026-11-16",
+     "fc": 81,
+     "act": 81,
+     "err": 0
+    },
+    {
+     "date": "2026-11-15",
+     "fc": 78.7,
+     "act": 80,
+     "err": 1.3
+    },
+    {
+     "date": "2026-11-14",
+     "fc": 71.3,
+     "act": 71,
+     "err": -0.3
+    },
+    {
+     "date": "2026-11-13",
+     "fc": 78.3,
+     "act": 81,
+     "err": 2.7
+    }
+   ]
+  },
+  "ecmwf_ifs025": {
+   "bias": 2.1,
+   "mae": 1.3,
+   "n": 7,
+   "days": [
+    {
+     "date": "2026-11-19",
+     "fc": 79.3,
+     "act": 82,
+     "err": 2.7
+    },
+    {
+     "date": "2026-11-18",
+     "fc": 75.8,
+     "act": 78,
+     "err": 2.2
+    },
+    {
+     "date": "2026-11-17",
+     "fc": 78.2,
+     "act": 81,
+     "err": 2.8
+    },
+    {
+     "date": "2026-11-16",
+     "fc": 78.3,
+     "act": 81,
+     "err": 2.7
+    },
+    {
+     "date": "2026-11-15",
+     "fc": 77.4,
+     "act": 80,
+     "err": 2.6
+    },
+    {
+     "date": "2026-11-14",
+     "fc": 68,
+     "act": 71,
+     "err": 3
+    },
+    {
+     "date": "2026-11-13",
+     "fc": 77.1,
+     "act": 81,
+     "err": 3.9
+    }
+   ]
+  },
+  "icon_seamless": {
+   "bias": 1.5,
+   "mae": 2.3,
+   "n": 7,
+   "days": [
+    {
+     "date": "2026-11-19",
+     "fc": 79.6,
+     "act": 82,
+     "err": 2.4
+    },
+    {
+     "date": "2026-11-18",
+     "fc": 80.3,
+     "act": 78,
+     "err": -2.3
+    },
+    {
+     "date": "2026-11-17",
+     "fc": 77.9,
+     "act": 81,
+     "err": 3.1
+    },
+    {
+     "date": "2026-11-16",
+     "fc": 77.6,
+     "act": 81,
+     "err": 3.4
+    },
+    {
+     "date": "2026-11-15",
+     "fc": 76.8,
+     "act": 80,
+     "err": 3.2
+    },
+    {
+     "date": "2026-11-14",
+     "fc": 71.6,
+     "act": 71,
+     "err": -0.6
+    },
+    {
+     "date": "2026-11-13",
+     "fc": 76.4,
+     "act": 81,
+     "err": 4.6
+    }
+   ]
+  },
+  "gem_seamless": {
+   "bias": 1.4,
+   "mae": 1.9,
+   "n": 7,
+   "days": [
+    {
+     "date": "2026-11-19",
+     "fc": 80.5,
+     "act": 82,
+     "err": 1.5
+    },
+    {
+     "date": "2026-11-18",
+     "fc": 77.2,
+     "act": 78,
+     "err": 0.8
+    },
+    {
+     "date": "2026-11-17",
+     "fc": 73.7,
+     "act": 81,
+     "err": 7.3
+    },
+    {
+     "date": "2026-11-16",
+     "fc": 78.8,
+     "act": 81,
+     "err": 2.2
+    },
+    {
+     "date": "2026-11-15",
+     "fc": 78.2,
+     "act": 80,
+     "err": 1.8
+    },
+    {
+     "date": "2026-11-14",
+     "fc": 70.1,
+     "act": 71,
+     "err": 0.9
+    },
+    {
+     "date": "2026-11-13",
+     "fc": 82.8,
+     "act": 81,
+     "err": -1.8
+    }
+   ]
+  },
+  "ukmo_seamless": {
+   "bias": 1.7,
+   "mae": 1.5,
+   "n": 7,
+   "days": [
+    {
+     "date": "2026-11-19",
+     "fc": 77.5,
+     "act": 82,
+     "err": 4.5
+    },
+    {
+     "date": "2026-11-18",
+     "fc": 76.5,
+     "act": 78,
+     "err": 1.5
+    },
+    {
+     "date": "2026-11-17",
+     "fc": 79.1,
+     "act": 81,
+     "err": 1.9
+    },
+    {
+     "date": "2026-11-16",
+     "fc": 77.8,
+     "act": 81,
+     "err": 3.2
+    },
+    {
+     "date": "2026-11-15",
+     "fc": 77.7,
+     "act": 80,
+     "err": 2.3
+    },
+    {
+     "date": "2026-11-14",
+     "fc": 71,
+     "act": 71,
+     "err": 0
+    },
+    {
+     "date": "2026-11-13",
+     "fc": 78.7,
+     "act": 81,
+     "err": 2.3
+    }
+   ]
+  }
+ },
+ "cli": {
+  "2025-01-01": {
+   "high": 81,
+   "low": 68,
+   "high_time": "327 PM",
+   "precip": 0
+  },
+  "2025-01-02": {
+   "high": 78,
+   "low": 64,
+   "high_time": "337 PM",
+   "precip": 0
+  },
+  "2025-01-03": {
+   "high": 77,
+   "low": 60,
+   "high_time": "303 PM",
+   "precip": 0
+  },
+  "2025-01-04": {
+   "high": 72,
+   "low": 55,
+   "high_time": "231 PM",
+   "precip": 0
+  },
+  "2025-01-05": {
+   "high": 75,
+   "low": 56,
+   "high_time": "1255 PM",
+   "precip": 0
+  },
+  "2025-01-06": {
+   "high": 80,
+   "low": 65,
+   "high_time": "340 PM",
+   "precip": 0
+  },
+  "2025-01-07": {
+   "high": 71,
+   "low": 53,
+   "high_time": "138 AM",
+   "precip": 0
+  },
+  "2025-01-08": {
+   "high": 72,
+   "low": 51,
+   "high_time": "315 PM",
+   "precip": 0
+  },
+  "2025-01-09": {
+   "high": 67,
+   "low": 49,
+   "high_time": "330 PM",
+   "precip": 0
+  },
+  "2025-01-10": {
+   "high": 73,
+   "low": 51,
+   "high_time": "1219 PM",
+   "precip": 0
+  },
+  "2025-01-11": {
+   "high": 77,
+   "low": 61,
+   "high_time": "1100 AM",
+   "precip": "T"
+  },
+  "2025-01-12": {
+   "high": 75,
+   "low": 57,
+   "high_time": "346 PM",
+   "precip": 0
+  },
+  "2025-01-13": {
+   "high": 79,
+   "low": 58,
+   "high_time": "321 PM",
+   "precip": 0
+  },
+  "2025-01-14": {
+   "high": 74,
+   "low": 61,
+   "high_time": "231 PM",
+   "precip": "T"
+  },
+  "2025-01-15": {
+   "high": 75,
+   "low": 59,
+   "high_time": "228 PM",
+   "precip": 0
+  },
+  "2025-01-16": {
+   "high": 74,
+   "low": 62,
+   "high_time": "236 PM",
+   "precip": "T"
+  },
+  "2025-01-17": {
+   "high": 72,
+   "low": 65,
+   "high_time": "1158 PM",
+   "precip": 0.15
+  },
+  "2025-01-18": {
+   "high": 82,
+   "low": 69,
+   "high_time": "253 PM",
+   "precip": 0.48
+  },
+  "2025-01-19": {
+   "high": 85,
+   "low": 70,
+   "high_time": "MM",
+   "precip": "T"
+  },
+  "2025-01-20": {
+   "high": 71,
+   "low": 58,
+   "high_time": "MM",
+   "precip": 0.15
+  },
+  "2025-01-21": {
+   "high": 81,
+   "low": 59,
+   "high_time": "200 PM",
+   "precip": "T"
+  },
+  "2025-01-22": {
+   "high": 69,
+   "low": 52,
+   "high_time": "224 AM",
+   "precip": 0.05
+  },
+  "2025-01-23": {
+   "high": 58,
+   "low": 50,
+   "high_time": "1125 AM",
+   "precip": 0.06
+  },
+  "2025-01-24": {
+   "high": 59,
+   "low": 48,
+   "high_time": "414 PM",
+   "precip": "T"
+  },
+  "2025-01-25": {
+   "high": 73,
+   "low": 47,
+   "high_time": "321 PM",
+   "precip": 0
+  },
+  "2025-01-26": {
+   "high": 76,
+   "low": 59,
+   "high_time": "220 PM",
+   "precip": 0
+  },
+  "2025-01-27": {
+   "high": 79,
+   "low": 59,
+   "high_time": "133 PM",
+   "precip": 0
+  },
+  "2025-01-28": {
+   "high": 80,
+   "low": 57,
+   "high_time": "338 PM",
+   "precip": 0
+  },
+  "2025-01-29": {
+   "high": 80,
+   "low": 57,
+   "high_time": "314 PM",
+   "precip": 0
+  },
+  "2025-01-30": {
+   "high": 79,
+   "low": 61,
+   "high_time": "135 PM",
+   "precip": 0
+  },
+  "2025-01-31": {
+   "high": 79,
+   "low": 69,
+   "high_time": "239 PM",
+   "precip": 0
+  },
+  "2025-02-01": {
+   "high": 84,
+   "low": 69,
+   "high_time": "1252 PM",
+   "precip": 0
+  },
+  "2025-02-02": {
+   "high": 82,
+   "low": 71,
+   "high_time": "319 PM",
+   "precip": 0
+  },
+  "2025-02-03": {
+   "high": 82,
+   "low": 73,
+   "high_time": "201 PM",
+   "precip": 0
+  },
+  "2025-02-04": {
+   "high": 82,
+   "low": 70,
+   "high_time": "315 PM",
+   "precip": 0
+  },
+  "2025-02-05": {
+   "high": 81,
+   "low": 69,
+   "high_time": "151 PM",
+   "precip": 0
+  },
+  "2025-02-06": {
+   "high": 81,
+   "low": 69,
+   "high_time": "224 PM",
+   "precip": 0
+  },
+  "2025-02-07": {
+   "high": 82,
+   "low": 68,
+   "high_time": "304 PM",
+   "precip": 0
+  },
+  "2025-02-08": {
+   "high": 82,
+   "low": 68,
+   "high_time": "1237 PM",
+   "precip": 0
+  },
+  "2025-02-09": {
+   "high": 83,
+   "low": 70,
+   "high_time": "111 PM",
+   "precip": 0
+  },
+  "2025-02-10": {
+   "high": 82,
+   "low": 68,
+   "high_time": "108 PM",
+   "precip": 0
+  },
+  "2025-02-11": {
+   "high": 81,
+   "low": 72,
+   "high_time": "117 PM",
+   "precip": 0
+  },
+  "2025-02-12": {
+   "high": 82,
+   "low": 71,
+   "high_time": "114 PM",
+   "precip": 0
+  },
+  "2025-02-13": {
+   "high": 84,
+   "low": 75,
+   "high_time": "212 PM",
+   "precip": 0
+  },
+  "2025-02-14": {
+   "high": 84,
+   "low": 73,
+   "high_time": "346 PM",
+   "precip": 0
+  },
+  "2025-02-15": {
+   "high": 82,
+   "low": 73,
+   "high_time": "1244 PM",
+   "precip": 0
+  },
+  "2025-02-16": {
+   "high": 85,
+   "low": 73,
+   "high_time": "440 PM",
+   "precip": 0
+  },
+  "2025-02-17": {
+   "high": 81,
+   "low": 69,
+   "high_time": "156 PM",
+   "precip": 0
+  },
+  "2025-02-18": {
+   "high": 83,
+   "low": 68,
+   "high_time": "150 PM",
+   "precip": 0.59
+  },
+  "2025-02-19": {
+   "high": 84,
+   "low": 69,
+   "high_time": "405 PM",
+   "precip": 0
+  },
+  "2025-02-20": {
+   "high": 78,
+   "low": 63,
+   "high_time": "1121 AM",
+   "precip": 0
+  },
+  "2025-02-21": {
+   "high": 75,
+   "low": 59,
+   "high_time": "132 PM",
+   "precip": 0
+  },
+  "2025-02-22": {
+   "high": 75,
+   "low": 66,
+   "high_time": "101 PM",
+   "precip": 0
+  },
+  "2025-02-23": {
+   "high": 78,
+   "low": 64,
+   "high_time": "153 PM",
+   "precip": 0
+  },
+  "2025-02-24": {
+   "high": 73,
+   "low": 67,
+   "high_time": "1006 PM",
+   "precip": 0.13
+  },
+  "2025-02-25": {
+   "high": 79,
+   "low": 65,
+   "high_time": "413 PM",
+   "precip": "T"
+  },
+  "2025-02-26": {
+   "high": 81,
+   "low": 61,
+   "high_time": "100 PM",
+   "precip": 0
+  },
+  "2025-02-27": {
+   "high": 81,
+   "low": 64,
+   "high_time": "338 PM",
+   "precip": 0
+  },
+  "2025-02-28": {
+   "high": 81,
+   "low": 63,
+   "high_time": "411 PM",
+   "precip": 0
+  },
+  "2025-03-01": {
+   "high": 81,
+   "low": 63,
+   "high_time": "144 PM",
+   "precip": 0
+  },
+  "2025-03-02": {
+   "high": 81,
+   "low": 62,
+   "high_time": "425 PM",
+   "precip": 0
+  },
+  "2025-03-03": {
+   "high": 80,
+   "low": 65,
+   "high_time": "1243 PM",
+   "precip": 0
+  },
+  "2025-03-04": {
+   "high": 80,
+   "low": 70,
+   "high_time": "1155 AM",
+   "precip": 0.17
+  },
+  "2025-03-05": {
+   "high": 84,
+   "low": 69,
+   "high_time": "236 PM",
+   "precip": 0.03
+  },
+  "2025-03-06": {
+   "high": 77,
+   "low": 58,
+   "high_time": "422 PM",
+   "precip": 0
+  },
+  "2025-03-07": {
+   "high": 77,
+   "low": 53,
+   "high_time": "309 PM",
+   "precip": 0
+  },
+  "2025-03-08": {
+   "high": 84,
+   "low": 60,
+   "high_time": "207 PM",
+   "precip": 0
+  },
+  "2025-03-09": {
+   "high": 88,
+   "low": "M",
+   "high_time": "239 PM",
+   "precip": 0
+  },
+  "2025-03-10": {
+   "high": 89,
+   "low": 64,
+   "high_time": "1210 PM",
+   "precip": 0
+  },
+  "2025-03-11": {
+   "high": 79,
+   "low": 58,
+   "high_time": "446 PM",
+   "precip": 0
+  },
+  "2025-03-12": {
+   "high": 80,
+   "low": 60,
+   "high_time": "220 PM",
+   "precip": 0
+  },
+  "2025-03-13": {
+   "high": 79,
+   "low": 61,
+   "high_time": "318 PM",
+   "precip": 0
+  },
+  "2025-03-14": {
+   "high": 83,
+   "low": 67,
+   "high_time": "223 PM",
+   "precip": 0
+  },
+  "2025-03-15": {
+   "high": 82,
+   "low": 72,
+   "high_time": "240 PM",
+   "precip": 0
+  },
+  "2025-03-16": {
+   "high": 85,
+   "low": 74,
+   "high_time": "303 PM",
+   "precip": 0.01
+  },
+  "2025-03-17": {
+   "high": 79,
+   "low": 58,
+   "high_time": "422 PM",
+   "precip": 0
+  },
+  "2025-03-18": {
+   "high": 79,
+   "low": 56,
+   "high_time": "216 PM",
+   "precip": 0
+  },
+  "2025-03-19": {
+   "high": 80,
+   "low": 61,
+   "high_time": "310 PM",
+   "precip": 0
+  },
+  "2025-03-20": {
+   "high": 85,
+   "low": 60,
+   "high_time": "300 PM",
+   "precip": 0
+  },
+  "2025-03-21": {
+   "high": 76,
+   "low": 60,
+   "high_time": "153 PM",
+   "precip": 0
+  },
+  "2025-03-22": {
+   "high": 78,
+   "low": 59,
+   "high_time": "104 PM",
+   "precip": 0
+  },
+  "2025-03-23": {
+   "high": 79,
+   "low": 64,
+   "high_time": "236 PM",
+   "precip": 0
+  },
+  "2025-03-24": {
+   "high": 83,
+   "low": 71,
+   "high_time": "255 PM",
+   "precip": 0
+  },
+  "2025-03-25": {
+   "high": 86,
+   "low": 68,
+   "high_time": "1147 AM",
+   "precip": 0.15
+  },
+  "2025-03-26": {
+   "high": 84,
+   "low": 67,
+   "high_time": "304 PM",
+   "precip": 0
+  },
+  "2025-03-27": {
+   "high": 83,
+   "low": 70,
+   "high_time": "239 PM",
+   "precip": 0
+  },
+  "2025-03-28": {
+   "high": 81,
+   "low": 73,
+   "high_time": "308 PM",
+   "precip": 0
+  },
+  "2025-03-29": {
+   "high": 80,
+   "low": 73,
+   "high_time": "1158 AM",
+   "precip": 0.02
+  },
+  "2025-03-30": {
+   "high": 81,
+   "low": 69,
+   "high_time": "1016 AM",
+   "precip": 1.21
+  },
+  "2025-03-31": {
+   "high": 86,
+   "low": 71,
+   "high_time": "315 PM",
+   "precip": "T"
+  },
+  "2025-04-01": {
+   "high": 88,
+   "low": 74,
+   "high_time": "211 PM",
+   "precip": 0
+  },
+  "2025-04-02": {
+   "high": 85,
+   "low": 76,
+   "high_time": "212 PM",
+   "precip": 0
+  },
+  "2025-04-03": {
+   "high": 86,
+   "low": 77,
+   "high_time": "304 PM",
+   "precip": "T"
+  },
+  "2025-04-04": {
+   "high": 85,
+   "low": 76,
+   "high_time": "215 PM",
+   "precip": 0
+  },
+  "2025-04-05": {
+   "high": 85,
+   "low": 76,
+   "high_time": "221 PM",
+   "precip": 0
+  },
+  "2025-04-06": {
+   "high": 84,
+   "low": 75,
+   "high_time": "204 PM",
+   "precip": 0
+  },
+  "2025-04-07": {
+   "high": 86,
+   "low": 75,
+   "high_time": "252 PM",
+   "precip": 0
+  },
+  "2025-04-08": {
+   "high": 84,
+   "low": 70,
+   "high_time": "931 AM",
+   "precip": 1.02
+  },
+  "2025-04-09": {
+   "high": 81,
+   "low": 66,
+   "high_time": "425 PM",
+   "precip": "T"
+  },
+  "2025-04-10": {
+   "high": 82,
+   "low": 65,
+   "high_time": "235 PM",
+   "precip": 0.01
+  },
+  "2025-04-11": {
+   "high": 83,
+   "low": 68,
+   "high_time": "125 PM",
+   "precip": 0
+  },
+  "2025-04-12": {
+   "high": 82,
+   "low": 64,
+   "high_time": "422 PM",
+   "precip": 0
+  },
+  "2025-04-13": {
+   "high": 81,
+   "low": 61,
+   "high_time": "1228 PM",
+   "precip": 0
+  },
+  "2025-04-14": {
+   "high": 81,
+   "low": 67,
+   "high_time": "116 PM",
+   "precip": 0
+  },
+  "2025-04-15": {
+   "high": 86,
+   "low": 65,
+   "high_time": "106 PM",
+   "precip": 0
+  },
+  "2025-04-16": {
+   "high": 85,
+   "low": 66,
+   "high_time": "322 PM",
+   "precip": 0
+  },
+  "2025-04-17": {
+   "high": 83,
+   "low": 70,
+   "high_time": "213 PM",
+   "precip": 0
+  },
+  "2025-04-18": {
+   "high": 83,
+   "low": 72,
+   "high_time": "1143 AM",
+   "precip": 0
+  },
+  "2025-04-19": {
+   "high": 82,
+   "low": 74,
+   "high_time": "221 PM",
+   "precip": 0
+  },
+  "2025-04-20": {
+   "high": 84,
+   "low": 72,
+   "high_time": "300 PM",
+   "precip": 0
+  },
+  "2025-04-21": {
+   "high": 83,
+   "low": 73,
+   "high_time": "242 PM",
+   "precip": 0
+  },
+  "2025-04-22": {
+   "high": 83,
+   "low": 73,
+   "high_time": "200 PM",
+   "precip": 0
+  },
+  "2025-04-23": {
+   "high": 84,
+   "low": 73,
+   "high_time": "229 PM",
+   "precip": 0
+  },
+  "2025-04-24": {
+   "high": 84,
+   "low": 74,
+   "high_time": "207 PM",
+   "precip": 0
+  },
+  "2025-04-25": {
+   "high": 84,
+   "low": 73,
+   "high_time": "1245 PM",
+   "precip": "T"
+  },
+  "2025-04-26": {
+   "high": 85,
+   "low": 74,
+   "high_time": "106 PM",
+   "precip": 0
+  },
+  "2025-04-27": {
+   "high": 85,
+   "low": 70,
+   "high_time": "318 PM",
+   "precip": 0
+  },
+  "2025-04-28": {
+   "high": 85,
+   "low": 71,
+   "high_time": "219 PM",
+   "precip": 0
+  },
+  "2025-05-01": {
+   "high": 84,
+   "low": 74,
+   "high_time": "153 PM",
+   "precip": 0
+  },
+  "2025-05-02": {
+   "high": 84,
+   "low": 72,
+   "high_time": "256 PM",
+   "precip": 0
+  },
+  "2025-05-03": {
+   "high": 83,
+   "low": 73,
+   "high_time": "235 PM",
+   "precip": 0.13
+  },
+  "2025-05-04": {
+   "high": 84,
+   "low": 69,
+   "high_time": "1034 AM",
+   "precip": 0.95
+  },
+  "2025-05-05": {
+   "high": 87,
+   "low": 72,
+   "high_time": "109 PM",
+   "precip": 0
+  },
+  "2025-05-06": {
+   "high": 87,
+   "low": 77,
+   "high_time": "125 PM",
+   "precip": "T"
+  },
+  "2025-05-07": {
+   "high": 86,
+   "low": 76,
+   "high_time": "158 PM",
+   "precip": 0
+  },
+  "2025-05-08": {
+   "high": 86,
+   "low": 74,
+   "high_time": "300 PM",
+   "precip": 0
+  },
+  "2025-05-09": {
+   "high": 86,
+   "low": 75,
+   "high_time": "331 PM",
+   "precip": 0
+  },
+  "2025-05-10": {
+   "high": 88,
+   "low": 78,
+   "high_time": "117 PM",
+   "precip": 0
+  },
+  "2025-05-11": {
+   "high": 87,
+   "low": 79,
+   "high_time": "156 PM",
+   "precip": "T"
+  },
+  "2025-05-12": {
+   "high": 84,
+   "low": 71,
+   "high_time": "254 PM",
+   "precip": 4.35
+  },
+  "2025-05-13": {
+   "high": 88,
+   "low": 75,
+   "high_time": "1229 PM",
+   "precip": 0.21
+  },
+  "2025-05-14": {
+   "high": 91,
+   "low": 73,
+   "high_time": "149 PM",
+   "precip": 0
+  },
+  "2025-05-15": {
+   "high": 90,
+   "low": 75,
+   "high_time": "1138 AM",
+   "precip": 0
+  },
+  "2025-05-16": {
+   "high": 89,
+   "low": 75,
+   "high_time": "349 PM",
+   "precip": 0
+  },
+  "2025-05-17": {
+   "high": 91,
+   "low": 77,
+   "high_time": "154 PM",
+   "precip": 0
+  },
+  "2025-05-18": {
+   "high": 89,
+   "low": 77,
+   "high_time": "333 PM",
+   "precip": 0
+  },
+  "2025-05-19": {
+   "high": 90,
+   "low": 77,
+   "high_time": "240 PM",
+   "precip": 0
+  },
+  "2025-05-20": {
+   "high": 90,
+   "low": 77,
+   "high_time": "1253 PM",
+   "precip": 0
+  },
+  "2025-05-21": {
+   "high": 94,
+   "low": 78,
+   "high_time": "1225 PM",
+   "precip": 0
+  },
+  "2025-05-22": {
+   "high": 94,
+   "low": 72,
+   "high_time": "1245 PM",
+   "precip": 1.69
+  },
+  "2025-05-23": {
+   "high": 91,
+   "low": 76,
+   "high_time": "1209 PM",
+   "precip": 0
+  },
+  "2025-05-24": {
+   "high": 90,
+   "low": 78,
+   "high_time": "319 PM",
+   "precip": 0
+  },
+  "2025-05-25": {
+   "high": 90,
+   "low": 81,
+   "high_time": "131 PM",
+   "precip": 0
+  },
+  "2025-05-26": {
+   "high": 91,
+   "low": 81,
+   "high_time": "1225 PM",
+   "precip": 0.2
+  },
+  "2025-05-27": {
+   "high": 90,
+   "low": 79,
+   "high_time": "213 PM",
+   "precip": 0.45
+  },
+  "2025-05-28": {
+   "high": 90,
+   "low": 82,
+   "high_time": "156 PM",
+   "precip": "T"
+  },
+  "2025-05-29": {
+   "high": 90,
+   "low": 81,
+   "high_time": "126 PM",
+   "precip": 0
+  },
+  "2025-05-30": {
+   "high": 92,
+   "low": 79,
+   "high_time": "308 PM",
+   "precip": 0
+  },
+  "2025-05-31": {
+   "high": 92,
+   "low": 76,
+   "high_time": "MM",
+   "precip": "T"
+  },
+  "2025-06-04": {
+   "high": 87,
+   "low": 74,
+   "high_time": "453 PM",
+   "precip": 0.08
+  },
+  "2025-06-05": {
+   "high": 86,
+   "low": 80,
+   "high_time": "400 PM",
+   "precip": 0
+  },
+  "2025-06-06": {
+   "high": 89,
+   "low": 80,
+   "high_time": "255 PM",
+   "precip": 0
+  },
+  "2025-06-07": {
+   "high": 90,
+   "low": 77,
+   "high_time": "142 PM",
+   "precip": 0
+  },
+  "2025-06-08": {
+   "high": 91,
+   "low": 78,
+   "high_time": "131 PM",
+   "precip": 0
+  },
+  "2025-06-09": {
+   "high": 90,
+   "low": 80,
+   "high_time": "247 PM",
+   "precip": 0
+  },
+  "2025-06-10": {
+   "high": 91,
+   "low": 80,
+   "high_time": "109 PM",
+   "precip": 0.01
+  },
+  "2025-06-11": {
+   "high": 90,
+   "low": 80,
+   "high_time": "226 PM",
+   "precip": 0.4
+  },
+  "2025-06-12": {
+   "high": 90,
+   "low": 76,
+   "high_time": "1216 PM",
+   "precip": 0.06
+  },
+  "2025-06-13": {
+   "high": 89,
+   "low": 77,
+   "high_time": "344 PM",
+   "precip": 0.82
+  },
+  "2025-06-14": {
+   "high": 89,
+   "low": 80,
+   "high_time": "247 PM",
+   "precip": 0
+  },
+  "2025-06-15": {
+   "high": 90,
+   "low": 79,
+   "high_time": "303 PM",
+   "precip": "T"
+  },
+  "2025-06-16": {
+   "high": 90,
+   "low": 75,
+   "high_time": "227 PM",
+   "precip": 0.12
+  },
+  "2025-06-17": {
+   "high": 90,
+   "low": 79,
+   "high_time": "137 PM",
+   "precip": 0
+  },
+  "2025-06-18": {
+   "high": 90,
+   "low": 76,
+   "high_time": "307 PM",
+   "precip": 0.13
+  },
+  "2025-06-19": {
+   "high": 90,
+   "low": 79,
+   "high_time": "1228 PM",
+   "precip": 0.66
+  },
+  "2025-06-20": {
+   "high": 90,
+   "low": 77,
+   "high_time": "246 PM",
+   "precip": 0
+  },
+  "2025-06-21": {
+   "high": 90,
+   "low": 78,
+   "high_time": "132 PM",
+   "precip": 0.1
+  },
+  "2025-06-22": {
+   "high": 89,
+   "low": 78,
+   "high_time": "302 PM",
+   "precip": 0.26
+  },
+  "2025-06-23": {
+   "high": 90,
+   "low": 81,
+   "high_time": "125 PM",
+   "precip": 0.02
+  },
+  "2025-06-24": {
+   "high": 91,
+   "low": 74,
+   "high_time": "148 PM",
+   "precip": 0.07
+  },
+  "2025-06-25": {
+   "high": 88,
+   "low": 74,
+   "high_time": "317 PM",
+   "precip": 0.08
+  },
+  "2025-06-26": {
+   "high": 86,
+   "low": 77,
+   "high_time": "302 PM",
+   "precip": 0.01
+  },
+  "2025-06-27": {
+   "high": 90,
+   "low": 80,
+   "high_time": "214 PM",
+   "precip": 0
+  },
+  "2025-06-28": {
+   "high": 90,
+   "low": 77,
+   "high_time": "1248 PM",
+   "precip": 0
+  },
+  "2025-06-29": {
+   "high": 90,
+   "low": 76,
+   "high_time": "131 PM",
+   "precip": "T"
+  },
+  "2025-06-30": {
+   "high": 91,
+   "low": 77,
+   "high_time": "1252 PM",
+   "precip": 0
+  },
+  "2025-07-01": {
+   "high": 89,
+   "low": 75,
+   "high_time": "1107 AM",
+   "precip": 0.57
+  },
+  "2025-07-02": {
+   "high": 89,
+   "low": 76,
+   "high_time": "117 PM",
+   "precip": 0.09
+  },
+  "2025-07-03": {
+   "high": 87,
+   "low": 75,
+   "high_time": "905 AM",
+   "precip": 1.18
+  },
+  "2025-07-04": {
+   "high": 86,
+   "low": 74,
+   "high_time": "1044 AM",
+   "precip": 0.87
+  },
+  "2025-07-05": {
+   "high": 89,
+   "low": 76,
+   "high_time": "435 PM",
+   "precip": 0.07
+  },
+  "2025-07-06": {
+   "high": 88,
+   "low": 75,
+   "high_time": "454 PM",
+   "precip": 1.9
+  },
+  "2025-07-07": {
+   "high": 92,
+   "low": 76,
+   "high_time": "240 PM",
+   "precip": 0
+  },
+  "2025-07-08": {
+   "high": 92,
+   "low": 79,
+   "high_time": "259 PM",
+   "precip": 0
+  },
+  "2025-07-09": {
+   "high": 92,
+   "low": 80,
+   "high_time": "1228 PM",
+   "precip": 0
+  },
+  "2025-07-10": {
+   "high": 91,
+   "low": 77,
+   "high_time": "244 PM",
+   "precip": 0.01
+  },
+  "2025-07-11": {
+   "high": 90,
+   "low": 77,
+   "high_time": "400 PM",
+   "precip": 0.02
+  },
+  "2025-07-12": {
+   "high": 92,
+   "low": 77,
+   "high_time": "1245 PM",
+   "precip": 0
+  },
+  "2025-07-13": {
+   "high": 88,
+   "low": 78,
+   "high_time": "1041 AM",
+   "precip": "T"
+  },
+  "2025-07-14": {
+   "high": 91,
+   "low": 74,
+   "high_time": "1132 AM",
+   "precip": 0.25
+  },
+  "2025-07-15": {
+   "high": 88,
+   "low": 75,
+   "high_time": "256 PM",
+   "precip": "T"
+  },
+  "2025-07-16": {
+   "high": 90,
+   "low": 75,
+   "high_time": "148 PM",
+   "precip": 1.39
+  },
+  "2025-07-17": {
+   "high": 91,
+   "low": 82,
+   "high_time": "209 PM",
+   "precip": "T"
+  },
+  "2025-07-18": {
+   "high": 92,
+   "low": 83,
+   "high_time": "252 PM",
+   "precip": 0
+  },
+  "2025-07-19": {
+   "high": 91,
+   "low": 82,
+   "high_time": "345 PM",
+   "precip": 0
+  },
+  "2025-07-20": {
+   "high": 92,
+   "low": 81,
+   "high_time": "206 PM",
+   "precip": 0
+  },
+  "2025-07-21": {
+   "high": 92,
+   "low": 80,
+   "high_time": "242 PM",
+   "precip": 0
+  },
+  "2025-07-22": {
+   "high": 95,
+   "low": 75,
+   "high_time": "1208 PM",
+   "precip": 0.69
+  },
+  "2025-07-23": {
+   "high": 90,
+   "low": 74,
+   "high_time": "228 PM",
+   "precip": 1.48
+  },
+  "2025-07-24": {
+   "high": 91,
+   "low": 80,
+   "high_time": "242 PM",
+   "precip": 0.06
+  },
+  "2025-07-25": {
+   "high": 91,
+   "low": 82,
+   "high_time": "230 PM",
+   "precip": 0
+  },
+  "2025-07-26": {
+   "high": 91,
+   "low": 80,
+   "high_time": "314 PM",
+   "precip": 0
+  },
+  "2025-07-27": {
+   "high": 92,
+   "low": 80,
+   "high_time": "116 PM",
+   "precip": 0
+  },
+  "2025-07-28": {
+   "high": 93,
+   "low": 83,
+   "high_time": "248 PM",
+   "precip": 0
+  },
+  "2025-07-29": {
+   "high": 91,
+   "low": 80,
+   "high_time": "137 PM",
+   "precip": 0.34
+  },
+  "2025-07-30": {
+   "high": 92,
+   "low": 80,
+   "high_time": "358 PM",
+   "precip": 0
+  },
+  "2025-07-31": {
+   "high": 94,
+   "low": 82,
+   "high_time": "1053 AM",
+   "precip": 0
+  },
+  "2025-08-01": {
+   "high": 93,
+   "low": 82,
+   "high_time": "MM",
+   "precip": 0
+  },
+  "2025-08-02": {
+   "high": 94,
+   "low": 79,
+   "high_time": "152 PM",
+   "precip": 0
+  },
+  "2025-08-03": {
+   "high": 94,
+   "low": 80,
+   "high_time": "1202 PM",
+   "precip": 0
+  },
+  "2025-08-04": {
+   "high": 92,
+   "low": 80,
+   "high_time": "235 PM",
+   "precip": 0.05
+  },
+  "2025-08-05": {
+   "high": 93,
+   "low": 79,
+   "high_time": "338 PM",
+   "precip": 1.14
+  },
+  "2025-08-06": {
+   "high": 93,
+   "low": 78,
+   "high_time": "1259 PM",
+   "precip": 0.02
+  },
+  "2025-08-07": {
+   "high": 89,
+   "low": 77,
+   "high_time": "943 AM",
+   "precip": 0.66
+  },
+  "2025-08-08": {
+   "high": 88,
+   "low": 75,
+   "high_time": "435 PM",
+   "precip": 0.07
+  },
+  "2025-08-09": {
+   "high": 83,
+   "low": 75,
+   "high_time": "1250 AM",
+   "precip": 1.04
+  },
+  "2025-08-10": {
+   "high": 89,
+   "low": 75,
+   "high_time": "1232 PM",
+   "precip": 0.17
+  },
+  "2025-08-11": {
+   "high": 91,
+   "low": 77,
+   "high_time": "237 PM",
+   "precip": 0.56
+  },
+  "2025-08-12": {
+   "high": 91,
+   "low": 79,
+   "high_time": "316 PM",
+   "precip": 0.16
+  },
+  "2025-08-13": {
+   "high": 91,
+   "low": 81,
+   "high_time": "347 PM",
+   "precip": 0
+  },
+  "2025-08-14": {
+   "high": 91,
+   "low": 81,
+   "high_time": "351 PM",
+   "precip": "T"
+  },
+  "2025-08-15": {
+   "high": 93,
+   "low": 81,
+   "high_time": "1155 AM",
+   "precip": 0
+  },
+  "2025-08-16": {
+   "high": 93,
+   "low": 80,
+   "high_time": "225 PM",
+   "precip": 0
+  },
+  "2025-08-17": {
+   "high": 92,
+   "low": 80,
+   "high_time": "1134 AM",
+   "precip": 0.08
+  },
+  "2025-08-18": {
+   "high": 94,
+   "low": 79,
+   "high_time": "316 PM",
+   "precip": 0
+  },
+  "2025-08-19": {
+   "high": 95,
+   "low": 78,
+   "high_time": "1148 AM",
+   "precip": 0.19
+  },
+  "2025-08-20": {
+   "high": 97,
+   "low": 77,
+   "high_time": "236 PM",
+   "precip": 0
+  },
+  "2025-08-21": {
+   "high": 92,
+   "low": 76,
+   "high_time": "304 PM",
+   "precip": 0.15
+  },
+  "2025-08-22": {
+   "high": 95,
+   "low": 77,
+   "high_time": "106 PM",
+   "precip": 0.59
+  },
+  "2025-08-23": {
+   "high": 90,
+   "low": 76,
+   "high_time": "1122 AM",
+   "precip": 0.16
+  },
+  "2025-08-24": {
+   "high": 93,
+   "low": 76,
+   "high_time": "1248 PM",
+   "precip": 0.18
+  },
+  "2025-08-25": {
+   "high": 93,
+   "low": 78,
+   "high_time": "200 PM",
+   "precip": 0
+  },
+  "2025-08-26": {
+   "high": 94,
+   "low": 80,
+   "high_time": "147 PM",
+   "precip": 0
+  },
+  "2025-08-27": {
+   "high": 95,
+   "low": 80,
+   "high_time": "1239 PM",
+   "precip": 0.15
+  },
+  "2025-08-28": {
+   "high": 92,
+   "low": 79,
+   "high_time": "1210 PM",
+   "precip": 0.04
+  },
+  "2025-08-29": {
+   "high": 93,
+   "low": 77,
+   "high_time": "1201 PM",
+   "precip": 0.07
+  },
+  "2025-08-30": {
+   "high": 93,
+   "low": 77,
+   "high_time": "1206 PM",
+   "precip": "T"
+  },
+  "2025-08-31": {
+   "high": 94,
+   "low": 77,
+   "high_time": "1239 PM",
+   "precip": 0.4
+  },
+  "2025-09-01": {
+   "high": 93,
+   "low": 77,
+   "high_time": "151 PM",
+   "precip": "T"
+  },
+  "2025-09-02": {
+   "high": 94,
+   "low": 78,
+   "high_time": "433 PM",
+   "precip": 0
+  },
+  "2025-09-03": {
+   "high": 90,
+   "low": 77,
+   "high_time": "1214 PM",
+   "precip": 0.07
+  },
+  "2025-09-04": {
+   "high": 88,
+   "low": 78,
+   "high_time": "1253 PM",
+   "precip": 0
+  },
+  "2025-09-05": {
+   "high": 91,
+   "low": 76,
+   "high_time": "1114 AM",
+   "precip": 1.72
+  },
+  "2025-09-06": {
+   "high": 86,
+   "low": 77,
+   "high_time": "512 PM",
+   "precip": 0
+  },
+  "2025-09-07": {
+   "high": 91,
+   "low": 79,
+   "high_time": "1101 AM",
+   "precip": 0
+  },
+  "2025-09-08": {
+   "high": 92,
+   "low": 74,
+   "high_time": "1204 PM",
+   "precip": 3.59
+  },
+  "2025-09-09": {
+   "high": 89,
+   "low": 75,
+   "high_time": "1136 AM",
+   "precip": 2.63
+  },
+  "2025-09-10": {
+   "high": 92,
+   "low": 74,
+   "high_time": "1148 AM",
+   "precip": 1.92
+  },
+  "2025-09-11": {
+   "high": 94,
+   "low": 76,
+   "high_time": "304 PM",
+   "precip": 0.62
+  },
+  "2025-09-12": {
+   "high": 90,
+   "low": 75,
+   "high_time": "1136 AM",
+   "precip": 1.75
+  },
+  "2025-09-13": {
+   "high": 91,
+   "low": 74,
+   "high_time": "108 PM",
+   "precip": 0.77
+  },
+  "2025-09-14": {
+   "high": 91,
+   "low": 74,
+   "high_time": "149 PM",
+   "precip": 1.23
+  },
+  "2025-09-15": {
+   "high": 89,
+   "low": 75,
+   "high_time": "317 PM",
+   "precip": 0
+  },
+  "2025-09-16": {
+   "high": 92,
+   "low": 79,
+   "high_time": "1242 PM",
+   "precip": 0
+  },
+  "2025-09-17": {
+   "high": 85,
+   "low": 77,
+   "high_time": "123 PM",
+   "precip": "T"
+  },
+  "2025-09-18": {
+   "high": 87,
+   "low": 76,
+   "high_time": "231 PM",
+   "precip": 0.17
+  },
+  "2025-09-19": {
+   "high": 92,
+   "low": 77,
+   "high_time": "147 PM",
+   "precip": 0
+  },
+  "2025-09-20": {
+   "high": 89,
+   "low": 78,
+   "high_time": "1238 PM",
+   "precip": 0.25
+  },
+  "2025-09-21": {
+   "high": 86,
+   "low": 74,
+   "high_time": "913 AM",
+   "precip": 1.01
+  },
+  "2025-09-22": {
+   "high": 90,
+   "low": 76,
+   "high_time": "1241 PM",
+   "precip": 0
+  },
+  "2025-09-23": {
+   "high": 88,
+   "low": 74,
+   "high_time": "934 AM",
+   "precip": 0.59
+  },
+  "2025-09-24": {
+   "high": 88,
+   "low": 76,
+   "high_time": "1112 AM",
+   "precip": 0.03
+  },
+  "2025-09-25": {
+   "high": 92,
+   "low": 77,
+   "high_time": "111 PM",
+   "precip": 0.01
+  },
+  "2025-09-26": {
+   "high": 90,
+   "low": 78,
+   "high_time": "235 PM",
+   "precip": 0.09
+  },
+  "2025-09-27": {
+   "high": 91,
+   "low": 78,
+   "high_time": "1106 AM",
+   "precip": 0.05
+  },
+  "2025-09-28": {
+   "high": 88,
+   "low": 78,
+   "high_time": "1141 AM",
+   "precip": 0.05
+  },
+  "2025-09-29": {
+   "high": 90,
+   "low": 77,
+   "high_time": "354 PM",
+   "precip": "T"
+  },
+  "2025-09-30": {
+   "high": 91,
+   "low": 76,
+   "high_time": "426 PM",
+   "precip": 0
+  },
+  "2025-10-01": {
+   "high": 92,
+   "low": 77,
+   "high_time": "151 PM",
+   "precip": 0
+  },
+  "2025-10-02": {
+   "high": 89,
+   "low": 74,
+   "high_time": "1042 AM",
+   "precip": 1.17
+  },
+  "2025-10-03": {
+   "high": 88,
+   "low": 75,
+   "high_time": "1238 PM",
+   "precip": 0.11
+  },
+  "2025-10-04": {
+   "high": 88,
+   "low": 78,
+   "high_time": "1255 PM",
+   "precip": 0.06
+  },
+  "2025-10-05": {
+   "high": 88,
+   "low": 77,
+   "high_time": "110 PM",
+   "precip": 0.04
+  },
+  "2025-10-06": {
+   "high": 89,
+   "low": 78,
+   "high_time": "150 PM",
+   "precip": 0.24
+  },
+  "2025-10-07": {
+   "high": 89,
+   "low": 78,
+   "high_time": "201 PM",
+   "precip": 0.02
+  },
+  "2025-10-08": {
+   "high": 89,
+   "low": 78,
+   "high_time": "1030 AM",
+   "precip": "T"
+  },
+  "2025-10-09": {
+   "high": 89,
+   "low": 77,
+   "high_time": "117 PM",
+   "precip": 0.03
+  },
+  "2025-10-10": {
+   "high": 80,
+   "low": 75,
+   "high_time": "1058 AM",
+   "precip": 0.79
+  },
+  "2025-10-11": {
+   "high": 86,
+   "low": 73,
+   "high_time": "133 PM",
+   "precip": 0.02
+  },
+  "2025-10-12": {
+   "high": 88,
+   "low": 71,
+   "high_time": "133 PM",
+   "precip": "T"
+  },
+  "2025-10-13": {
+   "high": 88,
+   "low": 75,
+   "high_time": "1231 PM",
+   "precip": 0
+  },
+  "2025-10-14": {
+   "high": 86,
+   "low": 76,
+   "high_time": "233 PM",
+   "precip": 0
+  },
+  "2025-10-15": {
+   "high": 86,
+   "low": 75,
+   "high_time": "234 PM",
+   "precip": 0
+  },
+  "2025-10-16": {
+   "high": 86,
+   "low": 73,
+   "high_time": "329 PM",
+   "precip": 0
+  },
+  "2025-10-17": {
+   "high": 85,
+   "low": 75,
+   "high_time": "1127 AM",
+   "precip": 0
+  },
+  "2025-10-18": {
+   "high": 85,
+   "low": 72,
+   "high_time": "204 PM",
+   "precip": 0
+  },
+  "2025-10-19": {
+   "high": 86,
+   "low": 77,
+   "high_time": "1150 AM",
+   "precip": "T"
+  },
+  "2025-10-20": {
+   "high": 88,
+   "low": 76,
+   "high_time": "110 PM",
+   "precip": 0
+  },
+  "2025-10-21": {
+   "high": 87,
+   "low": 78,
+   "high_time": "238 PM",
+   "precip": 0
+  },
+  "2025-10-22": {
+   "high": 88,
+   "low": 76,
+   "high_time": "227 PM",
+   "precip": 0
+  },
+  "2025-10-23": {
+   "high": 88,
+   "low": 76,
+   "high_time": "204 PM",
+   "precip": 0
+  },
+  "2025-10-24": {
+   "high": 87,
+   "low": 78,
+   "high_time": "155 PM",
+   "precip": 0
+  },
+  "2025-10-25": {
+   "high": 85,
+   "low": 78,
+   "high_time": "1103 AM",
+   "precip": "T"
+  },
+  "2025-10-26": {
+   "high": 87,
+   "low": 77,
+   "high_time": "1116 AM",
+   "precip": 0.97
+  },
+  "2025-10-27": {
+   "high": 87,
+   "low": 77,
+   "high_time": "227 PM",
+   "precip": 0.03
+  },
+  "2025-10-28": {
+   "high": 89,
+   "low": 76,
+   "high_time": "1227 PM",
+   "precip": 0
+  },
+  "2025-10-29": {
+   "high": 87,
+   "low": 75,
+   "high_time": "122 PM",
+   "precip": "T"
+  },
+  "2025-10-30": {
+   "high": 79,
+   "low": 69,
+   "high_time": "304 PM",
+   "precip": 0
+  },
+  "2025-10-31": {
+   "high": 76,
+   "low": 65,
+   "high_time": "415 PM",
+   "precip": 0
+  },
+  "2025-11-01": {
+   "high": 82,
+   "low": 64,
+   "high_time": "1239 PM",
+   "precip": 0
+  },
+  "2025-11-02": {
+   "high": 84,
+   "low": 70,
+   "high_time": "239 PM",
+   "precip": 0.17
+  },
+  "2025-11-03": {
+   "high": 87,
+   "low": 71,
+   "high_time": "237 PM",
+   "precip": 0
+  },
+  "2025-11-04": {
+   "high": 81,
+   "low": 71,
+   "high_time": "1039 AM",
+   "precip": 0
+  },
+  "2025-11-05": {
+   "high": 83,
+   "low": 74,
+   "high_time": "1206 PM",
+   "precip": 0
+  },
+  "2025-11-06": {
+   "high": 84,
+   "low": 73,
+   "high_time": "1249 PM",
+   "precip": 0
+  },
+  "2025-11-07": {
+   "high": 87,
+   "low": 74,
+   "high_time": "110 PM",
+   "precip": 0
+  },
+  "2025-11-08": {
+   "high": 87,
+   "low": 71,
+   "high_time": "151 PM",
+   "precip": 0
+  },
+  "2025-11-09": {
+   "high": 87,
+   "low": 75,
+   "high_time": "1226 PM",
+   "precip": 0
+  },
+  "2025-11-10": {
+   "high": 85,
+   "low": 58,
+   "high_time": "1121 AM",
+   "precip": 0
+  },
+  "2025-11-11": {
+   "high": 68,
+   "low": 49,
+   "high_time": "400 PM",
+   "precip": 0
+  },
+  "2025-11-12": {
+   "high": 76,
+   "low": 55,
+   "high_time": "1242 PM",
+   "precip": 0
+  },
+  "2025-11-13": {
+   "high": 78,
+   "low": 64,
+   "high_time": "253 PM",
+   "precip": 0
+  },
+  "2025-11-14": {
+   "high": 81,
+   "low": 65,
+   "high_time": "157 PM",
+   "precip": 0
+  },
+  "2025-11-15": {
+   "high": 81,
+   "low": 66,
+   "high_time": "242 PM",
+   "precip": 0
+  },
+  "2025-11-16": {
+   "high": 82,
+   "low": 64,
+   "high_time": "416 PM",
+   "precip": 0
+  },
+  "2025-11-17": {
+   "high": 82,
+   "low": 63,
+   "high_time": "331 PM",
+   "precip": 0
+  },
+  "2025-11-18": {
+   "high": 83,
+   "low": 64,
+   "high_time": "141 PM",
+   "precip": 0
+  },
+  "2025-11-19": {
+   "high": 84,
+   "low": 67,
+   "high_time": "1222 PM",
+   "precip": 0
+  },
+  "2025-11-20": {
+   "high": 84,
+   "low": 68,
+   "high_time": "215 PM",
+   "precip": 0
+  },
+  "2025-11-21": {
+   "high": 83,
+   "low": 68,
+   "high_time": "219 PM",
+   "precip": 0
+  },
+  "2025-11-22": {
+   "high": 83,
+   "low": 64,
+   "high_time": "112 PM",
+   "precip": 0
+  },
+  "2025-11-23": {
+   "high": 85,
+   "low": 65,
+   "high_time": "217 PM",
+   "precip": 0
+  },
+  "2025-11-24": {
+   "high": 84,
+   "low": 68,
+   "high_time": "158 PM",
+   "precip": 0
+  },
+  "2025-11-25": {
+   "high": 83,
+   "low": 73,
+   "high_time": "1233 PM",
+   "precip": 0
+  },
+  "2025-11-26": {
+   "high": 85,
+   "low": 73,
+   "high_time": "1251 PM",
+   "precip": 0
+  },
+  "2025-11-27": {
+   "high": 85,
+   "low": 69,
+   "high_time": "1145 AM",
+   "precip": 0.9
+  },
+  "2025-11-28": {
+   "high": 75,
+   "low": 60,
+   "high_time": "318 PM",
+   "precip": 0
+  },
+  "2025-11-29": {
+   "high": 78,
+   "low": 62,
+   "high_time": "212 PM",
+   "precip": 0.08
+  },
+  "2025-11-30": {
+   "high": 81,
+   "low": 71,
+   "high_time": "1251 PM",
+   "precip": 0.61
+  },
+  "2025-12-01": {
+   "high": 84,
+   "low": 69,
+   "high_time": "1257 PM",
+   "precip": "T"
+  },
+  "2025-12-02": {
+   "high": 86,
+   "low": 73,
+   "high_time": "133 PM",
+   "precip": 0
+  },
+  "2025-12-03": {
+   "high": 82,
+   "low": 71,
+   "high_time": "319 PM",
+   "precip": 0
+  },
+  "2025-12-04": {
+   "high": 83,
+   "low": 65,
+   "high_time": "1156 AM",
+   "precip": 0
+  },
+  "2025-12-05": {
+   "high": 83,
+   "low": 67,
+   "high_time": "204 PM",
+   "precip": 0
+  },
+  "2025-12-06": {
+   "high": 84,
+   "low": 67,
+   "high_time": "246 PM",
+   "precip": 0
+  },
+  "2025-12-07": {
+   "high": 85,
+   "low": 70,
+   "high_time": "219 PM",
+   "precip": 0
+  },
+  "2025-12-08": {
+   "high": 87,
+   "low": 73,
+   "high_time": "243 PM",
+   "precip": "T"
+  },
+  "2025-12-09": {
+   "high": 74,
+   "low": 70,
+   "high_time": "1158 AM",
+   "precip": 0.29
+  },
+  "2025-12-10": {
+   "high": 83,
+   "low": 65,
+   "high_time": "212 PM",
+   "precip": 0
+  },
+  "2025-12-11": {
+   "high": 75,
+   "low": 59,
+   "high_time": "354 PM",
+   "precip": 0
+  },
+  "2025-12-12": {
+   "high": 78,
+   "low": 61,
+   "high_time": "243 PM",
+   "precip": 0
+  },
+  "2025-12-13": {
+   "high": 80,
+   "low": 67,
+   "high_time": "1139 AM",
+   "precip": 0.42
+  },
+  "2025-12-14": {
+   "high": 82,
+   "low": 71,
+   "high_time": "322 PM",
+   "precip": 0.01
+  },
+  "2025-12-15": {
+   "high": 74,
+   "low": 65,
+   "high_time": "112 PM",
+   "precip": "T"
+  },
+  "2025-12-16": {
+   "high": 77,
+   "low": 66,
+   "high_time": "130 PM",
+   "precip": 0
+  },
+  "2025-12-17": {
+   "high": 80,
+   "low": 67,
+   "high_time": "1140 AM",
+   "precip": 0
+  },
+  "2025-12-18": {
+   "high": 82,
+   "low": 71,
+   "high_time": "200 PM",
+   "precip": 0
+  },
+  "2025-12-19": {
+   "high": 86,
+   "low": 74,
+   "high_time": "422 PM",
+   "precip": 0
+  },
+  "2025-12-20": {
+   "high": 84,
+   "low": 67,
+   "high_time": "1225 PM",
+   "precip": 0
+  },
+  "2025-12-21": {
+   "high": 83,
+   "low": 69,
+   "high_time": "208 PM",
+   "precip": 0
+  },
+  "2025-12-22": {
+   "high": 81,
+   "low": 71,
+   "high_time": "1201 PM",
+   "precip": 0
+  },
+  "2025-12-23": {
+   "high": 81,
+   "low": 70,
+   "high_time": "155 PM",
+   "precip": "T"
+  },
+  "2025-12-24": {
+   "high": 79,
+   "low": 67,
+   "high_time": "247 PM",
+   "precip": 0
+  },
+  "2025-12-25": {
+   "high": 81,
+   "low": 68,
+   "high_time": "220 PM",
+   "precip": 0
+  },
+  "2025-12-26": {
+   "high": 81,
+   "low": 63,
+   "high_time": "401 PM",
+   "precip": 0
+  },
+  "2025-12-27": {
+   "high": 81,
+   "low": 62,
+   "high_time": "351 PM",
+   "precip": 0
+  },
+  "2025-12-28": {
+   "high": 82,
+   "low": 61,
+   "high_time": "248 PM",
+   "precip": 0
+  },
+  "2025-12-29": {
+   "high": 82,
+   "low": 63,
+   "high_time": "353 PM",
+   "precip": 0
+  },
+  "2025-12-30": {
+   "high": 68,
+   "low": 56,
+   "high_time": "MM",
+   "precip": 0
+  },
+  "2025-12-31": {
+   "high": 64,
+   "low": 47,
+   "high_time": "334 PM",
+   "precip": 0
+  },
+  "2026-01-01": {
+   "high": 68,
+   "low": 46,
+   "high_time": "418 PM",
+   "precip": 0
+  },
+  "2026-01-02": {
+   "high": 72,
+   "low": 49,
+   "high_time": "358 PM",
+   "precip": 0
+  },
+  "2026-01-03": {
+   "high": 78,
+   "low": 50,
+   "high_time": "328 PM",
+   "precip": 0
+  },
+  "2026-01-04": {
+   "high": 80,
+   "low": 61,
+   "high_time": "419 PM",
+   "precip": 0
+  },
+  "2026-01-05": {
+   "high": 80,
+   "low": 60,
+   "high_time": "240 PM",
+   "precip": 0
+  },
+  "2026-01-06": {
+   "high": 81,
+   "low": 65,
+   "high_time": "203 PM",
+   "precip": "T"
+  },
+  "2026-01-07": {
+   "high": 82,
+   "low": 63,
+   "high_time": "202 PM",
+   "precip": 0
+  },
+  "2026-01-08": {
+   "high": 83,
+   "low": 64,
+   "high_time": "129 PM",
+   "precip": 0
+  },
+  "2026-01-09": {
+   "high": 81,
+   "low": 70,
+   "high_time": "316 PM",
+   "precip": 0
+  },
+  "2026-01-10": {
+   "high": 82,
+   "low": 72,
+   "high_time": "1245 PM",
+   "precip": 0
+  },
+  "2026-01-11": {
+   "high": 84,
+   "low": "M",
+   "high_time": "1253 PM",
+   "precip": 0
+  },
+  "2026-01-12": {
+   "high": 77,
+   "low": 65,
+   "high_time": "1227 PM",
+   "precip": 0.55
+  },
+  "2026-01-13": {
+   "high": 73,
+   "low": 68,
+   "high_time": "313 PM",
+   "precip": 0.48
+  },
+  "2026-01-14": {
+   "high": 79,
+   "low": 66,
+   "high_time": "355 PM",
+   "precip": 0.01
+  },
+  "2026-01-15": {
+   "high": 72,
+   "low": 50,
+   "high_time": "1106 AM",
+   "precip": "T"
+  },
+  "2026-01-16": {
+   "high": 69,
+   "low": 44,
+   "high_time": "323 PM",
+   "precip": 0
+  },
+  "2026-01-17": {
+   "high": 78,
+   "low": 62,
+   "high_time": "333 PM",
+   "precip": 0
+  },
+  "2026-01-18": {
+   "high": 82,
+   "low": 57,
+   "high_time": "1101 AM",
+   "precip": 0.35
+  },
+  "2026-01-19": {
+   "high": 68,
+   "low": 47,
+   "high_time": "239 PM",
+   "precip": 0
+  },
+  "2026-01-20": {
+   "high": 74,
+   "low": 56,
+   "high_time": "241 PM",
+   "precip": 0
+  },
+  "2026-01-21": {
+   "high": 71,
+   "low": 68,
+   "high_time": "741 PM",
+   "precip": "T"
+  },
+  "2026-01-22": {
+   "high": 76,
+   "low": 67,
+   "high_time": "207 PM",
+   "precip": 0.23
+  },
+  "2026-01-23": {
+   "high": 82,
+   "low": 68,
+   "high_time": "104 PM",
+   "precip": 0
+  },
+  "2026-01-24": {
+   "high": 83,
+   "low": 69,
+   "high_time": "137 PM",
+   "precip": 0
+  },
+  "2026-01-25": {
+   "high": 82,
+   "low": 73,
+   "high_time": "327 PM",
+   "precip": 0
+  },
+  "2026-01-26": {
+   "high": 88,
+   "low": 56,
+   "high_time": "221 PM",
+   "precip": 0
+  },
+  "2026-01-27": {
+   "high": 67,
+   "low": 50,
+   "high_time": "250 PM",
+   "precip": 0
+  },
+  "2026-01-28": {
+   "high": 64,
+   "low": 50,
+   "high_time": "230 PM",
+   "precip": "T"
+  },
+  "2026-01-29": {
+   "high": 72,
+   "low": 50,
+   "high_time": "309 PM",
+   "precip": 0
+  },
+  "2026-01-30": {
+   "high": 69,
+   "low": 59,
+   "high_time": "411 PM",
+   "precip": "T"
+  },
+  "2026-01-31": {
+   "high": 67,
+   "low": 45,
+   "high_time": "935 AM",
+   "precip": 0.02
+  },
+  "2026-02-01": {
+   "high": 52,
+   "low": 35,
+   "high_time": "442 PM",
+   "precip": 0
+  },
+  "2026-02-02": {
+   "high": 58,
+   "low": 38,
+   "high_time": "358 PM",
+   "precip": 0
+  },
+  "2026-02-03": {
+   "high": 69,
+   "low": 44,
+   "high_time": "203 PM",
+   "precip": 0
+  },
+  "2026-02-04": {
+   "high": 75,
+   "low": 54,
+   "high_time": "235 PM",
+   "precip": 0
+  },
+  "2026-02-05": {
+   "high": 74,
+   "low": 49,
+   "high_time": "1157 AM",
+   "precip": 0.08
+  },
+  "2026-02-06": {
+   "high": 66,
+   "low": 45,
+   "high_time": "353 PM",
+   "precip": 0
+  },
+  "2026-02-07": {
+   "high": 79,
+   "low": 51,
+   "high_time": "427 PM",
+   "precip": 0
+  },
+  "2026-02-08": {
+   "high": 74,
+   "low": 54,
+   "high_time": "117 PM",
+   "precip": 0
+  },
+  "2026-02-09": {
+   "high": 75,
+   "low": 54,
+   "high_time": "149 PM",
+   "precip": 0
+  },
+  "2026-02-10": {
+   "high": 76,
+   "low": 56,
+   "high_time": "207 PM",
+   "precip": 0
+  },
+  "2026-02-11": {
+   "high": 78,
+   "low": 59,
+   "high_time": "120 PM",
+   "precip": 0
+  },
+  "2026-02-12": {
+   "high": 81,
+   "low": 58,
+   "high_time": "257 PM",
+   "precip": 0
+  },
+  "2026-02-13": {
+   "high": 81,
+   "low": 61,
+   "high_time": "326 PM",
+   "precip": 0
+  },
+  "2026-02-14": {
+   "high": 79,
+   "low": 62,
+   "high_time": "133 PM",
+   "precip": 0
+  },
+  "2026-02-15": {
+   "high": 81,
+   "low": 70,
+   "high_time": "242 PM",
+   "precip": 0
+  },
+  "2026-02-16": {
+   "high": 86,
+   "low": 69,
+   "high_time": "304 PM",
+   "precip": "T"
+  },
+  "2026-02-17": {
+   "high": 80,
+   "low": 65,
+   "high_time": "108 PM",
+   "precip": "T"
+  },
+  "2026-02-18": {
+   "high": 80,
+   "low": 68,
+   "high_time": "212 PM",
+   "precip": 0
+  },
+  "2026-02-19": {
+   "high": 82,
+   "low": 63,
+   "high_time": "228 PM",
+   "precip": 0
+  },
+  "2026-02-20": {
+   "high": 83,
+   "low": 65,
+   "high_time": "216 PM",
+   "precip": 0
+  },
+  "2026-02-21": {
+   "high": 84,
+   "low": 67,
+   "high_time": "251 PM",
+   "precip": 0
+  },
+  "2026-02-22": {
+   "high": 88,
+   "low": 62,
+   "high_time": "242 PM",
+   "precip": 0
+  },
+  "2026-02-23": {
+   "high": 64,
+   "low": 49,
+   "high_time": "455 PM",
+   "precip": 0
+  },
+  "2026-02-24": {
+   "high": 67,
+   "low": 43,
+   "high_time": "423 PM",
+   "precip": 0
+  },
+  "2026-02-25": {
+   "high": 72,
+   "low": 48,
+   "high_time": "346 PM",
+   "precip": 0
+  },
+  "2026-02-26": {
+   "high": 79,
+   "low": 62,
+   "high_time": "100 PM",
+   "precip": 0
+  },
+  "2026-02-27": {
+   "high": 83,
+   "low": 70,
+   "high_time": "1251 PM",
+   "precip": 0
+  },
+  "2026-02-28": {
+   "high": 87,
+   "low": 67,
+   "high_time": "1148 AM",
+   "precip": 0
+  },
+  "2026-03-01": {
+   "high": 84,
+   "low": 68,
+   "high_time": "1141 AM",
+   "precip": 0.24
+  },
+  "2026-03-02": {
+   "high": 82,
+   "low": 71,
+   "high_time": "245 PM",
+   "precip": "T"
+  },
+  "2026-03-03": {
+   "high": 83,
+   "low": 71,
+   "high_time": "203 PM",
+   "precip": 0.32
+  },
+  "2026-03-04": {
+   "high": 81,
+   "low": 72,
+   "high_time": "331 PM",
+   "precip": 0.03
+  },
+  "2026-03-05": {
+   "high": 84,
+   "low": 74,
+   "high_time": "108 PM",
+   "precip": "T"
+  },
+  "2026-03-06": {
+   "high": 84,
+   "low": 74,
+   "high_time": "254 PM",
+   "precip": "T"
+  },
+  "2026-03-07": {
+   "high": 83,
+   "low": 74,
+   "high_time": "258 PM",
+   "precip": 0
+  },
+  "2026-03-08": {
+   "high": 84,
+   "low": 73,
+   "high_time": "154 PM",
+   "precip": 0
+  },
+  "2026-03-09": {
+   "high": 85,
+   "low": 72,
+   "high_time": "234 PM",
+   "precip": 0
+  },
+  "2026-03-10": {
+   "high": 85,
+   "low": 71,
+   "high_time": "207 PM",
+   "precip": 0
+  },
+  "2026-03-11": {
+   "high": 84,
+   "low": 74,
+   "high_time": "159 PM",
+   "precip": 0
+  },
+  "2026-03-12": {
+   "high": 87,
+   "low": 74,
+   "high_time": "512 PM",
+   "precip": 0.03
+  },
+  "2026-03-13": {
+   "high": 81,
+   "low": 72,
+   "high_time": "1132 AM",
+   "precip": 0.44
+  },
+  "2026-03-14": {
+   "high": 85,
+   "low": 70,
+   "high_time": "208 PM",
+   "precip": 0
+  },
+  "2026-03-15": {
+   "high": 81,
+   "low": 70,
+   "high_time": "913 AM",
+   "precip": 0.67
+  },
+  "2026-03-16": {
+   "high": 87,
+   "low": 69,
+   "high_time": "334 PM",
+   "precip": 0.11
+  },
+  "2026-03-17": {
+   "high": 71,
+   "low": 56,
+   "high_time": "110 AM",
+   "precip": 0.64
+  },
+  "2026-03-18": {
+   "high": 69,
+   "low": 56,
+   "high_time": "1136 AM",
+   "precip": 0.12
+  },
+  "2026-03-19": {
+   "high": 78,
+   "low": 62,
+   "high_time": "103 PM",
+   "precip": 0
+  },
+  "2026-03-20": {
+   "high": 78,
+   "low": 61,
+   "high_time": "314 PM",
+   "precip": 0.03
+  },
+  "2026-03-21": {
+   "high": 81,
+   "low": 61,
+   "high_time": "204 PM",
+   "precip": 0
+  },
+  "2026-03-22": {
+   "high": 81,
+   "low": 59,
+   "high_time": "159 PM",
+   "precip": 0
+  },
+  "2026-03-23": {
+   "high": 82,
+   "low": 61,
+   "high_time": "1252 PM",
+   "precip": 0
+  },
+  "2026-03-24": {
+   "high": 85,
+   "low": 64,
+   "high_time": "155 PM",
+   "precip": 0
+  },
+  "2026-03-25": {
+   "high": 82,
+   "low": 64,
+   "high_time": "124 PM",
+   "precip": 0
+  },
+  "2026-03-26": {
+   "high": 83,
+   "low": 67,
+   "high_time": "226 PM",
+   "precip": 0
+  },
+  "2026-03-27": {
+   "high": 84,
+   "low": 72,
+   "high_time": "1145 AM",
+   "precip": "T"
+  },
+  "2026-03-28": {
+   "high": 85,
+   "low": 68,
+   "high_time": "124 PM",
+   "precip": 0
+  },
+  "2026-03-29": {
+   "high": 80,
+   "low": 68,
+   "high_time": "128 PM",
+   "precip": 0.62
+  },
+  "2026-03-30": {
+   "high": 79,
+   "low": 69,
+   "high_time": "405 PM",
+   "precip": 1.1
+  },
+  "2026-03-31": {
+   "high": 82,
+   "low": 71,
+   "high_time": "236 PM",
+   "precip": 0.04
+  },
+  "2026-04-01": {
+   "high": 80,
+   "low": 71,
+   "high_time": "346 PM",
+   "precip": 0.03
+  },
+  "2026-04-02": {
+   "high": 83,
+   "low": 72,
+   "high_time": "233 PM",
+   "precip": 0.07
+  },
+  "2026-04-03": {
+   "high": 84,
+   "low": 74,
+   "high_time": "1249 PM",
+   "precip": 0
+  },
+  "2026-04-04": {
+   "high": 83,
+   "low": 72,
+   "high_time": "223 PM",
+   "precip": 0.06
+  },
+  "2026-04-05": {
+   "high": 84,
+   "low": 72,
+   "high_time": "107 PM",
+   "precip": 0.15
+  },
+  "2026-04-06": {
+   "high": 84,
+   "low": 72,
+   "high_time": "156 PM",
+   "precip": 0.01
+  },
+  "2026-04-07": {
+   "high": 84,
+   "low": 69,
+   "high_time": "101 PM",
+   "precip": 0.64
+  },
+  "2026-04-08": {
+   "high": 83,
+   "low": 69,
+   "high_time": "MM",
+   "precip": 0.87
+  },
+  "2026-04-09": {
+   "high": 79,
+   "low": 72,
+   "high_time": "MM",
+   "precip": 0.68
+  },
+  "2026-04-10": {
+   "high": 82,
+   "low": 72,
+   "high_time": "MM",
+   "precip": 0
+  },
+  "2026-04-12": {
+   "high": 81,
+   "low": 71,
+   "high_time": "MM",
+   "precip": 0
+  },
+  "2026-04-13": {
+   "high": 82,
+   "low": 72,
+   "high_time": "MM",
+   "precip": 0
+  },
+  "2026-04-14": {
+   "high": 83,
+   "low": 71,
+   "high_time": "MM",
+   "precip": 0
+  },
+  "2026-04-15": {
+   "high": 81,
+   "low": 72,
+   "high_time": "229 PM",
+   "precip": 0
+  },
+  "2026-04-16": {
+   "high": 82,
+   "low": 72,
+   "high_time": "MM",
+   "precip": 0
+  },
+  "2026-04-17": {
+   "high": 85,
+   "low": 72,
+   "high_time": "348 PM",
+   "precip": 0
+  },
+  "2026-04-18": {
+   "high": 86,
+   "low": 74,
+   "high_time": "MM",
+   "precip": 0
+  },
+  "2026-04-19": {
+   "high": 88,
+   "low": 73,
+   "high_time": "213 PM",
+   "precip": "T"
+  },
+  "2026-04-20": {
+   "high": 86,
+   "low": 70,
+   "high_time": "1157 AM",
+   "precip": 0.02
+  },
+  "2026-04-21": {
+   "high": 80,
+   "low": 72,
+   "high_time": "1144 AM",
+   "precip": 0
+  },
+  "2026-04-22": {
+   "high": 81,
+   "low": 71,
+   "high_time": "1116 AM",
+   "precip": 0
+  },
+  "2026-04-23": {
+   "high": 79,
+   "low": 71,
+   "high_time": "937 AM",
+   "precip": "T"
+  },
+  "2026-04-24": {
+   "high": 84,
+   "low": 70,
+   "high_time": "206 PM",
+   "precip": 0
+  },
+  "2026-04-25": {
+   "high": 85,
+   "low": 71,
+   "high_time": "202 PM",
+   "precip": 0
+  },
+  "2026-04-26": {
+   "high": 88,
+   "low": 72,
+   "high_time": "219 PM",
+   "precip": 0.79
+  },
+  "2026-04-27": {
+   "high": 88,
+   "low": 70,
+   "high_time": "1227 PM",
+   "precip": 0
+  },
+  "2026-04-28": {
+   "high": 86,
+   "low": 74,
+   "high_time": "307 PM",
+   "precip": 0
+  },
+  "2026-04-29": {
+   "high": 84,
+   "low": 71,
+   "high_time": "327 PM",
+   "precip": 0
+  },
+  "2026-04-30": {
+   "high": 87,
+   "low": 73,
+   "high_time": "418 PM",
+   "precip": 0
+  },
+  "2026-05-01": {
+   "high": 87,
+   "low": 72,
+   "high_time": "250 PM",
+   "precip": 0
+  },
+  "2026-05-02": {
+   "high": 94,
+   "low": 76,
+   "high_time": "423 PM",
+   "precip": 0
+  },
+  "2026-05-03": {
+   "high": 82,
+   "low": 72,
+   "high_time": "221 PM",
+   "precip": 0.89
+  },
+  "2026-05-04": {
+   "high": 82,
+   "low": 71,
+   "high_time": "1205 PM",
+   "precip": 0.04
+  },
+  "2026-05-05": {
+   "high": 88,
+   "low": 74,
+   "high_time": "1101 AM",
+   "precip": 0
+  },
+  "2026-05-06": {
+   "high": 88,
+   "low": 75,
+   "high_time": "339 PM",
+   "precip": 0
+  },
+  "2026-05-07": {
+   "high": 91,
+   "low": 74,
+   "high_time": "153 PM",
+   "precip": 0
+  },
+  "2026-05-08": {
+   "high": 93,
+   "low": 72,
+   "high_time": "1229 PM",
+   "precip": 0
+  },
+  "2026-05-09": {
+   "high": 91,
+   "low": 75,
+   "high_time": "346 PM",
+   "precip": 0
+  },
+  "2026-05-10": {
+   "high": 91,
+   "low": 79,
+   "high_time": "215 PM",
+   "precip": 0
+  },
+  "2026-05-11": {
+   "high": 90,
+   "low": 80,
+   "high_time": "202 PM",
+   "precip": 0
+  },
+  "2026-05-12": {
+   "high": 91,
+   "low": 77,
+   "high_time": "228 PM",
+   "precip": 0.16
+  },
+  "2026-05-13": {
+   "high": 94,
+   "low": 77,
+   "high_time": "220 PM",
+   "precip": 0
+  },
+  "2026-05-14": {
+   "high": 95,
+   "low": 74,
+   "high_time": "355 PM",
+   "precip": 0.04
+  },
+  "2026-05-15": {
+   "high": 93,
+   "low": 72,
+   "high_time": "1245 PM",
+   "precip": 0
+  },
+  "2026-05-16": {
+   "high": 90,
+   "low": 74,
+   "high_time": "1128 AM",
+   "precip": 0
+  },
+  "2026-05-17": {
+   "high": 87,
+   "low": 73,
+   "high_time": "MM",
+   "precip": 0.86
+  },
+  "2026-05-18": {
+   "high": 87,
+   "low": 75,
+   "high_time": "122 PM",
+   "precip": 0.19
+  },
+  "2026-05-19": {
+   "high": 87,
+   "low": 75,
+   "high_time": "316 PM",
+   "precip": 0.92
+  },
+  "2026-05-20": {
+   "high": 88,
+   "low": 73,
+   "high_time": "315 PM",
+   "precip": 0.17
+  },
+  "2026-05-21": {
+   "high": 89,
+   "low": 78,
+   "high_time": "1207 PM",
+   "precip": 0
+  },
+  "2026-05-22": {
+   "high": 89,
+   "low": 79,
+   "high_time": "100 PM",
+   "precip": "T"
+  },
+  "2026-05-23": {
+   "high": 89,
+   "low": 77,
+   "high_time": "116 PM",
+   "precip": 0.34
+  },
+  "2026-05-24": {
+   "high": 89,
+   "low": 78,
+   "high_time": "226 PM",
+   "precip": 0.17
+  },
+  "2026-05-25": {
+   "high": 88,
+   "low": 77,
+   "high_time": "227 PM",
+   "precip": 0.19
+  },
+  "2026-05-26": {
+   "high": 88,
+   "low": 80,
+   "high_time": "315 PM",
+   "precip": 0.01
+  },
+  "2026-05-27": {
+   "high": 89,
+   "low": 79,
+   "high_time": "1246 PM",
+   "precip": "T"
+  },
+  "2026-05-28": {
+   "high": 86,
+   "low": 75,
+   "high_time": "248 PM",
+   "precip": 0.82
+  },
+  "2026-05-29": {
+   "high": 92,
+   "low": 75,
+   "high_time": "1259 PM",
+   "precip": 0.13
+  },
+  "2026-05-30": {
+   "high": 87,
+   "low": 77,
+   "high_time": "1024 AM",
+   "precip": "T"
+  },
+  "2026-05-31": {
+   "high": 95,
+   "low": 75,
+   "high_time": "133 PM",
+   "precip": 1.69
+  },
+  "2026-06-01": {
+   "high": 94,
+   "low": 77,
+   "high_time": "331 PM",
+   "precip": 0.12
+  },
+  "2026-06-02": {
+   "high": 95,
+   "low": 75,
+   "high_time": "246 PM",
+   "precip": 0.29
+  },
+  "2026-06-03": {
+   "high": 86,
+   "low": 73,
+   "high_time": "1120 AM",
+   "precip": 0.55
+  },
+  "2026-06-04": {
+   "high": 85,
+   "low": 73,
+   "high_time": "1142 AM",
+   "precip": 0.04
+  },
+  "2026-06-05": {
+   "high": 85,
+   "low": 77,
+   "high_time": "1021 AM",
+   "precip": "T"
+  },
+  "2026-06-06": {
+   "high": 87,
+   "low": 76,
+   "high_time": "356 PM",
+   "precip": 0
+  },
+  "2026-06-07": {
+   "high": 89,
+   "low": 78,
+   "high_time": "212 PM",
+   "precip": 0
+  },
+  "2026-06-08": {
+   "high": 91,
+   "low": 80,
+   "high_time": "1214 PM",
+   "precip": 0
+  },
+  "2026-06-09": {
+   "high": 89,
+   "low": 78,
+   "high_time": "128 PM",
+   "precip": 0
+  },
+  "2026-06-10": {
+   "high": 88,
+   "low": 79,
+   "high_time": "151 PM",
+   "precip": 0
+  },
+  "2026-06-11": {
+   "high": 90,
+   "low": 78,
+   "high_time": "149 PM",
+   "precip": 0
+  },
+  "2026-06-12": {
+   "high": 91,
+   "low": 78,
+   "high_time": "121 PM",
+   "precip": 0
+  },
+  "2026-06-13": {
+   "high": 91,
+   "low": 78,
+   "high_time": "205 PM",
+   "precip": 0
+  },
+  "2026-06-14": {
+   "high": 93,
+   "low": 77,
+   "high_time": "100 PM",
+   "precip": "T"
+  },
+  "2026-06-15": {
+   "high": 95,
+   "low": 78,
+   "high_time": "329 PM",
+   "precip": 0
+  },
+  "2026-06-16": {
+   "high": 95,
+   "low": 79,
+   "high_time": "211 PM",
+   "precip": 0
+  },
+  "2026-06-17": {
+   "high": 94,
+   "low": 79,
+   "high_time": "231 PM",
+   "precip": 0
+  },
+  "2026-06-18": {
+   "high": 93,
+   "low": 81,
+   "high_time": "215 PM",
+   "precip": 0
+  },
+  "2026-06-19": {
+   "high": 92,
+   "low": 79,
+   "high_time": "228 PM",
+   "precip": "T"
+  },
+  "2026-06-20": {
+   "high": 93,
+   "low": 74,
+   "high_time": "1220 PM",
+   "precip": 0.56
+  },
+  "2026-06-21": {
+   "high": 94,
+   "low": 75,
+   "high_time": "302 PM",
+   "precip": 0
+  },
+  "2026-06-22": {
+   "high": 93,
+   "low": 82,
+   "high_time": "215 PM",
+   "precip": 0
+  },
+  "2026-06-23": {
+   "high": 91,
+   "low": 81,
+   "high_time": "1202 PM",
+   "precip": 0.03
+  },
+  "2026-06-24": {
+   "high": 93,
+   "low": 75,
+   "high_time": "138 PM",
+   "precip": "T"
+  },
+  "2026-06-25": {
+   "high": 92,
+   "low": 76,
+   "high_time": "229 PM",
+   "precip": "T"
+  },
+  "2026-06-26": {
+   "high": 92,
+   "low": 80,
+   "high_time": "1242 PM",
+   "precip": 0.17
+  },
+  "2026-06-27": {
+   "high": 92,
+   "low": 79,
+   "high_time": "205 PM",
+   "precip": 0.11
+  },
+  "2026-06-28": {
+   "high": 92,
+   "low": 81,
+   "high_time": "303 PM",
+   "precip": 0
+  },
+  "2026-06-29": {
+   "high": 93,
+   "low": 83,
+   "high_time": "309 PM",
+   "precip": 0
+  },
+  "2026-06-30": {
+   "high": 94,
+   "low": 79,
+   "high_time": "1151 AM",
+   "precip": 0
+  },
+  "2026-07-01": {
+   "high": 93,
+   "low": 78,
+   "high_time": "158 PM",
+   "precip": 0.13
+  },
+  "2026-07-02": {
+   "high": 93,
+   "low": 78,
+   "high_time": "1156 AM",
+   "precip": 0.12
+  },
+  "2026-07-03": {
+   "high": 91,
+   "low": 78,
+   "high_time": "419 PM",
+   "precip": 0.06
+  },
+  "2026-07-04": {
+   "high": 93,
+   "low": 80,
+   "high_time": "316 PM",
+   "precip": 0.05
+  },
+  "2026-07-05": {
+   "high": 94,
+   "low": 76,
+   "high_time": "1154 AM",
+   "precip": 0.19
+  },
+  "2026-07-06": {
+   "high": 93,
+   "low": 77,
+   "high_time": "144 PM",
+   "precip": 0.26
+  },
+  "2026-07-07": {
+   "high": 93,
+   "low": "M",
+   "high_time": "133 PM",
+   "precip": 0
+  },
+  "2026-07-08": {
+   "high": 92,
+   "low": 83,
+   "high_time": "228 PM",
+   "precip": 0
+  },
+  "2026-07-09": {
+   "high": 92,
+   "low": 82,
+   "high_time": "306 PM",
+   "precip": 0
+  },
+  "2026-07-10": {
+   "high": 93,
+   "low": 73,
+   "high_time": "1214 PM",
+   "precip": 1.2
+  },
+  "2026-07-11": {
+   "high": 91,
+   "low": 73,
+   "high_time": "144 PM",
+   "precip": 0.01
+  },
+  "2026-07-12": {
+   "high": 94,
+   "low": 84,
+   "high_time": "258 PM",
+   "precip": 0
+  },
+  "2026-07-13": {
+   "high": 93,
+   "low": 79,
+   "high_time": "307 PM",
+   "precip": 0
+  },
+  "2026-07-14": {
+   "high": 94,
+   "low": 80,
+   "high_time": "255 PM",
+   "precip": 0
+  },
+  "2026-07-15": {
+   "high": 94,
+   "low": 80,
+   "high_time": "312 PM",
+   "precip": 0
+  },
+  "2026-07-16": {
+   "high": 97,
+   "low": 80,
+   "high_time": "257 PM",
+   "precip": 0
+  },
+  "2026-07-17": {
+   "high": 94,
+   "low": 74,
+   "high_time": "1220 PM",
+   "precip": 0.44
+  },
+  "2026-07-18": {
+   "high": 91,
+   "low": 78,
+   "high_time": "307 PM",
+   "precip": 0.19
+  },
+  "2026-07-19": {
+   "high": 91,
+   "low": 83,
+   "high_time": "407 PM",
+   "precip": "T"
+  },
+  "2026-07-20": {
+   "high": 93,
+   "low": 83,
+   "high_time": "227 PM",
+   "precip": 0
+  },
+  "2026-07-21": {
+   "high": 92,
+   "low": 82,
+   "high_time": "328 PM",
+   "precip": 0.02
+  },
+  "2026-07-22": {
+   "high": 92,
+   "low": 82,
+   "high_time": "156 PM",
+   "precip": "T"
+  },
+  "2026-07-23": {
+   "high": 93,
+   "low": 82,
+   "high_time": "119 PM",
+   "precip": "T"
+  },
+  "2026-07-24": {
+   "high": 93,
+   "low": 81,
+   "high_time": "246 PM",
+   "precip": "T"
+  },
+  "2026-07-25": {
+   "high": 92,
+   "low": 81,
+   "high_time": "1231 PM",
+   "precip": 0.21
+  },
+  "2026-07-26": {
+   "high": 94,
+   "low": 78,
+   "high_time": "1153 AM",
+   "precip": 0.01
+  },
+  "2026-07-27": {
+   "high": 92,
+   "low": 75,
+   "high_time": "118 PM",
+   "precip": 1.83
+  },
+  "2026-07-28": {
+   "high": 91,
+   "low": 78,
+   "high_time": "1120 AM",
+   "precip": 0.11
+  },
+  "2026-07-29": {
+   "high": 94,
+   "low": 79,
+   "high_time": "420 PM",
+   "precip": 0.02
+  },
+  "2026-07-30": {
+   "high": 96,
+   "low": 80,
+   "high_time": "353 PM",
+   "precip": 0
+  },
+  "2026-07-31": {
+   "high": 96,
+   "low": 81,
+   "high_time": "151 PM",
+   "precip": 0
+  },
+  "2026-08-01": {
+   "high": 94,
+   "low": 74,
+   "high_time": "1238 PM",
+   "precip": 0.58
+  },
+  "2026-08-02": {
+   "high": 91,
+   "low": 78,
+   "high_time": "1203 PM",
+   "precip": 0.13
+  },
+  "2026-08-03": {
+   "high": 93,
+   "low": 73,
+   "high_time": "1138 AM",
+   "precip": 1.2
+  },
+  "2026-08-04": {
+   "high": 92,
+   "low": 77,
+   "high_time": "1148 AM",
+   "precip": "T"
+  },
+  "2026-08-05": {
+   "high": 90,
+   "low": 78,
+   "high_time": "1149 AM",
+   "precip": 0.16
+  },
+  "2026-08-06": {
+   "high": 88,
+   "low": 75,
+   "high_time": "458 PM",
+   "precip": 0.41
+  },
+  "2026-08-07": {
+   "high": 91,
+   "low": 79,
+   "high_time": "322 PM",
+   "precip": 0
+  },
+  "2026-08-08": {
+   "high": 92,
+   "low": 82,
+   "high_time": "118 PM",
+   "precip": 0
+  },
+  "2026-08-09": {
+   "high": 92,
+   "low": 82,
+   "high_time": "312 PM",
+   "precip": 0
+  },
+  "2026-08-10": {
+   "high": 93,
+   "low": 84,
+   "high_time": "228 PM",
+   "precip": 0
+  },
+  "2026-08-11": {
+   "high": 94,
+   "low": 83,
+   "high_time": "239 PM",
+   "precip": 0
+  },
+  "2026-08-12": {
+   "high": 94,
+   "low": 80,
+   "high_time": "123 PM",
+   "precip": 0
+  },
+  "2026-08-13": {
+   "high": 94,
+   "low": 78,
+   "high_time": "1229 PM",
+   "precip": 0.04
+  },
+  "2026-08-14": {
+   "high": 96,
+   "low": 82,
+   "high_time": "113 PM",
+   "precip": "T"
+  },
+  "2026-08-15": {
+   "high": 93,
+   "low": 80,
+   "high_time": "400 PM",
+   "precip": 0.03
+  },
+  "2026-08-16": {
+   "high": 94,
+   "low": 82,
+   "high_time": "218 PM",
+   "precip": 0
+  },
+  "2026-08-17": {
+   "high": 95,
+   "low": 80,
+   "high_time": "214 PM",
+   "precip": 0
+  },
+  "2026-08-18": {
+   "high": 100,
+   "low": 82,
+   "high_time": "247 PM",
+   "precip": 0
+  },
+  "2026-08-19": {
+   "high": 96,
+   "low": 76,
+   "high_time": "112 PM",
+   "precip": 0.25
+  },
+  "2026-08-20": {
+   "high": 93,
+   "low": 79,
+   "high_time": "1058 AM",
+   "precip": 0.26
+  },
+  "2026-08-21": {
+   "high": 94,
+   "low": 81,
+   "high_time": "1246 PM",
+   "precip": "T"
+  },
+  "2026-08-22": {
+   "high": 94,
+   "low": 80,
+   "high_time": "154 PM",
+   "precip": "T"
+  },
+  "2026-08-23": {
+   "high": 93,
+   "low": 79,
+   "high_time": "1223 PM",
+   "precip": 0.34
+  },
+  "2026-08-24": {
+   "high": 91,
+   "low": 77,
+   "high_time": "339 PM",
+   "precip": 0.84
+  },
+  "2026-08-25": {
+   "high": 92,
+   "low": 79,
+   "high_time": "150 PM",
+   "precip": "T"
+  },
+  "2026-08-26": {
+   "high": 92,
+   "low": 77,
+   "high_time": "111 PM",
+   "precip": 0.02
+  },
+  "2026-08-27": {
+   "high": 93,
+   "low": 78,
+   "high_time": "207 PM",
+   "precip": 0.01
+  },
+  "2026-08-28": {
+   "high": 93,
+   "low": 80,
+   "high_time": "240 PM",
+   "precip": 0
+  },
+  "2026-08-29": {
+   "high": 85,
+   "low": 76,
+   "high_time": "511 AM",
+   "precip": 0.62
+  },
+  "2026-08-30": {
+   "high": 91,
+   "low": 81,
+   "high_time": "MM",
+   "precip": 0
+  },
+  "2026-08-31": {
+   "high": 91,
+   "low": 78,
+   "high_time": "1112 AM",
+   "precip": 1.1
+  },
+  "2026-09-01": {
+   "high": 89,
+   "low": 75,
+   "high_time": "1254 PM",
+   "precip": 1.29
+  },
+  "2026-09-02": {
+   "high": 90,
+   "low": 76,
+   "high_time": "1241 PM",
+   "precip": 0.23
+  },
+  "2026-09-03": {
+   "high": 93,
+   "low": 77,
+   "high_time": "1253 PM",
+   "precip": 0.9
+  },
+  "2026-09-04": {
+   "high": 91,
+   "low": 78,
+   "high_time": "1149 AM",
+   "precip": 0.03
+  },
+  "2026-09-05": {
+   "high": 92,
+   "low": 76,
+   "high_time": "1148 AM",
+   "precip": 0.55
+  },
+  "2026-09-06": {
+   "high": 92,
+   "low": 76,
+   "high_time": "1208 PM",
+   "precip": 0.02
+  },
+  "2026-09-07": {
+   "high": 92,
+   "low": 74,
+   "high_time": "141 PM",
+   "precip": 0.15
+  },
+  "2026-09-08": {
+   "high": 92,
+   "low": 78,
+   "high_time": "112 PM",
+   "precip": 0
+  },
+  "2026-09-09": {
+   "high": 90,
+   "low": 79,
+   "high_time": "255 PM",
+   "precip": 0.28
+  },
+  "2026-09-10": {
+   "high": 91,
+   "low": 73,
+   "high_time": "1008 AM",
+   "precip": 0.67
+  },
+  "2026-09-11": {
+   "high": 88,
+   "low": 78,
+   "high_time": "339 PM",
+   "precip": 0.08
+  },
+  "2026-09-12": {
+   "high": 93,
+   "low": 78,
+   "high_time": "1253 PM",
+   "precip": 0
+  },
+  "2026-09-13": {
+   "high": 92,
+   "low": 76,
+   "high_time": "1235 PM",
+   "precip": 0.27
+  },
+  "2026-09-14": {
+   "high": 90,
+   "low": 77,
+   "high_time": "307 PM",
+   "precip": 0.02
+  },
+  "2026-09-15": {
+   "high": 93,
+   "low": 80,
+   "high_time": "1258 PM",
+   "precip": "T"
+  },
+  "2026-09-16": {
+   "high": 92,
+   "low": 78,
+   "high_time": "133 PM",
+   "precip": 0.16
+  },
+  "2026-09-17": {
+   "high": 84,
+   "low": 76,
+   "high_time": "515 PM",
+   "precip": 0.06
+  },
+  "2026-09-18": {
+   "high": 90,
+   "low": 76,
+   "high_time": "1039 AM",
+   "precip": 0.17
+  },
+  "2026-09-19": {
+   "high": 90,
+   "low": 75,
+   "high_time": "MM",
+   "precip": 0
+  },
+  "2026-09-20": {
+   "high": 90,
+   "low": 74,
+   "high_time": "102 PM",
+   "precip": 0.95
+  },
+  "2026-09-21": {
+   "high": 88,
+   "low": 76,
+   "high_time": "256 PM",
+   "precip": 0.08
+  },
+  "2026-09-22": {
+   "high": 89,
+   "low": 77,
+   "high_time": "225 PM",
+   "precip": 0.11
+  },
+  "2026-09-23": {
+   "high": 83,
+   "low": 76,
+   "high_time": "423 PM",
+   "precip": 0.51
+  },
+  "2026-09-24": {
+   "high": 91,
+   "low": 77,
+   "high_time": "358 PM",
+   "precip": 0.01
+  },
+  "2026-09-25": {
+   "high": 91,
+   "low": 78,
+   "high_time": "228 PM",
+   "precip": "T"
+  },
+  "2026-09-26": {
+   "high": 88,
+   "low": 75,
+   "high_time": "257 PM",
+   "precip": 0
+  },
+  "2026-09-27": {
+   "high": 89,
+   "low": 76,
+   "high_time": "318 PM",
+   "precip": 0
+  },
+  "2026-09-28": {
+   "high": 90,
+   "low": 80,
+   "high_time": "115 PM",
+   "precip": 0
+  },
+  "2026-09-29": {
+   "high": 85,
+   "low": 72,
+   "high_time": "1233 PM",
+   "precip": 0.65
+  },
+  "2026-09-30": {
+   "high": 85,
+   "low": 77,
+   "high_time": "938 AM",
+   "precip": 0.12
+  },
+  "2026-10-01": {
+   "high": 83,
+   "low": 74,
+   "high_time": "1144 PM",
+   "precip": 1.32
+  },
+  "2026-10-02": {
+   "high": 88,
+   "low": 81,
+   "high_time": "307 PM",
+   "precip": 0.08
+  },
+  "2026-10-03": {
+   "high": 87,
+   "low": 80,
+   "high_time": "127 PM",
+   "precip": "T"
+  },
+  "2026-10-04": {
+   "high": 90,
+   "low": 79,
+   "high_time": "157 PM",
+   "precip": "T"
+  },
+  "2026-10-05": {
+   "high": 90,
+   "low": 80,
+   "high_time": "245 PM",
+   "precip": 0
+  },
+  "2026-10-06": {
+   "high": 90,
+   "low": 79,
+   "high_time": "1258 PM",
+   "precip": 0
+  },
+  "2026-10-07": {
+   "high": 90,
+   "low": 77,
+   "high_time": "1133 AM",
+   "precip": 0.43
+  },
+  "2026-10-08": {
+   "high": 90,
+   "low": 77,
+   "high_time": "139 PM",
+   "precip": 0
+  },
+  "2026-10-09": {
+   "high": 90,
+   "low": 81,
+   "high_time": "126 PM",
+   "precip": 0
+  },
+  "2026-10-10": {
+   "high": 91,
+   "low": 82,
+   "high_time": "1229 PM",
+   "precip": 0
+  },
+  "2026-10-11": {
+   "high": 90,
+   "low": 77,
+   "high_time": "206 PM",
+   "precip": 0.43
+  },
+  "2026-10-12": {
+   "high": 90,
+   "low": 80,
+   "high_time": "152 PM",
+   "precip": "T"
+  },
+  "2026-10-13": {
+   "high": 89,
+   "low": 78,
+   "high_time": "1240 PM",
+   "precip": 0
+  },
+  "2026-10-14": {
+   "high": 88,
+   "low": 78,
+   "high_time": "408 PM",
+   "precip": 0.01
+  },
+  "2026-10-15": {
+   "high": 90,
+   "low": 80,
+   "high_time": "238 PM",
+   "precip": 0.02
+  },
+  "2026-10-16": {
+   "high": 90,
+   "low": 76,
+   "high_time": "1255 PM",
+   "precip": 0.21
+  },
+  "2026-10-17": {
+   "high": 90,
+   "low": 76,
+   "high_time": "1135 AM",
+   "precip": 0.33
+  },
+  "2026-10-18": {
+   "high": 82,
+   "low": 74,
+   "high_time": "342 PM",
+   "precip": 0.07
+  },
+  "2026-10-19": {
+   "high": 86,
+   "low": 75,
+   "high_time": "129 PM",
+   "precip": "T"
+  },
+  "2026-10-20": {
+   "high": 85,
+   "low": 73,
+   "high_time": "220 PM",
+   "precip": 0.12
+  },
+  "2026-10-21": {
+   "high": 84,
+   "low": 70,
+   "high_time": "329 PM",
+   "precip": 0
+  },
+  "2026-10-22": {
+   "high": 80,
+   "low": 72,
+   "high_time": "1122 AM",
+   "precip": "T"
+  },
+  "2026-10-23": {
+   "high": 82,
+   "low": 71,
+   "high_time": "105 PM",
+   "precip": 0.43
+  },
+  "2026-10-24": {
+   "high": 84,
+   "low": 71,
+   "high_time": "202 PM",
+   "precip": "T"
+  },
+  "2026-10-25": {
+   "high": 82,
+   "low": 71,
+   "high_time": "321 PM",
+   "precip": 0.38
+  },
+  "2026-10-26": {
+   "high": 83,
+   "low": 73,
+   "high_time": "101 PM",
+   "precip": 0.43
+  },
+  "2026-10-27": {
+   "high": 84,
+   "low": 75,
+   "high_time": "1230 PM",
+   "precip": 0.41
+  },
+  "2026-10-28": {
+   "high": 88,
+   "low": 75,
+   "high_time": "117 PM",
+   "precip": 0.19
+  },
+  "2026-10-29": {
+   "high": 88,
+   "low": 76,
+   "high_time": "1252 PM",
+   "precip": "T"
+  },
+  "2026-10-30": {
+   "high": 87,
+   "low": 76,
+   "high_time": "234 PM",
+   "precip": "T"
+  },
+  "2026-10-31": {
+   "high": 85,
+   "low": 79,
+   "high_time": "326 PM",
+   "precip": 0.04
+  },
+  "2026-11-01": {
+   "high": 82,
+   "low": 72,
+   "high_time": "907 AM",
+   "precip": 1.57
+  },
+  "2026-11-02": {
+   "high": 85,
+   "low": 71,
+   "high_time": "1234 PM",
+   "precip": 1.78
+  },
+  "2026-11-03": {
+   "high": 87,
+   "low": 75,
+   "high_time": "132 PM",
+   "precip": 1.04
+  },
+  "2026-11-04": {
+   "high": 85,
+   "low": 76,
+   "high_time": "225 PM",
+   "precip": 1.5
+  },
+  "2026-11-05": {
+   "high": 85,
+   "low": 74,
+   "high_time": "308 PM",
+   "precip": 0.01
+  },
+  "2026-11-06": {
+   "high": 86,
+   "low": 73,
+   "high_time": "229 PM",
+   "precip": 0
+  },
+  "2026-11-07": {
+   "high": 87,
+   "low": 74,
+   "high_time": "219 PM",
+   "precip": 0
+  },
+  "2026-11-08": {
+   "high": 85,
+   "low": 75,
+   "high_time": "113 PM",
+   "precip": 0
+  },
+  "2026-11-09": {
+   "high": 85,
+   "low": 75,
+   "high_time": "101 PM",
+   "precip": "T"
+  },
+  "2026-11-10": {
+   "high": 85,
+   "low": 73,
+   "high_time": "241 PM",
+   "precip": 0
+  },
+  "2026-11-11": {
+   "high": 84,
+   "low": 76,
+   "high_time": "337 PM",
+   "precip": 0
+  },
+  "2026-11-12": {
+   "high": 87,
+   "low": 72,
+   "high_time": "151 PM",
+   "precip": "T"
+  },
+  "2026-11-13": {
+   "high": 81,
+   "low": 68,
+   "high_time": "1203 PM",
+   "precip": 0.01
+  },
+  "2026-11-14": {
+   "high": 71,
+   "low": 64,
+   "high_time": "345 PM",
+   "precip": 0
+  },
+  "2026-11-15": {
+   "high": 80,
+   "low": 61,
+   "high_time": "1259 PM",
+   "precip": 0
+  },
+  "2026-11-16": {
+   "high": 81,
+   "low": 68,
+   "high_time": "249 PM",
+   "precip": 0.8
+  },
+  "2026-11-17": {
+   "high": 81,
+   "low": 71,
+   "high_time": "1251 PM",
+   "precip": 0.62
+  },
+  "2026-11-18": {
+   "high": 78,
+   "low": 70,
+   "high_time": "322 AM",
+   "precip": 1.91
+  },
+  "2026-11-19": {
+   "high": 82,
+   "low": 73,
+   "high_time": "1219 PM",
+   "precip": 0.15
+  }
+ },
+ "errors": [],
+ "today": {
+  "date": "2026-11-20",
+  "isToday": true,
+  "call": "82° to 83°",
+  "callP": 0.34181692194953905,
+  "point": 83,
+  "mean": 82.7,
+  "blend": 82.3,
+  "expected": 82.7,
+  "sd": 2.26,
+  "floor": 73.9,
+  "models": [
+   {
+    "model": "ECMWF",
+    "raw": 80.2,
+    "peak": "3 PM",
+    "bias": 2.1,
+    "mae": 1.3,
+    "n": 7,
+    "pace": 2.4,
+    "corr": 82.4,
+    "w": 0.21
+   },
+   {
+    "model": "NBM",
+    "raw": 83,
+    "peak": "3 PM",
+    "bias": 1,
+    "mae": 1.4,
+    "n": 7,
+    "pace": 0.9,
+    "corr": 84,
+    "w": 0.187
+   },
+   {
+    "model": "UKMO",
+    "raw": 78.4,
+    "peak": "5 PM",
+    "bias": 1.7,
+    "mae": 1.5,
+    "n": 7,
+    "pace": 0.3,
+    "corr": 79.8,
+    "w": 0.167
+   },
+   {
+    "model": "HRRR",
+    "raw": 77.9,
+    "peak": "2 PM",
+    "bias": 1,
+    "mae": 1.8,
+    "n": 7,
+    "pace": -0.4,
+    "corr": 78.6,
+    "w": 0.123
+   },
+   {
+    "model": "GFS",
+    "raw": 83.9,
+    "peak": "3 PM",
+    "bias": 0.4,
+    "mae": 1.8,
+    "n": 7,
+    "pace": -1,
+    "corr": 84,
+    "w": 0.123
+   },
+   {
+    "model": "GEM",
+    "raw": 83.9,
+    "peak": "3 PM",
+    "bias": 1.4,
+    "mae": 1.9,
+    "n": 7,
+    "pace": 0.7,
+    "corr": 85.1,
+    "w": 0.112
+   },
+   {
+    "model": "ICON",
+    "raw": 81.6,
+    "peak": "3 PM",
+    "bias": 1.5,
+    "mae": 2.3,
+    "n": 7,
+    "pace": 0.4,
+    "corr": 82.8,
+    "w": 0.079
+   }
+  ],
+  "nws": {
+   "high": 84,
+   "text": "Partly Sunny",
+   "hourlyMax": 84,
+   "hourlyMaxTime": "3 PM",
+   "popMid": 2
+  },
+  "dist": [
+   {
+    "k": 77,
+    "p": 0.008000922930475704
+   },
+   {
+    "k": 78,
+    "p": 0.021670260967717382
+   },
+   {
+    "k": 79,
+    "p": 0.04836526038819804
+   },
+   {
+    "k": 80,
+    "p": 0.08895466153387938
+   },
+   {
+    "k": 81,
+    "p": 0.13483120974795476
+   },
+   {
+    "k": 82,
+    "p": 0.16842547520332266
+   },
+   {
+    "k": 83,
+    "p": 0.17339144674621637
+   },
+   {
+    "k": 84,
+    "p": 0.1471128633662273
+   },
+   {
+    "k": 85,
+    "p": 0.10286578655711331
+   },
+   {
+    "k": 86,
+    "p": 0.05927644629260268
+   },
+   {
+    "k": 87,
+    "p": 0.028149185088416587
+   },
+   {
+    "k": 88,
+    "p": 0.011015406517922096
+   }
+  ],
+  "brackets": [
+   {
+    "label": "79° or below",
+    "lo": null,
+    "hi": 79,
+    "bid": 0.02,
+    "ask": 0.03,
+    "last": 0.02,
+    "mid": 0.025,
+    "p": 0.025,
+    "model_p": 0.08123164031114241,
+    "edge": 0.05623164031114241
+   },
+   {
+    "label": "80° to 81°",
+    "lo": 80,
+    "hi": 81,
+    "bid": 0.31,
+    "ask": 0.32,
+    "last": 0.32,
+    "mid": 0.315,
+    "p": 0.315,
+    "model_p": 0.22378587128183414,
+    "edge": -0.09121412871816587
+   },
+   {
+    "label": "82° to 83°",
+    "lo": 82,
+    "hi": 83,
+    "bid": 0.45,
+    "ask": 0.49,
+    "last": 0.49,
+    "mid": 0.47,
+    "p": 0.47,
+    "model_p": 0.34181692194953905,
+    "edge": -0.12818307805046092
+   },
+   {
+    "label": "84° to 85°",
+    "lo": 84,
+    "hi": 85,
+    "bid": 0.16,
+    "ask": 0.17,
+    "last": 0.17,
+    "mid": 0.165,
+    "p": 0.165,
+    "model_p": 0.24997864992334062,
+    "edge": 0.08497864992334062
+   },
+   {
+    "label": "86° to 87°",
+    "lo": 86,
+    "hi": 87,
+    "bid": 0.01,
+    "ask": 0.03,
+    "last": 0.02,
+    "mid": 0.02,
+    "p": 0.02,
+    "model_p": 0.08742563138101928,
+    "edge": 0.06742563138101927
+   },
+   {
+    "label": "88° or above",
+    "lo": 88,
+    "hi": null,
+    "bid": 0,
+    "ask": 0.01,
+    "last": 0.01,
+    "mid": 0.005,
+    "p": 0.005,
+    "model_p": 0.015761285153124544,
+    "edge": 0.010761285153124543
+   }
+  ],
+  "kalshi": {
+   "event": "KXHIGHMIA-26NOV20",
+   "peak": "82° to 83°",
+   "window": {
+    "from": "80° to 81°",
+    "to": "84° to 85°",
+    "cover": 0.95
+   },
+   "implied": 82.2
+  },
+  "checkpoints": [
+   {
+    "c": 25,
+    "f": 77,
+    "lo": 76.1,
+    "hi": 77.9
+   },
+   {
+    "c": 26,
+    "f": 78.8,
+    "lo": 77.9,
+    "hi": 79.7
+   },
+   {
+    "c": 27,
+    "f": 80.6,
+    "lo": 79.7,
+    "hi": 81.5
+   },
+   {
+    "c": 28,
+    "f": 82.4,
+    "lo": 81.5,
+    "hi": 83.3
+   },
+   {
+    "c": 29,
+    "f": 84.2,
+    "lo": 83.3,
+    "hi": 85.1
+   },
+   {
+    "c": 30,
+    "f": 86,
+    "lo": 85.1,
+    "hi": 86.9
+   },
+   {
+    "c": 31,
+    "f": 87.8,
+    "lo": 86.9,
+    "hi": 88.7
+   }
+  ],
+  "tgroups": [
+   {
+    "bracket": "80° to 81°",
+    "needF": 79.5,
+    "tgroup": "T0264",
+    "oneMinC": 27
+   },
+   {
+    "bracket": "82° to 83°",
+    "needF": 81.5,
+    "tgroup": "T0275",
+    "oneMinC": 28
+   },
+   {
+    "bracket": "84° to 85°",
+    "needF": 83.5,
+    "tgroup": "T0287",
+    "oneMinC": 29
+   },
+   {
+    "bracket": "86° to 87°",
+    "needF": 85.5,
+    "tgroup": "T0298",
+    "oneMinC": 30
+   }
+  ],
+  "regime": {
+   "windDir": 241,
+   "windTxt": "WSW",
+   "windKt": 5.8,
+   "rainIn": 0,
+   "cape90": 1298,
+   "lowCloud": 43,
+   "totalCloud": 85,
+   "t850F": 63.1,
+   "dewMax": 72.7,
+   "notes": [
+    "W land breeze across the Everglades: the hot pattern, no ocean cap.",
+    "Scattered showers possible (CAPE ~1298, ~0.00\" rain): timing vs the 11 AM–2 PM peak matters."
+   ],
+   "sector": "W/land",
+   "storm": "moderate"
+  },
+  "analogs": {
+   "n": 30,
+   "median": 84,
+   "p10": 82,
+   "p90": 88,
+   "top": [
+    {
+     "date": "2018-11-26",
+     "high": 85,
+     "dir": "SW",
+     "rain": 0,
+     "dew": 73.9
+    },
+    {
+     "date": "2018-11-24",
+     "high": 83,
+     "dir": "SW",
+     "rain": 0.0001,
+     "dew": 73.9
+    },
+    {
+     "date": "2023-12-03",
+     "high": 88,
+     "dir": "SW",
+     "rain": 0,
+     "dew": 74
+    },
+    {
+     "date": "2023-12-04",
+     "high": 85,
+     "dir": "W",
+     "rain": 0,
+     "dew": 73
+    },
+    {
+     "date": "2025-12-08",
+     "high": 87,
+     "dir": "WSW",
+     "rain": 0.0001,
+     "dew": 74
+    },
+    {
+     "date": "2018-11-25",
+     "high": 84,
+     "dir": "WSW",
+     "rain": 0.0001,
+     "dew": 75
+    },
+    {
+     "date": "2013-11-02",
+     "high": 89,
+     "dir": "W",
+     "rain": 0,
+     "dew": 73.94
+    },
+    {
+     "date": "2022-11-10",
+     "high": 85,
+     "dir": "SSW",
+     "rain": 0.0001,
+     "dew": 73
+    }
+   ]
+  },
+  "obs": {
+   "maxSoFar": 73.9,
+   "maxSrc": "METAR",
+   "maxTime": "12:20 AM",
+   "nowF": 72,
+   "nowT": "2026-11-20T07:53:00.000Z",
+   "nowTime": "7:53 AM EST",
+   "dewF": 71,
+   "wind": "220 @ 6 kt",
+   "wx": "-DZ BR",
+   "sky": "BKN005 OVC010",
+   "raw": "METAR KMIA 201253Z 22006KT 4SM -DZ BR BKN005 OVC010 22/22 A2994 RMK AO2 DZB22 SLP139 P0000 T02220217 $",
+   "series": [
+    {
+     "h": 0.3333333333333333,
+     "f": 73.9
+    },
+    {
+     "h": 0.8833333333333333,
+     "f": 73
+    },
+    {
+     "h": 1.5,
+     "f": 73
+    },
+    {
+     "h": 1.8833333333333333,
+     "f": 73
+    },
+    {
+     "h": 2.8833333333333333,
+     "f": 73
+    },
+    {
+     "h": 3.8833333333333333,
+     "f": 72
+    },
+    {
+     "h": 4,
+     "f": 72
+    },
+    {
+     "h": 4.883333333333333,
+     "f": 72
+    },
+    {
+     "h": 5.883333333333333,
+     "f": 72
+    },
+    {
+     "h": 6.033333333333333,
+     "f": 72
+    },
+    {
+     "h": 6.883333333333333,
+     "f": 72
+    },
+    {
+     "h": 7.883333333333333,
+     "f": 72
+    }
+   ]
+  },
+  "summary": "Call 83 (82° to 83°, 34%). Kalshi peak 82° to 83°, implied ~82.2. Bias-corrected blend 82.7 ± 2.26 °F. Observed high so far 73.9 °F. Cheap: 84° to 85° (25% vs market 17%). Rich: 82° to 83° (34% vs market 47%)."
+ },
+ "tomorrow": {
+  "date": "2026-11-21",
+  "isToday": false,
+  "call": "82° to 83°",
+  "callP": 0.29371252481955734,
+  "point": 83,
+  "mean": 83.1,
+  "blend": 82.7,
+  "expected": 83.1,
+  "sd": 2.57,
+  "floor": null,
+  "models": [
+   {
+    "model": "ECMWF",
+    "raw": 79.2,
+    "peak": "11 AM",
+    "bias": 2.1,
+    "mae": 1.3,
+    "n": 7,
+    "pace": null,
+    "corr": 81.3,
+    "w": 0.21
+   },
+   {
+    "model": "NBM",
+    "raw": 82.8,
+    "peak": "1 PM",
+    "bias": 1,
+    "mae": 1.4,
+    "n": 7,
+    "pace": null,
+    "corr": 83.8,
+    "w": 0.187
+   },
+   {
+    "model": "UKMO",
+    "raw": 79,
+    "peak": "11 AM",
+    "bias": 1.7,
+    "mae": 1.5,
+    "n": 7,
+    "pace": null,
+    "corr": 80.7,
+    "w": 0.167
+   },
+   {
+    "model": "HRRR",
+    "raw": 79.4,
+    "peak": "1 PM",
+    "bias": 1,
+    "mae": 1.8,
+    "n": 7,
+    "pace": null,
+    "corr": 80.4,
+    "w": 0.123
+   },
+   {
+    "model": "GFS",
+    "raw": 85.5,
+    "peak": "1 PM",
+    "bias": 0.4,
+    "mae": 1.8,
+    "n": 7,
+    "pace": null,
+    "corr": 85.9,
+    "w": 0.123
+   },
+   {
+    "model": "GEM",
+    "raw": 83.7,
+    "peak": "11 AM",
+    "bias": 1.4,
+    "mae": 1.9,
+    "n": 7,
+    "pace": null,
+    "corr": 85.1,
+    "w": 0.112
+   },
+   {
+    "model": "ICON",
+    "raw": 81.5,
+    "peak": "2 PM",
+    "bias": 1.5,
+    "mae": 2.3,
+    "n": 7,
+    "pace": null,
+    "corr": 83,
+    "w": 0.079
+   }
+  ],
+  "nws": {
+   "high": 84,
+   "text": "Mostly Sunny then Slight Chance Showers And Thunderstorms",
+   "hourlyMax": 83,
+   "hourlyMaxTime": "3 PM",
+   "popMid": 21
+  },
+  "dist": [
+   {
+    "k": 77,
+    "p": 0.009342776806794772
+   },
+   {
+    "k": 78,
+    "p": 0.02162698706350177
+   },
+   {
+    "k": 79,
+    "p": 0.04313125977106337
+   },
+   {
+    "k": 80,
+    "p": 0.07410931535119678
+   },
+   {
+    "k": 81,
+    "p": 0.10971045812041734
+   },
+   {
+    "k": 82,
+    "p": 0.13993367636616766
+   },
+   {
+    "k": 83,
+    "p": 0.1537788484533897
+   },
+   {
+    "k": 84,
+    "p": 0.14560418331080444
+   },
+   {
+    "k": 85,
+    "p": 0.11878258989655131
+   },
+   {
+    "k": 86,
+    "p": 0.08348922273974271
+   },
+   {
+    "k": 87,
+    "p": 0.050559723871487106
+   },
+   {
+    "k": 88,
+    "p": 0.02637948066072456
+   },
+   {
+    "k": 89,
+    "p": 0.011857844767642529
+   },
+   {
+    "k": 90,
+    "p": 0.0045921656215994625
+   }
+  ],
+  "brackets": [
+   {
+    "label": "79° or below",
+    "lo": null,
+    "hi": 79,
+    "bid": 0,
+    "ask": 0,
+    "last": 0,
+    "mid": 0,
+    "p": null,
+    "model_p": 0.0790925654348782,
+    "edge": null
+   },
+   {
+    "label": "80° to 81°",
+    "lo": 80,
+    "hi": 81,
+    "bid": 0,
+    "ask": 0,
+    "last": 0,
+    "mid": 0,
+    "p": null,
+    "model_p": 0.1838197734716141,
+    "edge": null
+   },
+   {
+    "label": "82° to 83°",
+    "lo": 82,
+    "hi": 83,
+    "bid": 0,
+    "ask": 0,
+    "last": 0,
+    "mid": 0,
+    "p": null,
+    "model_p": 0.29371252481955734,
+    "edge": null
+   },
+   {
+    "label": "84° to 85°",
+    "lo": 84,
+    "hi": 85,
+    "bid": 0,
+    "ask": 0,
+    "last": 0,
+    "mid": 0,
+    "p": null,
+    "model_p": 0.26438677320735576,
+    "edge": null
+   },
+   {
+    "label": "86° to 87°",
+    "lo": 86,
+    "hi": 87,
+    "bid": 0,
+    "ask": 0,
+    "last": 0,
+    "mid": 0,
+    "p": null,
+    "model_p": 0.13404894661122982,
+    "edge": null
+   },
+   {
+    "label": "88° or above",
+    "lo": 88,
+    "hi": null,
+    "bid": 0,
+    "ask": 0,
+    "last": 0,
+    "mid": 0,
+    "p": null,
+    "model_p": 0.044939416455364735,
+    "edge": null
+   }
+  ],
+  "kalshi": {
+   "event": "KXHIGHMIA-26NOV21",
+   "noMarket": true
+  },
+  "checkpoints": [
+   {
+    "c": 25,
+    "f": 77,
+    "lo": 76.1,
+    "hi": 77.9
+   },
+   {
+    "c": 26,
+    "f": 78.8,
+    "lo": 77.9,
+    "hi": 79.7
+   },
+   {
+    "c": 27,
+    "f": 80.6,
+    "lo": 79.7,
+    "hi": 81.5
+   },
+   {
+    "c": 28,
+    "f": 82.4,
+    "lo": 81.5,
+    "hi": 83.3
+   },
+   {
+    "c": 29,
+    "f": 84.2,
+    "lo": 83.3,
+    "hi": 85.1
+   },
+   {
+    "c": 30,
+    "f": 86,
+    "lo": 85.1,
+    "hi": 86.9
+   },
+   {
+    "c": 31,
+    "f": 87.8,
+    "lo": 86.9,
+    "hi": 88.7
+   }
+  ],
+  "tgroups": [
+   {
+    "bracket": "80° to 81°",
+    "needF": 79.5,
+    "tgroup": "T0264",
+    "oneMinC": 27
+   },
+   {
+    "bracket": "82° to 83°",
+    "needF": 81.5,
+    "tgroup": "T0275",
+    "oneMinC": 28
+   },
+   {
+    "bracket": "84° to 85°",
+    "needF": 83.5,
+    "tgroup": "T0287",
+    "oneMinC": 29
+   },
+   {
+    "bracket": "86° to 87°",
+    "needF": 85.5,
+    "tgroup": "T0298",
+    "oneMinC": 30
+   },
+   {
+    "bracket": "88° or above",
+    "needF": 87.5,
+    "tgroup": "T0309",
+    "oneMinC": 31
+   }
+  ],
+  "regime": {
+   "windDir": 206,
+   "windTxt": "SSW",
+   "windKt": 6.6,
+   "rainIn": 0.24,
+   "cape90": 3188,
+   "lowCloud": 37,
+   "totalCloud": 80,
+   "t850F": 59.7,
+   "dewMax": 75,
+   "notes": [
+    "S/SW flow: warm and humid; cumulus and storm timing decide it.",
+    "Scattered showers possible (CAPE ~3188, ~0.24\" rain): timing vs the 11 AM–2 PM peak matters."
+   ],
+   "sector": "S/SW",
+   "storm": "moderate"
+  },
+  "analogs": {
+   "n": 30,
+   "median": 85,
+   "p10": 82,
+   "p90": 88,
+   "top": [
+    {
+     "date": "2006-11-16",
+     "high": 83,
+     "dir": "SSW",
+     "rain": 0.94,
+     "dew": 73.4
+    },
+    {
+     "date": "2010-11-04",
+     "high": 81,
+     "dir": "SW",
+     "rain": 0.34,
+     "dew": 73.8
+    },
+    {
+     "date": "2009-12-05",
+     "high": 82,
+     "dir": "WSW",
+     "rain": 0.21,
+     "dew": 75.92
+    },
+    {
+     "date": "2009-11-11",
+     "high": 84,
+     "dir": "SSW",
+     "rain": 0.06,
+     "dew": 75.2
+    },
+    {
+     "date": "2022-11-27",
+     "high": 88,
+     "dir": "SSW",
+     "rain": 0.0001,
+     "dew": 75.2
+    },
+    {
+     "date": "2017-11-23",
+     "high": 84,
+     "dir": "SSE",
+     "rain": 0.32,
+     "dew": 73.9
+    },
+    {
+     "date": "2008-11-30",
+     "high": 79,
+     "dir": "S",
+     "rain": 0.22,
+     "dew": 73
+    },
+    {
+     "date": "2018-12-09",
+     "high": 84,
+     "dir": "SSW",
+     "rain": 0.01,
+     "dew": 75.9
+    }
+   ]
+  },
+  "obs": null,
+  "summary": "Call 83 (82° to 83°, 29%). Kalshi market not trading yet. Bias-corrected blend 83.1 ± 2.57 °F."
+ }
+}
