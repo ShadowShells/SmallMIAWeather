@@ -58,7 +58,7 @@ if (KEY) {
   } catch (e) { wethr = { date: todayS, fetched_utc: new Date().toISOString(), error: e.message }; console.log("wethr failed:", e.message); }
   // latest observation (newer than the NWS API, which lags ~20 min and rounds to whole °C)
   try {
-    const r = await fetch(`https://wethr.net/api/v2/observations.php?station_code=${STATION.icao}`, { headers: { Authorization: `Bearer ${KEY}`, "X-API-Key": KEY, Accept: "application/json" } });
+    const r = await fetch(`https://wethr.net/api/v2/observations.php?station_code=${STATION.icao}&start_time=${encodeURIComponent(new Date(Date.now() - 90 * 60e3).toISOString().slice(0, 19).replace("T", " "))}&end_time=${encodeURIComponent(new Date().toISOString().slice(0, 19).replace("T", " "))}`, { headers: { Authorization: `Bearer ${KEY}`, "X-API-Key": KEY, Accept: "application/json" } });
     const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch { /* */ }
     wethr.latestRaw = r.ok ? (j ?? t.slice(0, 3000)) : `HTTP ${r.status} ${t.slice(0, 200)}`;
   } catch (e) { wethr.latestRaw = e.message; }
