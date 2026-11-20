@@ -10,8 +10,8 @@
   "nwsGrid": "MFL/105,51",
   "utcOffset": -5
  },
- "generated": "2026-11-20T16:13:44.968Z",
- "generatedTxt": "4:13 PM EST",
+ "generated": "2026-11-20T16:25:26.262Z",
+ "generatedTxt": "4:25 PM EST",
  "scores": {
   "ncep_hrrr_conus": {
    "bias": 1,
@@ -4531,7 +4531,7 @@
   },
   "wethr": {
    "date": "2026-11-20",
-   "fetched_utc": "2026-11-20T21:13:44.912Z",
+   "fetched_utc": "2026-11-20T21:25:26.213Z",
    "high": 82,
    "potential": 82,
    "time": "3:24 PM",
@@ -7219,6 +7219,30 @@
      "ws": 8,
      "wg": null,
      "metar": false
+    },
+    {
+     "t": "2026-11-20T21:15:00Z",
+     "c": 27,
+     "f": 80.6,
+     "lo": 80,
+     "hi": 81,
+     "dew": 22,
+     "wd": 120,
+     "ws": 8,
+     "wg": null,
+     "metar": false
+    },
+    {
+     "t": "2026-11-20T21:20:00Z",
+     "c": 27,
+     "f": 80.6,
+     "lo": 80,
+     "hi": 81,
+     "dew": 22,
+     "wd": 120,
+     "ws": 6,
+     "wg": null,
+     "metar": false
     }
    ]
   },
@@ -7568,10 +7592,10 @@
    "nowF": 80.6,
    "nowRange": "80–81",
    "nowSrc": "wethr 5-min",
-   "nowT": "2026-11-20T16:10:00.000Z",
-   "nowTime": "4:10 PM EST",
+   "nowT": "2026-11-20T16:20:00.000Z",
+   "nowTime": "4:20 PM EST",
    "dewF": 72,
-   "wind": "120 @ 8 kt",
+   "wind": "120 @ 6 kt",
    "wx": "",
    "sky": "",
    "raw": "",
@@ -8438,6 +8462,14 @@
     },
     {
      "h": 16.166666666666668,
+     "f": 80.6
+    },
+    {
+     "h": 16.25,
+     "f": 80.6
+    },
+    {
+     "h": 16.333333333333332,
      "f": 80.6
     }
    ]
