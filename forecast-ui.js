@@ -98,7 +98,7 @@ function render() {
   if (sc) lrn.push(sc.n >= 5 ? `<li><b>Self-correction:</b> last ${sc.n} ${DAY === "today" ? "morning" : "night-before"} calls missed by ${sc.bias > 0 ? "+" : ""}${sc.bias} °F on average → adjusting ${f.selfAdj > 0 ? "+" : ""}${f.selfAdj} °F.</li>`
     : `<li><b>Self-correction:</b> ${sc.n} graded day${sc.n === 1 ? "" : "s"} so far; switches on at 5.</li>`);
   const wf = DATA.wethrFile;
-  lrn.push(f.wethr ? `<li><b>wethr High (NWS logic, incl. 1-min):</b> ${f.wethr.high}${f.wethr.potential != null ? ` · potential ${f.wethr.potential}` : ""} — used as the floor.</li>`
+  lrn.push(f.wethr ? `<li><b>wethr High (NWS logic, incl. 1-min):</b> high <b>${f.wethr.high}</b>${f.wethr.time ? ` at ${esc(f.wethr.time)}` : ""}${f.wethr.sources?.length ? ` (${esc(f.wethr.sources.join(", "))})` : ""}${f.wethr.low != null ? ` · low ${f.wethr.low}${f.wethr.lowTime ? ` at ${esc(f.wethr.lowTime)}` : ""}` : ""} — the high is used as the floor.</li>`
     : wf?.error ? `<li><b>wethr:</b> ${esc(wf.error.slice(0, 90))}</li>` : `<li><b>wethr:</b> not connected (add the <code>WETHR_API_KEY</code> repo secret).</li>`);
   if (Ln) lrn.push(`<li class="dim">Trained ${esc(new Date(Ln.trained).toISOString().slice(0, 16).replace("T", " "))}Z on ${Ln.daysUsed} days (${esc(Ln.window)}).</li>`);
   $("learned").innerHTML = lrn.join("");

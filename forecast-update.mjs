@@ -50,7 +50,9 @@ if (KEY) {
     let high = pick("wethr_high", "high", "high_f", "max_temp_f", "max_temp", "temperature_high", "value");
     const potential = pick("potential_high", "potential_high_f");
     const timeKey = Object.keys(found).find((k) => /time/i.test(k));
-    wethr = { date: todayS, fetched_utc: new Date().toISOString(), high, potential, time: null, raw: j ?? body.slice(0, 2000) };
+    const est = (u) => { if (!u) return null; const d = new Date(Date.parse(u.replace(" ", "T") + "Z") + STATION.utcOffset * 3600e3); let h = d.getUTCHours(); return `${h % 12 || 12}:${String(d.getUTCMinutes()).padStart(2, "0")} ${h >= 12 ? "PM" : "AM"}`; };
+    wethr = { date: j?.date || todayS, fetched_utc: new Date().toISOString(), high, potential, time: est(j?.time_of_high_utc),
+      sources: j?.wethr_high_sources || [], low: j?.wethr_low ?? null, lowTime: est(j?.time_of_low_utc), raw: j ?? body.slice(0, 2000) };
     for (const o of [j, j?.data, j?.result, Array.isArray(j?.data) ? j.data[0] : null]) if (o && typeof o === "object") for (const [k, v] of Object.entries(o)) if (typeof v === "string" && /time|source/i.test(k)) (wethr.extra ||= {})[k] = v;
     console.log("wethr high:", high, "potential:", potential);
   } catch (e) { wethr = { date: todayS, fetched_utc: new Date().toISOString(), error: e.message }; console.log("wethr failed:", e.message); }
