@@ -1,9 +1,15 @@
 {
  "date": "2026-11-20",
- "fetched_utc": "2026-11-20T13:30:17.251Z",
+ "fetched_utc": "2026-11-20T13:30:51.923Z",
  "high": 74,
  "potential": 74,
- "time": null,
+ "time": "12:27 AM",
+ "sources": [
+  "metar",
+  "dsm"
+ ],
+ "low": 72,
+ "lowTime": "8:26 AM",
  "raw": {
   "station_code": "KMIA",
   "date": "2026-11-20",
