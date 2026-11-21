@@ -10,7 +10,7 @@
 // 3. selfcal — the dashboard's own recent misses (forecast_log.json): mean error of
 //              the morning and night-before calls, shrunk and clamped, fed back in.
 import { readFileSync, writeFileSync } from "node:fs";
-import { STATION } from "./forecast-engine.js";
+import { STATION, trendBucket, skyState } from "./forecast-engine.js";
 
 const WIN = 30, YEARS = 12, HOURS = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 export const sectorOf = (wd) => wd == null ? "calm" : (wd >= 290 || wd < 20) ? "N/NW" : wd < 150 ? "E/onshore" : wd < 240 ? "S/SW" : "W/land";
@@ -39,18 +39,21 @@ export async function train({ logPath = "forecast_log.json" } = {}) {
   }));
 
   // --- hourly METARs (routine + specials), local standard time ---
-  const q = `station=${STATION.iemId}&data=tmpf&data=drct&data=sknt&year1=${yr - YEARS}&month1=1&day1=1&year2=${yr}&month2=12&day2=31&tz=Etc/GMT%2B5&format=onlycomma&latlon=no&missing=empty&trace=empty&report_type=3&report_type=4`;
+  const q = `station=${STATION.iemId}&data=tmpf&data=drct&data=sknt&data=gust&data=skyc1&data=skyc2&data=skyc3&data=skyl1&data=skyl2&data=skyl3&data=wxcodes&year1=${yr - YEARS}&month1=1&day1=1&year2=${yr}&month2=12&day2=31&tz=Etc/GMT%2B5&format=onlycomma&latlon=no&missing=empty&trace=empty&report_type=3&report_type=4`;
   const csv = await text("https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?" + q);
   const days = {};
-  for (const ln of csv.trim().split("\n").slice(1)) {
-    const [, valid, tf, dr, sk] = ln.split(",");
+  const lines = csv.trim().split("\n"), H = lines[0].split(","), ix = (k) => H.indexOf(k);
+  for (const ln of lines.slice(1)) {
+    const c = ln.split(","), valid = c[1], tf = c[ix("tmpf")], dr = c[ix("drct")], sk = c[ix("sknt")];
     const T = parseFloat(tf); if (isNaN(T)) continue;
     const d = valid.slice(0, 10);
     const dd = Math.abs(doy(d) - t); if (Math.min(dd, 365 - dd) > WIN || d >= todayS) continue;
-    (days[d] ||= []).push({ h: +valid.slice(11, 13), m: +valid.slice(14, 16), T: Math.round(T), dr: parseFloat(dr), sk: parseFloat(sk) });
+    const num = (x) => (x === "" || x == null ? null : parseFloat(x));
+    (days[d] ||= []).push({ h: +valid.slice(11, 13), m: +valid.slice(14, 16), T: Math.round(T), dr: parseFloat(dr), sk: parseFloat(sk), g: num(c[ix("gust")]),
+      sky: skyState([c[ix("skyc1")], c[ix("skyc2")], c[ix("skyc3")]], [num(c[ix("skyl1")]), num(c[ix("skyl2")]), num(c[ix("skyl3")])], c[ix("wxcodes")]) });
   }
 
-  const rise = {}, spike = {}; // rise[sector][hour] = [CLI - maxSoFar]; spike[sector] = [CLI - dayMaxHourly]
+  const rise = {}, spike = {}, nc = {}, spikeG = { gusty: [], calm: [] }, peakH = {}; // rise[sector][hour] = [CLI - maxSoFar]; spike[sector] = [CLI - dayMaxHourly]
   const push = (o, k, v) => (o[k] ||= []).push(v);
   let used = 0;
   for (const [d, obs] of Object.entries(days)) {
@@ -62,14 +65,27 @@ export async function train({ logPath = "forecast_log.json" } = {}) {
     if (hi - dayMax < -2) continue; // bad CLI / missing obs
     used++;
     for (const s of [sec, "all"]) push(spike, s, hi - dayMax);
+    const gusty = obs.some((o) => o.h >= 9 && o.h <= 17 && (o.g ?? 0) >= 18);
+    spikeG[gusty ? "gusty" : "calm"].push(hi - dayMax);
+    const pk = obs.find((o) => o.T === dayMax && o.h >= 8); if (pk) for (const s of [sec, "all"]) push(peakH, s, pk.h + pk.m / 60);
     for (const h of HOURS) {
       const so = obs.filter((o) => o.h <= h); if (!so.length) continue;
       const r = hi - Math.max(...so.map((o) => o.T));
       for (const s of [sec, "all"]) { (rise[s] ||= {}); push(rise[s], h, r); }
+      // nowcast table: condition on last-hour trend and current sky
+      const cur = so[so.length - 1], prev = obs.filter((o) => o.h <= h - 1).at(-1);
+      if (cur.h < h - 1 || !prev) continue;
+      const tb = trendBucket(cur.T - prev.T);
+      for (const k of [`${tb}|${cur.sky}`, `${tb}|*`, `*|${cur.sky}`]) { (nc[h] ||= {}); push(nc[h], k, r); }
     }
   }
   const pacing = {};
   for (const s in rise) { pacing[s] = {}; for (const h in rise[s]) if (rise[s][h].length >= 25) pacing[s][h] = pmf(rise[s][h], -1, 15); }
+  const nowcast = {};
+  for (const h in nc) { nowcast[h] = {}; for (const k in nc[h]) if (nc[h][k].length >= 30) nowcast[h][k] = pmf(nc[h][k], -1, 15); }
+  const qt = (a, p) => { const b = [...a].sort((x, y) => x - y); return Math.round(b[Math.min(b.length - 1, Math.floor(p * b.length))] * 10) / 10; };
+  const peak = {}; for (const s in peakH) if (peakH[s].length >= 25) peak[s] = { p25: qt(peakH[s], 0.25), p50: qt(peakH[s], 0.5), p75: qt(peakH[s], 0.75), n: peakH[s].length };
+  const spikeGust = {}; for (const k in spikeG) if (spikeG[k].length >= 25) { const a = spikeG[k]; spikeGust[k] = { ...pmf(a, -2, 4), ge1: Math.round((a.filter((x) => x >= 1).length / a.length) * 100) / 100 }; }
   const spikeOut = {};
   for (const s in spike) if (spike[s].length >= 25) {
     const a = spike[s]; spikeOut[s] = { ...pmf(a, -2, 4), ge1: Math.round((a.filter((x) => x >= 1).length / a.length) * 100) / 100 };
@@ -88,7 +104,7 @@ export async function train({ logPath = "forecast_log.json" } = {}) {
 
   const out = {
     trained: new Date().toISOString(), station: STATION.icao, window: `±${WIN} days of ${todayS.slice(5)}, ${yr - YEARS}–${yr}`, daysUsed: used,
-    pacing, spike: spikeOut,
+    pacing, spike: spikeOut, nowcast, peak, spikeGust,
     selfcal: { today: cal((e) => e.morning || e.first), tomorrow: cal((e) => e.first) },
   };
   return out;

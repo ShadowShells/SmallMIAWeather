@@ -77,24 +77,33 @@ function render() {
       <td class="dim">${b.bid != null ? Math.round(b.bid * 100) : "—"} / ${b.ask != null ? Math.round(b.ask * 100) : "—"}</td>
     </tr>`).join("") || `<tr><td colspan="5" class="dim">No Kalshi market found for ${esc(f.kalshi?.event || f.date)}.</td></tr>`;
 
-  // pacing check (learned from history)
-  const pc = f.pacing, Ln = DATA.learned, hl = (h) => (h > 12 ? `${h - 12} PM` : h === 12 ? "12 PM" : `${h} AM`);
+  // nowcast (learned from history)
+  const pc = f.pacing, Ln = DATA.learned, hl = (h) => { const H = Math.floor(h), M = Math.round((h - H) * 60); return `${H % 12 || 12}${M ? ":" + String(M).padStart(2, "0") : ""} ${H >= 12 ? "PM" : "AM"}`; };
   $("pace-panel").style.display = DAY === "today" ? "" : "none";
   if (pc) {
-    $("pace-h").textContent = `${pc.n} ${pc.sector} days · through ${hl(pc.hour)} · weight ${Math.round(pc.weight * 100)}%`;
+    const sg = (x) => (x == null ? "—" : (x > 0 ? "+" : "") + x);
+    $("pace-h").textContent = `${pc.n} similar days · weight ${Math.round(pc.weight * 100)}%`;
+    $("nc-chips").innerHTML = [
+      ["Rate (60 min)", pc.rate == null ? "—" : `${sg(pc.rate)} °F/h`],
+      ["Last hour", pc.trend == null ? "—" : `${sg(pc.trend)} °F`],
+      ["Sky now", pc.sky],
+      ["Gusts", pc.gust ? `${pc.gust} kt` : "none"],
+      ["Usual peak by", hl(pc.peakBy)],
+    ].map(([k, v]) => `<div class="fact"><div class="k">${k}</div><div class="v" style="font-size:14px">${esc(v)}</div></div>`).join("");
     const fin = Object.fromEntries((f.dist || []).map((d) => [d.k, d.p]));
+    const cls = { "on pace": "pos", "at line now": "pos", reached: "pos", close: "", behind: "neg", "past usual peak": "neg" };
     $("tb-pace").innerHTML = (pc.reach || []).map((r) => {
       const fm = Object.entries(fin).filter(([k]) => +k >= r.lo).reduce((s2, [, p]) => s2 + p, 0);
-      return `<tr class="${r.label === f.call ? "callrow" : ""}"><td>≥ ${r.lo} <span class="dim">(${esc(r.label)})</span></td><td>${pct(r.hist)}</td><td><b>${pct(fm)}</b></td></tr>`;
+      return `<tr class="${r.label === f.call ? "callrow" : ""}"><td>≥ ${r.lo} <span class="dim">(${esc(r.label)})</span></td><td>${r.needRate == null ? "—" : sg(r.needRate) + " °F/h"}</td><td class="${cls[r.status] || ""}">${esc(r.status)}</td><td>${pct(r.hist)}</td><td><b>${pct(fm)}</b></td></tr>`;
     }).join("");
-    $("pace-note").innerHTML = `Hourly high so far <b>${pc.base}</b> at ${hl(pc.hour)}. On past ${esc(pc.sector)} days in this season, from this point the CLI high ended on average <b>+${pc.meanRise} °F</b> higher. ` +
-      `"History" = how often it reached each line from here; "Final" = the call after blending history with the models (history counts more as the day goes on).`;
+    $("pace-note").innerHTML = `Now ${pc.nowF}°, hourly-METAR high so far <b>${pc.base}</b> (official floor ${f.floor ?? "—"}), ${pc.hoursLeft} h to the usual peak. <b>Needs</b> = climb rate required from now to reach each line by then; <b>Status</b> compares it with the current rate. ` +
+      `<b>History</b> = how often the CLI reached the line on past days that looked like this at ${hl(pc.hour)} (same last-hour trend and sky: ${esc(pc.key)}). <b>Final</b> = the call after blending with the models; history counts more as the day goes on.`;
   } else {
-    $("tb-pace").innerHTML = "";
-    $("pace-note").textContent = Ln ? "Starts once today's first METAR is in (6 AM onward)." : "Not trained yet — the scheduled job builds forecast_learned.json once a day.";
+    $("tb-pace").innerHTML = ""; $("nc-chips").innerHTML = "";
+    $("pace-note").textContent = Ln ? "Starts once today's first METAR is in (7 AM onward)." : "Not trained yet — the scheduled job builds forecast_learned.json once a day.";
   }
   const lrn = [];
-  if (f.spike) lrn.push(`<li><b>1-minute spike:</b> on ${esc(f.regime?.sector || "all")} days the CLI high beat the highest hourly METAR by ≥1 °F <b>${pct(f.spike.ge1)}</b> of the time (avg +${f.spike.mean}). The pacing table already counts this.</li>`);
+  if (f.spike) lrn.push(`<li><b>1-minute spike:</b> on ${esc(f.regime?.sector || "all")} days the CLI high beat the highest hourly METAR by ≥1 °F <b>${pct(f.spike.ge1)}</b> of the time (avg +${f.spike.mean}). The nowcast already counts this.${f.pacing?.spikeGust ? ` On ${f.pacing.gusty ? "gusty" : "non-gusty"} afternoons like today: ${pct(f.pacing.spikeGust.ge1)}.` : ""}</li>`);
   const sc = f.selfcal;
   if (sc) lrn.push(sc.n >= 5 ? `<li><b>Self-correction:</b> last ${sc.n} ${DAY === "today" ? "morning" : "night-before"} calls missed by ${sc.bias > 0 ? "+" : ""}${sc.bias} °F on average → adjusting ${f.selfAdj > 0 ? "+" : ""}${f.selfAdj} °F.</li>`
     : `<li><b>Self-correction:</b> ${sc.n} graded day${sc.n === 1 ? "" : "s"} so far; switches on at 5.</li>`);

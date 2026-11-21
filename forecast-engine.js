@@ -328,14 +328,70 @@ export function obsToday(obs, day) {
   for (const o of td) if (o.max6C != null && o.t.getUTCHours() >= 6) { const f = r1(c2f(o.max6C)); if (f > mx) { mx = f; hiT = o.t; src = `6-h max group (${hm(o.t)})`; } }
   const last = td[td.length - 1];
   const whole = last.fromMetar === false;
-  return { maxSoFar: mx, maxSrc: src, maxTime: hiT ? hm(hiT) : null, nowF: r1(c2f(last.tC)), nowRange: whole ? `${Math.round(c2f(last.tC - 0.5))}–${Math.round(c2f(last.tC + 0.5) - 0.01)}` : null,
+  // hourly-METAR-only high (what the history tables are measured from; excludes 5-min/1-min readings)
+  const mets = td.filter((o) => o.fromMetar !== false && !o.src);
+  const maxMetar = mets.length ? Math.max(...mets.map((o) => Math.round(c2f(o.tC)))) : null;
+  return Object.defineProperty({ maxSoFar: mx, maxMetar, maxSrc: src, maxTime: hiT ? hm(hiT) : null, nowF: r1(c2f(last.tC)), nowRange: whole ? `${Math.round(c2f(last.tC - 0.5))}–${Math.round(c2f(last.tC + 0.5) - 0.01)}` : null,
     nowSrc: last.src || (whole ? "5-min" : "METAR"), nowT: last.t, nowTime: hm(last.t) + " EST",
     dewF: last.dewC != null ? Math.round(c2f(last.dewC)) : null,
     wind: `${last.wdir ?? "—"}${last.wspd != null ? " @ " + last.wspd : ""}${last.wgst ? "G" + last.wgst : ""} kt`, wx: last.wx || "", sky: last.sky, raw: last.raw,
-    series: td.map((o) => ({ h: o.t.getUTCHours() + o.t.getUTCMinutes() / 60, f: r1(c2f(o.tC)) })) };
+    series: td.map((o) => ({ h: o.t.getUTCHours() + o.t.getUTCMinutes() / 60, f: r1(c2f(o.tC)) })) }, "_td", { value: td, enumerable: false });
 }
 
 /* ---------------- learning (forecast_learned.json from forecast-train.mjs) ---------------- */
+export const trendBucket = (d) => d == null ? null : d <= 0 ? "≤0" : d === 1 ? "+1" : d === 2 ? "+2" : "≥3";
+/** cloudy/wet = a BKN/OVC/VV layer at or below 5,000 ft, or rain/drizzle/thunder reported */
+export const skyState = (covers, basesFt, wx) => {
+  if (/RA|DZ|TS|SH|rain|drizzle|thunder|shower/i.test(wx || "")) return "cloudy/wet";
+  for (let i = 0; i < covers.length; i++) if (/BKN|OVC|VV/.test(covers[i] || "") && basesFt[i] != null && basesFt[i] <= 5000) return "cloudy/wet";
+  return "fair";
+};
+
+/** Nowcast: last-hour trend, current rate, sky/rain and gusts now -> historical distribution of
+ *  the final high from here, plus the climb each bracket still needs before the usual peak hour. */
+export function nowcast(learned, ob, sector, floor, brackets, hNow) {
+  const td = ob?._td; if (!td?.length || !learned?.nowcast) return null;
+  const last = td[td.length - 1], tNow = last.t.getTime(), F = (o) => c2f(o.tC);
+  const h = Math.min(16, Math.max(7, last.t.getUTCHours()));
+  // temp ~60 min ago and the regression rate over the last 60 min
+  const prev = td.filter((o) => Math.abs(o.t.getTime() - (tNow - 3600e3)) <= 35 * 60e3).sort((a, b) => Math.abs(a.t - (tNow - 3600e3)) - Math.abs(b.t - (tNow - 3600e3)))[0];
+  const trend = prev ? Math.round(F(last)) - Math.round(F(prev)) : null;
+  const win = td.filter((o) => o.t.getTime() >= tNow - 3600e3);
+  let rate = null;
+  if (win.length >= 3) {
+    const xs = win.map((o) => (o.t.getTime() - tNow) / 3600e3), ys = win.map(F), mx = xs.reduce((a, b) => a + b) / xs.length, my = ys.reduce((a, b) => a + b) / ys.length;
+    const den = xs.reduce((s2, x) => s2 + (x - mx) ** 2, 0); if (den > 0) rate = r1(xs.reduce((s2, x, i) => s2 + (x - mx) * (ys[i] - my), 0) / den);
+  }
+  if (rate == null && prev && tNow - prev.t.getTime() >= 30 * 60e3) rate = r1((F(last) - F(prev)) / ((tNow - prev.t.getTime()) / 3600e3));
+  // sky + weather from the latest ob that carries them (METARs; wethr's 5-min rows don't)
+  const sk = [...td].reverse().find((o) => o.sky || o.raw);
+  let sky = "fair", skyTxt = "—";
+  if (sk) {
+    const toks = (sk.sky || "").split(/\s+/).filter(Boolean), covers = toks.map((t) => t.replace(/\d+$/, "")), bases = toks.map((t) => { const m = t.match(/(\d{3})$/); return m ? +m[1] * 100 : null; });
+    const wxs = `${sk.wx || ""} ${(sk.raw || "").split("RMK")[0].split(/\s+/).filter((w) => /^[-+]?(VC)?(TS|SH|RA|DZ)/.test(w)).join(" ")}`;
+    sky = skyState(covers, bases, wxs); skyTxt = `${sk.sky || ""}${sk.wx ? " · " + sk.wx : ""}`.trim();
+  }
+  const gust = Math.max(0, ...td.filter((o) => o.t.getUTCHours() >= 9).map((o) => o.wgst || 0));
+  const tb = trendBucket(trend), T = learned.nowcast[h] || {};
+  let key = null, tab = null;
+  for (const k of tb ? [`${tb}|${sky}`, `${tb}|*`, `*|${sky}`] : [`*|${sky}`]) if (T[k]) { key = k; tab = T[k]; break; }
+  if (!tab) { tab = learned.pacing?.all?.[h]; key = "all"; } if (!tab) return null;
+  const base = ob.maxMetar ?? Math.floor(ob.maxSoFar + 0.5), fi = floor != null ? Math.floor(floor + 0.5) : -999, emp = {}; let et = 0;
+  for (const [r, p] of Object.entries(tab.p)) { const k = base + +r; if (p > 0 && k >= fi) { emp[k] = (emp[k] || 0) + p; et += p; } }
+  for (const k in emp) emp[k] /= et || 1;
+  const pk = learned.peak?.[sector] || learned.peak?.all, peakBy = pk ? pk.p75 + 0.1 : 14;
+  const left = peakBy - hNow, nowF = r1(F(last));
+  const reach = (brackets || []).filter((b) => b.lo != null).map((b) => {
+    const need = b.lo - 0.5, hist = Object.entries(emp).filter(([k]) => +k >= b.lo).reduce((s2, [, p]) => s2 + p, 0);
+    if (fi >= b.lo) return { label: b.label, lo: b.lo, hist: 1, needRate: null, status: "reached" };
+    if (left <= 0.25) return { label: b.label, lo: b.lo, hist, needRate: null, status: "past usual peak" };
+    const nr = r1((need - nowF) / left);
+    const status = rate == null ? "—" : nr <= 0 ? "at line now" : rate >= nr ? "on pace" : rate >= 0.6 * nr ? "close" : "behind";
+    return { label: b.label, lo: b.lo, hist, needRate: nr, status };
+  });
+  return { hour: h, trend, trendBucket: tb, rate, sky, skyTxt, gust, gusty: gust >= 18, key, n: tab.n, meanRise: tab.mean, base, emp,
+    peakBy: r1(peakBy), hoursLeft: r1(Math.max(0, left)), nowF, reach, spikeGust: learned.spikeGust?.[gust >= 18 ? "gusty" : "calm"] || null };
+}
 /** Empirical pacing: given the hourly-METAR high so far at this hour and today's wind sector, the
  *  historical distribution of the final CLI high (whole °F). */
 export function pacingDist(learned, sector, hour, maxSoFar) {
@@ -384,7 +440,7 @@ export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana
   const meanRaw = r1(mu);
   // self-correction: the dashboard's own recent average miss (shrunk, ±2 °F max)
   const hourObs = isToday && ob ? ob.nowT.getUTCHours() : null;
-  const wEmp = hourObs == null ? 0 : Math.max(0, Math.min(0.5, 0.08 * (hourObs - 8)));
+  const wEmp = hourObs == null ? 0 : Math.max(0, Math.min(0.55, 0.08 * (hourObs - 8)));
   const selfAdj = sc0?.adj ? sc0.adj * (1 - wEmp) : 0;
   mu += selfAdj;
   const v = wmean(vals.map((x) => (x - mu) ** 2), ws);
@@ -400,20 +456,14 @@ export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana
   const dist = {}; let tot = 0;
   for (let k = lo; k <= hi; k++) { const p = Math.max(0, pLess(k + 0.5) - pLess(k - 0.5)); dist[k] = p; tot += p; }
   for (const k in dist) dist[k] /= tot || 1;
-  // blend in the empirical pacing distribution (history: where the high ended from here)
+  // blend in the nowcast: history conditioned on the last-hour trend and current sky (fallback: pacing table)
   let pacing = null;
   if (isToday && ob && learned) {
-    const pd = pacingDist(learned, reg?.sector || "all", hourObs, ob.maxSoFar);
-    if (pd) {
-      const fi = floor != null ? Math.floor(floor + 0.5) : -999;
-      const emp = {}; let et = 0;
-      for (const [k, p] of Object.entries(pd.dist)) if (+k >= fi) { emp[k] = p; et += p; }
-      for (const k in emp) emp[k] /= et || 1;
-      const keys = new Set([...Object.keys(dist), ...Object.keys(emp)]);
-      if (et > 0 && wEmp > 0) for (const k of keys) dist[k] = (1 - wEmp) * (dist[k] || 0) + wEmp * (emp[k] || 0);
-      const reach = (kal?.brackets || []).filter((b) => b.lo != null).map((b) => ({ label: b.label, lo: b.lo,
-        hist: Object.entries(emp).filter(([k]) => +k >= b.lo).reduce((s, [, p]) => s + p, 0) }));
-      pacing = { ...pd, weight: wEmp, emp, reach, maxSoFar: ob.maxSoFar };
+    const nc = nowcast(learned, ob, reg?.sector || "all", floor, kal?.brackets, hNow);
+    if (nc) {
+      const keys = new Set([...Object.keys(dist), ...Object.keys(nc.emp)]);
+      if (wEmp > 0 && Object.keys(nc.emp).length) for (const k of keys) dist[k] = (1 - wEmp) * (dist[k] || 0) + wEmp * (nc.emp[k] || 0);
+      pacing = { ...nc, weight: wEmp, sector: reg?.sector || "all", maxSoFar: ob.maxSoFar };
     }
   }
   const point = +Object.entries(dist).reduce((a, b) => (b[1] > a[1] ? b : a))[0];
@@ -448,7 +498,8 @@ export function summarize(fc, reg) {
   if (fc.floor != null) parts.push(`Observed high so far ${fc.floor} °F${fc.wethr ? " (wethr, incl. 1-min)" : ""}.`);
   if (fc.pacing) {
     const pc = fc.pacing, up1 = Object.entries(pc.emp).filter(([k]) => +k >= pc.base + 1).reduce((s, [, p]) => s + p, 0);
-    parts.push(`Pacing history (${pc.n} ${pc.sector} days, ${pc.hour > 12 ? pc.hour - 12 + " PM" : pc.hour + " AM"}): from ${pc.base} so far the CLI ended higher ${Math.round(up1 * 100)}% of the time, avg +${pc.meanRise}.`);
+    const hl = pc.hour > 12 ? pc.hour - 12 + " PM" : pc.hour === 12 ? "12 PM" : pc.hour + " AM";
+    parts.push(`Nowcast ${hl}: ${pc.rate != null ? (pc.rate >= 0 ? "+" : "") + pc.rate + " °F/h" : "rate n/a"}, last hour ${pc.trend != null ? (pc.trend >= 0 ? "+" : "") + pc.trend : "?"}, ${pc.sky}${pc.gusty ? ", gusty" : ""}; on ${pc.n} similar past days the CLI ended above ${pc.base} ${Math.round(up1 * 100)}% of the time (avg +${pc.meanRise}).`);
   }
   if (fc.selfAdj) parts.push(`Self-correction ${fc.selfAdj > 0 ? "+" : ""}${fc.selfAdj} °F from recent misses.`);
   const by = fc.brackets.filter((b) => b.edge != null).sort((a, b) => b.edge - a.edge);

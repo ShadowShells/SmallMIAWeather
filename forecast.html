@@ -45,6 +45,7 @@
     .hit { color: var(--good); } .miss { color: var(--bad); }
     main td:first-child { text-align: left; }
     @media (max-width: 940px) {
+      #nc-chips { grid-template-columns: repeat(3, 1fr) !important; }
       .hero { grid-template-columns: 1fr; } .callbox { border-right: none; border-bottom: 1px dashed var(--line); padding: 0 0 12px; }
       .facts { grid-template-columns: repeat(2, 1fr); } .grid2 { grid-template-columns: 1fr; } .kv { grid-template-columns: repeat(2, 1fr); }
     }
@@ -115,9 +116,10 @@
 
     <section class="grid2">
       <div class="panel" id="pace-panel">
-        <div class="panel-head"><span>Pacing check · learned from history</span><span id="pace-h" class="legend"></span></div>
+        <div class="panel-head"><span>Nowcast · pace to each line</span><span id="pace-h" class="legend"></span></div>
+        <div class="pbody"><div id="nc-chips" class="facts" style="grid-template-columns:repeat(5,minmax(0,1fr))"></div></div>
         <div class="tbl-wrap"><table>
-          <thead><tr><th>Reaches</th><th>History</th><th>Final</th></tr></thead>
+          <thead><tr><th>Reaches</th><th>Needs</th><th>Status</th><th>History</th><th>Final</th></tr></thead>
           <tbody id="tb-pace"></tbody>
         </table></div>
         <div class="pbody" id="pace-note" style="font-size:12.5px;color:var(--dim)"></div>
