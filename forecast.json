@@ -10,8 +10,8 @@
   "nwsGrid": "MFL/105,51",
   "utcOffset": -5
  },
- "generated": "2026-11-21T16:33:33.527Z",
- "generatedTxt": "4:33 PM EST",
+ "generated": "2026-11-21T16:40:14.980Z",
+ "generatedTxt": "4:40 PM EST",
  "scores": {
   "ncep_hrrr_conus": {
    "bias": 1.4,
@@ -4486,9 +4486,9 @@
   },
   "pacing": {
    "hour": 16,
-   "trend": -1,
+   "trend": 0,
    "trendBucket": "≤0",
-   "rate": -1,
+   "rate": -0.1,
    "sky": "fair",
    "skyTxt": "SCT033 SCT110 OVC250",
    "gust": 16,
@@ -4576,7 +4576,7 @@
   },
   "wethr": {
    "date": "2026-11-21",
-   "fetched_utc": "2026-11-21T21:33:33.432Z",
+   "fetched_utc": "2026-11-21T21:40:14.868Z",
    "high": 82,
    "potential": 82,
    "time": "3:33 PM",
@@ -7338,6 +7338,18 @@
      "ws": 9,
      "wg": 15,
      "metar": false
+    },
+    {
+     "t": "2026-11-21T21:35:00Z",
+     "c": 27,
+     "f": 80.6,
+     "lo": 80,
+     "hi": 81,
+     "dew": 22,
+     "wd": 190,
+     "ws": 10,
+     "wg": null,
+     "metar": false
     }
    ]
   },
@@ -7426,10 +7438,10 @@
   ],
   "nws": {
    "high": 84,
-   "text": "Slight Chance Showers And Thunderstorms",
-   "hourlyMax": 81,
-   "hourlyMaxTime": "4 PM",
-   "popMid": 15
+   "text": "Chance Showers And Thunderstorms",
+   "hourlyMax": 83,
+   "hourlyMaxTime": "3 PM",
+   "popMid": 21
   },
   "dist": [
    {
@@ -7678,10 +7690,10 @@
    "nowF": 80.6,
    "nowRange": "80–81",
    "nowSrc": "wethr 5-min",
-   "nowT": "2026-11-21T16:30:00.000Z",
-   "nowTime": "4:30 PM EST",
+   "nowT": "2026-11-21T16:35:00.000Z",
+   "nowTime": "4:35 PM EST",
    "dewF": 72,
-   "wind": "200 @ 9G15 kt",
+   "wind": "190 @ 10 kt",
    "wx": "",
    "sky": "",
    "raw": "",
@@ -8577,10 +8589,14 @@
     {
      "h": 16.5,
      "f": 80.6
+    },
+    {
+     "h": 16.583333333333332,
+     "f": 80.6
     }
    ]
   },
-  "summary": "Call 82 (82° to 83°, 100%). Kalshi peak 82° to 83°, implied ~82.5. Bias-corrected blend 80.8 ± 0.64 °F. Observed high so far 82 °F (wethr, incl. 1-min). Nowcast 4 PM: -1 °F/h, last hour -1, fair; on 574 similar past days the CLI ended above 81 100% of the time (avg +0.75)."
+  "summary": "Call 82 (82° to 83°, 100%). Kalshi peak 82° to 83°, implied ~82.5. Bias-corrected blend 80.8 ± 0.64 °F. Observed high so far 82 °F (wethr, incl. 1-min). Nowcast 4 PM: -0.1 °F/h, last hour +0, fair; on 574 similar past days the CLI ended above 81 100% of the time (avg +0.75)."
  },
  "tomorrow": {
   "date": "2026-11-22",
@@ -8767,9 +8783,9 @@
     "ask": 0.01,
     "last": 0.01,
     "mid": 0.005,
-    "p": 0.0049504950495049506,
+    "p": 0.0048543689320388345,
     "model_p": 0.045459602076738284,
-    "edge": 0.040509107027233336
+    "edge": 0.04060523314469945
    },
    {
     "label": "81° to 82°",
@@ -8779,21 +8795,21 @@
     "ask": 0.03,
     "last": 0.02,
     "mid": 0.025,
-    "p": 0.024752475247524754,
+    "p": 0.024271844660194174,
     "model_p": 0.16031556565748356,
-    "edge": 0.13556309040995881
+    "edge": 0.1360437209972894
    },
    {
     "label": "83° to 84°",
     "lo": 83,
     "hi": 84,
-    "bid": 0.28,
-    "ask": 0.29,
-    "last": 0.28,
-    "mid": 0.28500000000000003,
-    "p": 0.2821782178217822,
+    "bid": 0.3,
+    "ask": 0.31,
+    "last": 0.33,
+    "mid": 0.305,
+    "p": 0.2961165048543689,
     "model_p": 0.3134592073410797,
-    "edge": 0.031280989519297475
+    "edge": 0.01734270248671077
    },
    {
     "label": "85° to 86°",
@@ -8803,9 +8819,9 @@
     "ask": 0.56,
     "last": 0.56,
     "mid": 0.555,
-    "p": 0.5495049504950495,
+    "p": 0.5388349514563107,
     "model_p": 0.3013599072527701,
-    "edge": -0.24814504324227943
+    "edge": -0.23747504420354054
    },
    {
     "label": "87° to 88°",
@@ -8815,9 +8831,9 @@
     "ask": 0.13,
     "last": 0.13,
     "mid": 0.125,
-    "p": 0.12376237623762376,
+    "p": 0.12135922330097088,
     "model_p": 0.1424396369555167,
-    "edge": 0.01867726071789294
+    "edge": 0.021080413654545826
    },
    {
     "label": "89° or above",
@@ -8827,9 +8843,9 @@
     "ask": 0.02,
     "last": 0.01,
     "mid": 0.015,
-    "p": 0.01485148514851485,
+    "p": 0.014563106796116504,
     "model_p": 0.03696608071641167,
-    "edge": 0.02211459556789682
+    "edge": 0.022402973920295166
    }
   ],
   "kalshi": {
@@ -8838,7 +8854,7 @@
    "window": {
     "from": "83° to 84°",
     "to": "87° to 88°",
-    "cover": 0.9554455445544555
+    "cover": 0.9563106796116505
    },
    "implied": 85.1
   },
@@ -9000,6 +9016,6 @@
    ]
   },
   "obs": null,
-  "summary": "Call 84 (83° to 84°, 31%). Kalshi peak 85° to 86°, implied ~85.1. Bias-corrected blend 84.4 ± 2.3 °F. Cheap: 81° to 82° (16% vs market 2%). Rich: 85° to 86° (30% vs market 55%)."
+  "summary": "Call 84 (83° to 84°, 31%). Kalshi peak 85° to 86°, implied ~85.1. Bias-corrected blend 84.4 ± 2.3 °F. Cheap: 81° to 82° (16% vs market 2%). Rich: 85° to 86° (30% vs market 54%)."
  }
 }
