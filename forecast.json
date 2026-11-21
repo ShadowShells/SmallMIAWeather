@@ -10,8 +10,8 @@
   "nwsGrid": "MFL/105,51",
   "utcOffset": -5
  },
- "generated": "2026-11-21T16:40:14.980Z",
- "generatedTxt": "4:40 PM EST",
+ "generated": "2026-11-21T16:52:23.066Z",
+ "generatedTxt": "4:52 PM EST",
  "scores": {
   "ncep_hrrr_conus": {
    "bias": 1.4,
@@ -4468,7 +4468,7 @@
   "date": "2026-11-21",
   "isToday": true,
   "call": "82° to 83°",
-  "callP": 0.9974835914514617,
+  "callP": 0.9974838449664136,
   "point": 82,
   "mean": 80.8,
   "meanRaw": 80.8,
@@ -4488,7 +4488,7 @@
    "hour": 16,
    "trend": 0,
    "trendBucket": "≤0",
-   "rate": -0.1,
+   "rate": 0,
    "sky": "fair",
    "skyTxt": "SCT033 SCT110 OVC250",
    "gust": 16,
@@ -4502,7 +4502,7 @@
     "83": 0.13850837138508373,
     "84": 0.004566210045662101
    },
-   "peakBy": 14,
+   "peakBy": 15,
    "hoursLeft": 0,
    "nowF": 80.6,
    "reach": [
@@ -4525,21 +4525,21 @@
      "lo": 84,
      "hist": 0.004566210045662101,
      "needRate": null,
-     "status": "past usual peak"
+     "status": "past late peak"
     },
     {
      "label": "86° to 87°",
      "lo": 86,
      "hist": 0,
      "needRate": null,
-     "status": "past usual peak"
+     "status": "past late peak"
     },
     {
      "label": "88° or above",
      "lo": 88,
      "hist": 0,
      "needRate": null,
-     "status": "past usual peak"
+     "status": "past late peak"
     }
    ],
    "spikeGust": {
@@ -4576,10 +4576,10 @@
   },
   "wethr": {
    "date": "2026-11-21",
-   "fetched_utc": "2026-11-21T21:40:14.868Z",
+   "fetched_utc": "2026-11-21T21:52:23.014Z",
    "high": 82,
    "potential": 82,
-   "time": "3:33 PM",
+   "time": "1:39 PM",
    "sources": [
     "omo",
     "hf_metar",
@@ -7350,12 +7350,48 @@
      "ws": 10,
      "wg": null,
      "metar": false
+    },
+    {
+     "t": "2026-11-21T21:40:00Z",
+     "c": 27,
+     "f": 80.6,
+     "lo": 80,
+     "hi": 81,
+     "dew": 22,
+     "wd": 180,
+     "ws": 9,
+     "wg": null,
+     "metar": false
+    },
+    {
+     "t": "2026-11-21T21:45:00Z",
+     "c": 27,
+     "f": 80.6,
+     "lo": 80,
+     "hi": 81,
+     "dew": 22,
+     "wd": 190,
+     "ws": 7,
+     "wg": null,
+     "metar": false
+    },
+    {
+     "t": "2026-11-21T21:50:00Z",
+     "c": 27,
+     "f": 80.6,
+     "lo": 80,
+     "hi": 81,
+     "dew": 22,
+     "wd": 180,
+     "ws": 8,
+     "wg": null,
+     "metar": false
     }
    ]
   },
   "blend": 80.6,
   "expected": 82.1,
-  "sd": 0.64,
+  "sd": 0.63,
   "floor": 82,
   "models": [
    {
@@ -7404,13 +7440,13 @@
    },
    {
     "model": "HRRR",
-    "raw": 77.1,
+    "raw": 78.2,
     "peak": "4 PM",
     "bias": 1.4,
     "mae": 2,
     "n": 7,
-    "pace": 3.5,
-    "corr": 80.2,
+    "pace": 2.4,
+    "corr": 80.4,
     "w": 0.098
    },
    {
@@ -7438,19 +7474,19 @@
   ],
   "nws": {
    "high": 84,
-   "text": "Chance Showers And Thunderstorms",
-   "hourlyMax": 83,
-   "hourlyMaxTime": "3 PM",
-   "popMid": 21
+   "text": "Slight Chance Showers And Thunderstorms",
+   "hourlyMax": 81,
+   "hourlyMaxTime": "4 PM",
+   "popMid": 15
   },
   "dist": [
    {
     "k": 82,
-    "p": 0.9196538634978556
+    "p": 0.9196367892369077
    },
    {
     "k": 83,
-    "p": 0.07782972795360607
+    "p": 0.07784705572950586
    }
   ],
   "brackets": [
@@ -7487,8 +7523,8 @@
     "last": 0.99,
     "mid": 0.995,
     "p": 0.9754901960784318,
-    "model_p": 0.9974835914514617,
-    "edge": 0.02199339537302991
+    "model_p": 0.9974838449664136,
+    "edge": 0.02199364888798183
    },
    {
     "label": "84° to 85°",
@@ -7499,8 +7535,8 @@
     "last": 0.01,
     "mid": 0.005,
     "p": 0.004901960784313728,
-    "model_p": 0.0025164085484981036,
-    "edge": -0.0023855522358156244
+    "model_p": 0.0025161550335571635,
+    "edge": -0.0023858057507565645
    },
    {
     "label": "86° to 87°",
@@ -7511,8 +7547,8 @@
     "last": 0.01,
     "mid": 0.005,
     "p": 0.004901960784313728,
-    "model_p": 4.0267789103154426e-14,
-    "edge": -0.00490196078427346
+    "model_p": 2.937650123158164e-14,
+    "edge": -0.004901960784284351
    },
    {
     "label": "88° or above",
@@ -7602,18 +7638,18 @@
    }
   ],
   "regime": {
-   "windDir": 184,
+   "windDir": 185,
    "windTxt": "S",
-   "windKt": 6.7,
+   "windKt": 6.6,
    "rainIn": 0.21,
-   "cape90": 3306,
+   "cape90": 3334,
    "lowCloud": 33,
    "totalCloud": 83,
    "t850F": 60.2,
    "dewMax": 76.2,
    "notes": [
     "S/SW flow: warm and humid; cumulus and storm timing decide it.",
-    "Scattered showers possible (CAPE ~3306, ~0.21\" rain): timing vs the 11 AM–2 PM peak matters."
+    "Scattered showers possible (CAPE ~3334, ~0.21\" rain): timing vs the 11 AM–2 PM peak matters."
    ],
    "sector": "S/SW",
    "storm": "moderate"
@@ -7674,26 +7710,27 @@
      "dew": 77
     },
     {
-     "date": "2020-11-12",
-     "high": 81,
-     "dir": "SSE",
-     "rain": 1.32,
-     "dew": 79
+     "date": "2015-11-10",
+     "high": 89,
+     "dir": "S",
+     "rain": 0.02,
+     "dew": 75.92
     }
    ]
   },
   "obs": {
    "maxSoFar": 81.5,
    "maxMetar": 81,
+   "nowFit": 80.6,
    "maxSrc": "wethr 5-min",
    "maxTime": "1:40 PM",
    "nowF": 80.6,
    "nowRange": "80–81",
    "nowSrc": "wethr 5-min",
-   "nowT": "2026-11-21T16:35:00.000Z",
-   "nowTime": "4:35 PM EST",
+   "nowT": "2026-11-21T16:50:00.000Z",
+   "nowTime": "4:50 PM EST",
    "dewF": 72,
-   "wind": "190 @ 10 kt",
+   "wind": "180 @ 8 kt",
    "wx": "",
    "sky": "",
    "raw": "",
@@ -8593,10 +8630,22 @@
     {
      "h": 16.583333333333332,
      "f": 80.6
+    },
+    {
+     "h": 16.666666666666668,
+     "f": 80.6
+    },
+    {
+     "h": 16.75,
+     "f": 80.6
+    },
+    {
+     "h": 16.833333333333332,
+     "f": 80.6
     }
    ]
   },
-  "summary": "Call 82 (82° to 83°, 100%). Kalshi peak 82° to 83°, implied ~82.5. Bias-corrected blend 80.8 ± 0.64 °F. Observed high so far 82 °F (wethr, incl. 1-min). Nowcast 4 PM: -0.1 °F/h, last hour +0, fair; on 574 similar past days the CLI ended above 81 100% of the time (avg +0.75)."
+  "summary": "Call 82 (82° to 83°, 100%). Kalshi peak 82° to 83°, implied ~82.5. Bias-corrected blend 80.8 ± 0.63 °F. Observed high so far 82 °F (wethr, incl. 1-min). Nowcast 4 PM: +0 °F/h, last hour +0, fair; on 574 similar past days the CLI ended above 81 100% of the time (avg +0.75)."
  },
  "tomorrow": {
   "date": "2026-11-22",
@@ -8783,9 +8832,9 @@
     "ask": 0.01,
     "last": 0.01,
     "mid": 0.005,
-    "p": 0.0048543689320388345,
+    "p": 0.004901960784313725,
     "model_p": 0.045459602076738284,
-    "edge": 0.04060523314469945
+    "edge": 0.04055764129242456
    },
    {
     "label": "81° to 82°",
@@ -8795,33 +8844,33 @@
     "ask": 0.03,
     "last": 0.02,
     "mid": 0.025,
-    "p": 0.024271844660194174,
+    "p": 0.024509803921568627,
     "model_p": 0.16031556565748356,
-    "edge": 0.1360437209972894
+    "edge": 0.13580576173591494
    },
    {
     "label": "83° to 84°",
     "lo": 83,
     "hi": 84,
-    "bid": 0.3,
-    "ask": 0.31,
+    "bid": 0.33,
+    "ask": 0.34,
     "last": 0.33,
-    "mid": 0.305,
-    "p": 0.2961165048543689,
+    "mid": 0.335,
+    "p": 0.3284313725490196,
     "model_p": 0.3134592073410797,
-    "edge": 0.01734270248671077
+    "edge": -0.014972165207939925
    },
    {
     "label": "85° to 86°",
     "lo": 85,
     "hi": 86,
-    "bid": 0.55,
-    "ask": 0.56,
-    "last": 0.56,
-    "mid": 0.555,
-    "p": 0.5388349514563107,
+    "bid": 0.51,
+    "ask": 0.52,
+    "last": 0.55,
+    "mid": 0.515,
+    "p": 0.5049019607843137,
     "model_p": 0.3013599072527701,
-    "edge": -0.23747504420354054
+    "edge": -0.2035420535315436
    },
    {
     "label": "87° to 88°",
@@ -8831,9 +8880,9 @@
     "ask": 0.13,
     "last": 0.13,
     "mid": 0.125,
-    "p": 0.12135922330097088,
+    "p": 0.12254901960784313,
     "model_p": 0.1424396369555167,
-    "edge": 0.021080413654545826
+    "edge": 0.01989061734767357
    },
    {
     "label": "89° or above",
@@ -8843,9 +8892,9 @@
     "ask": 0.02,
     "last": 0.01,
     "mid": 0.015,
-    "p": 0.014563106796116504,
+    "p": 0.014705882352941176,
     "model_p": 0.03696608071641167,
-    "edge": 0.022402973920295166
+    "edge": 0.022260198363470495
    }
   ],
   "kalshi": {
@@ -8854,9 +8903,9 @@
    "window": {
     "from": "83° to 84°",
     "to": "87° to 88°",
-    "cover": 0.9563106796116505
+    "cover": 0.9558823529411764
    },
-   "implied": 85.1
+   "implied": 85
   },
   "checkpoints": [
    {
@@ -9016,6 +9065,6 @@
    ]
   },
   "obs": null,
-  "summary": "Call 84 (83° to 84°, 31%). Kalshi peak 85° to 86°, implied ~85.1. Bias-corrected blend 84.4 ± 2.3 °F. Cheap: 81° to 82° (16% vs market 2%). Rich: 85° to 86° (30% vs market 54%)."
+  "summary": "Call 84 (83° to 84°, 31%). Kalshi peak 85° to 86°, implied ~85. Bias-corrected blend 84.4 ± 2.3 °F. Cheap: 81° to 82° (16% vs market 2%). Rich: 85° to 86° (30% vs market 50%)."
  }
 }
