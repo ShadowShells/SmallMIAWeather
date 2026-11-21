@@ -49,7 +49,7 @@ async function load() {
 function render() {
   document.querySelectorAll(".tabs button").forEach((b) => b.classList.toggle("on", b.dataset.day === DAY));
   const f = DATA[DAY], reg = f.regime || {};
-  if (f.error) { $("summary").textContent = f.error; return; }
+  if (f.error) { $("warn").style.display = "block"; $("warn").textContent = f.error; return; }
   $("point").textContent = f.point ?? "—";
   $("bracket").textContent = f.call || "no Kalshi brackets";
   $("callp").textContent = f.callP != null ? `${pct(f.callP)} model · ${DAY === "today" ? "today" : "tomorrow"} ${f.date}` : f.date;
@@ -63,7 +63,6 @@ function render() {
   $("f-now").title = o ? `${o.nowF}° from ${o.nowSrc}${o.nowRange ? " (whole °C, true value " + o.nowRange + " °F)" : ""}` : "";
   $("f-reg").textContent = `${reg.sector || "—"} ${reg.windTxt || ""} ${reg.windKt ?? ""}kt`;
   $("f-storm").textContent = reg.storm || "—";
-  $("summary").textContent = f.summary || "";
 
   // brackets
   const kp = f.kalshi?.peak;
@@ -96,11 +95,8 @@ function render() {
       const fm = Object.entries(fin).filter(([k]) => +k >= r.lo).reduce((s2, [, p]) => s2 + p, 0);
       return `<tr class="${r.label === f.call ? "callrow" : ""}"><td>≥ ${r.lo} <span class="dim">(${esc(r.label)})</span></td><td>${r.needRate == null ? "—" : sg(r.needRate) + " °F/h"}</td><td class="${cls[r.status] || ""}">${esc(r.status)}</td><td>${pct(r.hist)}</td><td><b>${pct(fm)}</b></td></tr>`;
     }).join("");
-    $("pace-note").innerHTML = `Now ${pc.nowF}°, hourly-METAR high so far <b>${pc.base}</b> (official floor ${f.floor ?? "—"}), ${pc.hoursLeft} h to the usual peak. <b>Needs</b> = climb rate required from now to reach each line by then; <b>Status</b> compares it with the current rate. ` +
-      `<b>History</b> = how often the CLI reached the line on past days that looked like this at ${hl(pc.hour)} (same last-hour trend and sky: ${esc(pc.key)}). <b>Final</b> = the call after blending with the models; history counts more as the day goes on.`;
   } else {
     $("tb-pace").innerHTML = ""; $("nc-chips").innerHTML = "";
-    $("pace-note").textContent = Ln ? "Starts once today's first METAR is in (7 AM onward)." : "Not trained yet — the scheduled job builds forecast_learned.json once a day.";
   }
   const lrn = [];
   if (f.spike) lrn.push(`<li><b>1-minute spike:</b> on ${esc(f.regime?.sector || "all")} days the CLI high beat the highest hourly METAR by ≥1 °F <b>${pct(f.spike.ge1)}</b> of the time (avg +${f.spike.mean}). The nowcast already counts this.${f.pacing?.spikeGust ? ` On ${f.pacing.gusty ? "gusty" : "non-gusty"} afternoons like today: ${pct(f.pacing.spikeGust.ge1)}.` : ""}</li>`);
