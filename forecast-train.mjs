@@ -84,7 +84,7 @@ export async function train({ logPath = "forecast_log.json" } = {}) {
   const nowcast = {};
   for (const h in nc) { nowcast[h] = {}; for (const k in nc[h]) if (nc[h][k].length >= 30) nowcast[h][k] = pmf(nc[h][k], -1, 15); }
   const qt = (a, p) => { const b = [...a].sort((x, y) => x - y); return Math.round(b[Math.min(b.length - 1, Math.floor(p * b.length))] * 10) / 10; };
-  const peak = {}; for (const s in peakH) if (peakH[s].length >= 25) peak[s] = { p25: qt(peakH[s], 0.25), p50: qt(peakH[s], 0.5), p75: qt(peakH[s], 0.75), n: peakH[s].length };
+  const peak = {}; for (const s in peakH) if (peakH[s].length >= 25) peak[s] = { p25: qt(peakH[s], 0.25), p50: qt(peakH[s], 0.5), p75: qt(peakH[s], 0.75), p90: qt(peakH[s], 0.9), n: peakH[s].length };
   const spikeGust = {}; for (const k in spikeG) if (spikeG[k].length >= 25) { const a = spikeG[k]; spikeGust[k] = { ...pmf(a, -2, 4), ge1: Math.round((a.filter((x) => x >= 1).length / a.length) * 100) / 100 }; }
   const spikeOut = {};
   for (const s in spike) if (spike[s].length >= 25) {

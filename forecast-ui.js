@@ -87,10 +87,10 @@ function render() {
       ["Last hour", pc.trend == null ? "—" : `${sg(pc.trend)} °F`],
       ["Sky now", pc.sky],
       ["Gusts", pc.gust ? `${pc.gust} kt` : "none"],
-      ["Usual peak by", hl(pc.peakBy)],
+      ["Late peak by", hl(pc.peakBy)],
     ].map(([k, v]) => `<div class="fact"><div class="k">${k}</div><div class="v" style="font-size:14px">${esc(v)}</div></div>`).join("");
     const fin = Object.fromEntries((f.dist || []).map((d) => [d.k, d.p]));
-    const cls = { "on pace": "pos", "at line now": "pos", reached: "pos", close: "", behind: "neg", "past usual peak": "neg" };
+    const cls = { "on pace": "pos", "at line now": "pos", reached: "pos", close: "", behind: "neg", "past late peak": "neg" };
     $("tb-pace").innerHTML = (pc.reach || []).map((r) => {
       const fm = Object.entries(fin).filter(([k]) => +k >= r.lo).reduce((s2, [, p]) => s2 + p, 0);
       return `<tr class="${r.label === f.call ? "callrow" : ""}"><td>≥ ${r.lo} <span class="dim">(${esc(r.label)})</span></td><td>${r.needRate == null ? "—" : sg(r.needRate) + " °F/h"}</td><td class="${cls[r.status] || ""}">${esc(r.status)}</td><td>${pct(r.hist)}</td><td><b>${pct(fm)}</b></td></tr>`;

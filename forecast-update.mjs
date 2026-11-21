@@ -51,7 +51,9 @@ if (KEY) {
     const potential = pick("potential_high", "potential_high_f");
     const timeKey = Object.keys(found).find((k) => /time/i.test(k));
     const est = (u) => { if (!u) return null; const d = new Date(Date.parse(u.replace(" ", "T") + "Z") + STATION.utcOffset * 3600e3); let h = d.getUTCHours(); return `${h % 12 || 12}:${String(d.getUTCMinutes()).padStart(2, "0")} ${h >= 12 ? "PM" : "AM"}`; };
-    wethr = { date: j?.date || todayS, fetched_utc: new Date().toISOString(), high, potential, time: est(j?.time_of_high_utc),
+    // when the high was first reached (time_of_high_utc is when the CLI/DSM later confirmed it)
+    const firsts = Object.values(j?.wethr_high_source_detail || {}).map((x) => x.first_confirmed_utc).filter(Boolean).sort();
+    wethr = { date: j?.date || todayS, fetched_utc: new Date().toISOString(), high, potential, time: est(firsts[0] || j?.time_of_high_utc),
       sources: j?.wethr_high_sources || [], low: j?.wethr_low ?? null, lowTime: est(j?.time_of_low_utc), raw: j ?? body.slice(0, 2000) };
     for (const o of [j, j?.data, j?.result, Array.isArray(j?.data) ? j.data[0] : null]) if (o && typeof o === "object") for (const [k, v] of Object.entries(o)) if (typeof v === "string" && /time|source/i.test(k)) (wethr.extra ||= {})[k] = v;
     console.log("wethr high:", high, "potential:", potential);

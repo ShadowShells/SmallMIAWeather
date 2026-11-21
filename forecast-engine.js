@@ -331,7 +331,15 @@ export function obsToday(obs, day) {
   // hourly-METAR-only high (what the history tables are measured from; excludes 5-min/1-min readings)
   const mets = td.filter((o) => o.fromMetar !== false && !o.src);
   const maxMetar = mets.length ? Math.max(...mets.map((o) => Math.round(c2f(o.tC)))) : null;
-  return Object.defineProperty({ maxSoFar: mx, maxMetar, maxSrc: src, maxTime: hiT ? hm(hiT) : null, nowF: r1(c2f(last.tC)), nowRange: whole ? `${Math.round(c2f(last.tC - 0.5))}–${Math.round(c2f(last.tC + 0.5) - 0.01)}` : null,
+  // smoothed "now": a fresh METAR T-group if there is one, else the mean of the last 20 min of
+  // whole-°C 5-min readings (a single 5-min reading can be off by up to 0.9 °F)
+  const lm = mets[mets.length - 1], tl = last.t.getTime();
+  const rec = td.filter((o) => o.t.getTime() >= tl - 20 * 60e3);
+  let nowFit = lm && tl - lm.t.getTime() <= 30 * 60e3 ? c2f(lm.tC) : rec.reduce((s2, o) => s2 + c2f(o.tC), 0) / rec.length;
+  // a newer whole-°C reading bounds where the temperature is now: clamp into its range
+  if (last.fromMetar === false && (!lm || last.t > lm.t)) nowFit = Math.min(c2f(last.tC + 0.5) - 0.05, Math.max(c2f(last.tC - 0.5), nowFit));
+  nowFit = r1(nowFit);
+  return Object.defineProperty({ maxSoFar: mx, maxMetar, nowFit, maxSrc: src, maxTime: hiT ? hm(hiT) : null, nowF: r1(c2f(last.tC)), nowRange: whole ? `${Math.round(c2f(last.tC - 0.5))}–${Math.round(c2f(last.tC + 0.5) - 0.01)}` : null,
     nowSrc: last.src || (whole ? "5-min" : "METAR"), nowT: last.t, nowTime: hm(last.t) + " EST",
     dewF: last.dewC != null ? Math.round(c2f(last.dewC)) : null,
     wind: `${last.wdir ?? "—"}${last.wspd != null ? " @ " + last.wspd : ""}${last.wgst ? "G" + last.wgst : ""} kt`, wx: last.wx || "", sky: last.sky, raw: last.raw,
@@ -354,15 +362,19 @@ export function nowcast(learned, ob, sector, floor, brackets, hNow) {
   const last = td[td.length - 1], tNow = last.t.getTime(), F = (o) => c2f(o.tC);
   const h = Math.min(16, Math.max(7, last.t.getUTCHours()));
   // temp ~60 min ago and the regression rate over the last 60 min
-  const prev = td.filter((o) => Math.abs(o.t.getTime() - (tNow - 3600e3)) <= 35 * 60e3).sort((a, b) => Math.abs(a.t - (tNow - 3600e3)) - Math.abs(b.t - (tNow - 3600e3)))[0];
-  const trend = prev ? Math.round(F(last)) - Math.round(F(prev)) : null;
-  const win = td.filter((o) => o.t.getTime() >= tNow - 3600e3);
+  // last-hour trend from hourly METARs only (that's how the history table measured it)
+  const mets = td.filter((o) => o.fromMetar !== false && !o.src), lm = mets[mets.length - 1];
+  const pm = lm ? mets.filter((o) => Math.abs(o.t.getTime() - (lm.t.getTime() - 3600e3)) <= 25 * 60e3).sort((a, b) => Math.abs(a.t - (lm.t - 3600e3)) - Math.abs(b.t - (lm.t - 3600e3)))[0] : null;
+  const prev = pm;
+  const trend = lm && pm && tNow - lm.t.getTime() <= 75 * 60e3 ? Math.round(F(lm)) - Math.round(F(pm)) : null;
+  // rate: least-squares slope over the last 75 min of every reading (5-min + METAR)
+  const win = td.filter((o) => o.t.getTime() >= tNow - 75 * 60e3);
   let rate = null;
   if (win.length >= 3) {
     const xs = win.map((o) => (o.t.getTime() - tNow) / 3600e3), ys = win.map(F), mx = xs.reduce((a, b) => a + b) / xs.length, my = ys.reduce((a, b) => a + b) / ys.length;
     const den = xs.reduce((s2, x) => s2 + (x - mx) ** 2, 0); if (den > 0) rate = r1(xs.reduce((s2, x, i) => s2 + (x - mx) * (ys[i] - my), 0) / den);
   }
-  if (rate == null && prev && tNow - prev.t.getTime() >= 30 * 60e3) rate = r1((F(last) - F(prev)) / ((tNow - prev.t.getTime()) / 3600e3));
+  if (rate == null && lm && pm) rate = r1((F(lm) - F(pm)) / ((lm.t - pm.t) / 3600e3));
   // sky + weather from the latest ob that carries them (METARs; wethr's 5-min rows don't)
   const sk = [...td].reverse().find((o) => o.sky || o.raw);
   let sky = "fair", skyTxt = "—";
@@ -376,15 +388,17 @@ export function nowcast(learned, ob, sector, floor, brackets, hNow) {
   let key = null, tab = null;
   for (const k of tb ? [`${tb}|${sky}`, `${tb}|*`, `*|${sky}`] : [`*|${sky}`]) if (T[k]) { key = k; tab = T[k]; break; }
   if (!tab) { tab = learned.pacing?.all?.[h]; key = "all"; } if (!tab) return null;
-  const base = ob.maxMetar ?? Math.floor(ob.maxSoFar + 0.5), fi = floor != null ? Math.floor(floor + 0.5) : -999, emp = {}; let et = 0;
+  // history is measured from the hourly-METAR high; the smoothed current temp stands in for the next METAR
+  const base = Math.max(ob.maxMetar ?? -999, ob.nowFit != null ? Math.round(ob.nowFit) : -999, ob.maxMetar == null ? Math.floor(ob.maxSoFar + 0.5) : -999), fi = floor != null ? Math.floor(floor + 0.5) : -999, emp = {}; let et = 0;
   for (const [r, p] of Object.entries(tab.p)) { const k = base + +r; if (p > 0 && k >= fi) { emp[k] = (emp[k] || 0) + p; et += p; } }
   for (const k in emp) emp[k] /= et || 1;
-  const pk = learned.peak?.[sector] || learned.peak?.all, peakBy = pk ? pk.p75 + 0.1 : 14;
-  const left = peakBy - hNow, nowF = r1(F(last));
+  // aim for the late end of the usual peak window (90th pct of the hourly-high time for this wind)
+  const pk = learned.peak?.[sector] || learned.peak?.all, peakBy = pk ? (pk.p90 ?? pk.p75 + 1) + 0.1 : 15;
+  const left = peakBy - hNow, nowF = ob.nowFit ?? r1(F(last));
   const reach = (brackets || []).filter((b) => b.lo != null).map((b) => {
     const need = b.lo - 0.5, hist = Object.entries(emp).filter(([k]) => +k >= b.lo).reduce((s2, [, p]) => s2 + p, 0);
     if (fi >= b.lo) return { label: b.label, lo: b.lo, hist: 1, needRate: null, status: "reached" };
-    if (left <= 0.25) return { label: b.label, lo: b.lo, hist, needRate: null, status: "past usual peak" };
+    if (left <= 0.25) return { label: b.label, lo: b.lo, hist, needRate: null, status: "past late peak" };
     const nr = r1((need - nowF) / left);
     const status = rate == null ? "—" : nr <= 0 ? "at line now" : rate >= nr ? "on pace" : rate >= 0.6 * nr ? "close" : "behind";
     return { label: b.label, lo: b.lo, hist, needRate: nr, status };
@@ -419,7 +433,7 @@ export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana
       const oh = Math.floor(ob.nowT.getTime() / 3600e3) * 3600e3;
       const oi = times.findIndex((t) => t.getTime() === oh);
       if (oi >= 0 && t2[oi] != null) {
-        const pace = ob.nowF - t2[oi], h = ob.nowT.getUTCHours();
+        const pace = (ob.nowFit ?? ob.nowF) - t2[oi], h = ob.nowT.getUTCHours();
         const carry = h < 8 ? 0.25 : h < 10 ? 0.45 : h < 13 ? 0.65 : 0.8;
         row.pace = r1(pace);
         corr = raw + (1 - carry) * sc.bias + carry * pace; // pace already carries the model's usual bias
