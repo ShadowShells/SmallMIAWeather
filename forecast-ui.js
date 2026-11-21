@@ -111,7 +111,7 @@ function render() {
   lrn.push(f.wethr ? `<li><b>wethr High (NWS logic, incl. 1-min):</b> high <b>${f.wethr.high}</b>${f.wethr.time ? ` at ${esc(f.wethr.time)}` : ""}${f.wethr.sources?.length ? ` (${esc(f.wethr.sources.join(", "))})` : ""}${f.wethr.low != null ? ` · low ${f.wethr.low}${f.wethr.lowTime ? ` at ${esc(f.wethr.lowTime)}` : ""}` : ""} — the high is used as the floor.</li>`
     : wf?.error ? `<li><b>wethr:</b> ${esc(wf.error.slice(0, 90))}</li>` : `<li><b>wethr:</b> not connected (add the <code>WETHR_API_KEY</code> repo secret).</li>`);
   if (Ln) lrn.push(`<li class="dim">Trained ${esc(new Date(Ln.trained).toISOString().slice(0, 16).replace("T", " "))}Z on ${Ln.daysUsed} days (${esc(Ln.window)}).</li>`);
-  $("learned").innerHTML = lrn.join("");
+  if ($("learned")) $("learned").innerHTML = lrn.join("");
 
   // models
   $("tb-mod").innerHTML = (f.models || []).map((m) => `
