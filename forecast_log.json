@@ -36,13 +36,13 @@
    "kalshi_peak": "79° or below"
   },
   "latest": {
-   "at": "11-21 12:25 PM EST",
+   "at": "11-21 12:40 PM EST",
    "point": 80,
    "call": "80° to 81°",
-   "mean": 81.1,
-   "meanRaw": 81.1,
+   "mean": 80.9,
+   "meanRaw": 80.9,
    "sector": "S/SW",
-   "kalshi_peak": "80° to 81°"
+   "kalshi_peak": "82° to 83°"
   },
   "morning": {
    "at": "11-21 10:55 AM EST",
@@ -64,11 +64,11 @@
    "sector": "W/land"
   },
   "latest": {
-   "at": "11-21 12:25 PM EST",
-   "point": 85,
-   "call": "85° to 86°",
-   "mean": 84.5,
-   "meanRaw": 84.5,
+   "at": "11-21 12:40 PM EST",
+   "point": 84,
+   "call": "83° to 84°",
+   "mean": 84.4,
+   "meanRaw": 84.4,
    "sector": "W/land",
    "kalshi_peak": "85° to 86°"
   }
