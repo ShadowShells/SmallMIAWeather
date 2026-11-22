@@ -10,8 +10,8 @@
   "nwsGrid": "MFL/105,51",
   "utcOffset": -5
  },
- "generated": "2026-11-22T17:14:28.359Z",
- "generatedTxt": "5:14 PM EST",
+ "generated": "2026-11-22T17:25:59.701Z",
+ "generatedTxt": "5:25 PM EST",
  "scores": {
   "ncep_hrrr_conus": {
    "bias": 1.6,
@@ -4596,7 +4596,7 @@
    "hour": 16,
    "trend": -2,
    "trendBucket": "≤0",
-   "rate": -1.6,
+   "rate": -0.9,
    "sky": "fair",
    "skyTxt": "SCT040 SCT300",
    "gust": 0,
@@ -4693,7 +4693,7 @@
   },
   "wethr": {
    "date": "2026-11-22",
-   "fetched_utc": "2026-11-22T22:14:28.270Z",
+   "fetched_utc": "2026-11-22T22:25:59.526Z",
    "high": 85,
    "potential": 85,
    "time": "2:53 PM",
@@ -4802,7 +4802,7 @@
          }
         ],
         "missing_runs_truncated": false,
-        "as_of_utc": "2026-11-22 22:14:01"
+        "as_of_utc": "2026-11-22 22:25:02"
        }
       ]
      }
@@ -7526,6 +7526,30 @@
      "ws": 6,
      "wg": null,
      "metar": false
+    },
+    {
+     "t": "2026-11-22T22:15:00Z",
+     "c": 28,
+     "f": 82.4,
+     "lo": 82,
+     "hi": 83,
+     "dew": 19,
+     "wd": 260,
+     "ws": 6,
+     "wg": null,
+     "metar": false
+    },
+    {
+     "t": "2026-11-22T22:20:00Z",
+     "c": 28,
+     "f": 82.4,
+     "lo": 82,
+     "hi": 83,
+     "dew": 19,
+     "wd": 250,
+     "ws": 7,
+     "wg": null,
+     "metar": false
     }
    ]
   },
@@ -7955,10 +7979,10 @@
    "nowF": 82.4,
    "nowRange": "82–83",
    "nowSrc": "wethr 5-min",
-   "nowT": "2026-11-22T17:10:00.000Z",
-   "nowTime": "5:10 PM EST",
+   "nowT": "2026-11-22T17:20:00.000Z",
+   "nowTime": "5:20 PM EST",
    "dewF": 66,
-   "wind": "230 @ 6 kt",
+   "wind": "250 @ 7 kt",
    "wx": "",
    "sky": "",
    "raw": "",
@@ -8866,10 +8890,18 @@
     {
      "h": 17.166666666666668,
      "f": 82.4
+    },
+    {
+     "h": 17.25,
+     "f": 82.4
+    },
+    {
+     "h": 17.333333333333332,
+     "f": 82.4
     }
    ]
   },
-  "summary": "Call 85 (85° to 86°, 91%). Kalshi peak 85° to 86°, implied ~85.5. Bias-corrected blend 82.3 ± 0.66 °F. Observed high so far 85 °F (wethr, incl. 1-min). Nowcast 4 PM: -1.6 °F/h, last hour -2, fair; on 576 similar past days the CLI ended above 85 70% of the time (avg +0.75). Cheap: 87° to 88° (9% vs market 0%)."
+  "summary": "Call 85 (85° to 86°, 91%). Kalshi peak 85° to 86°, implied ~85.5. Bias-corrected blend 82.3 ± 0.66 °F. Observed high so far 85 °F (wethr, incl. 1-min). Nowcast 4 PM: -0.9 °F/h, last hour -2, fair; on 576 similar past days the CLI ended above 85 70% of the time (avg +0.75). Cheap: 87° to 88° (9% vs market 0%)."
  },
  "tomorrow": {
   "date": "2026-11-23",
@@ -9100,7 +9132,7 @@
     "hi": 78,
     "bid": 0.22,
     "ask": 0.23,
-    "last": 0.22,
+    "last": 0.23,
     "mid": 0.225,
     "p": 0.21844660194174761,
     "model_p": 0.21306298329097068,
