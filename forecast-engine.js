@@ -562,7 +562,6 @@ export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana
       pacing = { ...nc, weight: wEmp, sector: reg?.sector || "all", maxSoFar: ob.maxSoFar };
     }
   }
-  const point = +Object.entries(dist).reduce((a, b) => (b[1] > a[1] ? b : a))[0];
   const expected = Object.entries(dist).reduce((s, [k, p]) => s + k * p, 0);
   const brackets = (kal?.brackets || []).map((b) => {
     const L = b.lo ?? -999, H = b.hi ?? 999;
@@ -570,6 +569,9 @@ export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana
     return { ...b, model_p: mp, edge: b.p == null ? null : mp - b.p };
   });
   const call = brackets.length ? brackets.reduce((a, b) => (b.model_p > a.model_p ? b : a)) : null;
+  // point = most likely whole degree inside the called bracket (so the big number matches the call)
+  const inCall = Object.entries(dist).filter(([k]) => !call || (+k >= (call.lo ?? -999) && +k <= (call.hi ?? 999)));
+  const point = +(inCall.length ? inCall : Object.entries(dist)).reduce((a, b) => (b[1] > a[1] ? b : a))[0];
   // checkpoints: whole-°C 1-minute readings and METAR T-group lines
   const cps = [];
   for (let c = Math.floor(((mu - 5) - 32) * 5 / 9); c <= Math.ceil(((mu + 4) - 32) * 5 / 9); c++) {
