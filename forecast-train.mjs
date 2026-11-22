@@ -10,7 +10,7 @@
 // 3. selfcal — the dashboard's own recent misses (forecast_log.json): mean error of
 //              the morning and night-before calls, shrunk and clamped, fed back in.
 import { readFileSync, writeFileSync } from "node:fs";
-import { STATION, trendBucket, skyState } from "./forecast-engine.js";
+import { STATION, trendBucket, skyState, RING, upwindDelta } from "./forecast-engine.js";
 
 const WIN = 30, YEARS = 12, HOURS = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 export const sectorOf = (wd) => wd == null ? "calm" : (wd >= 290 || wd < 20) ? "N/NW" : wd < 150 ? "E/onshore" : wd < 240 ? "S/SW" : "W/land";
@@ -53,6 +53,27 @@ export async function train({ logPath = "forecast_log.json" } = {}) {
       sky: skyState([c[ix("skyc1")], c[ix("skyc2")], c[ix("skyc3")]], [num(c[ix("skyl1")]), num(c[ix("skyl2")]), num(c[ix("skyl3")])], c[ix("wxcodes")]) });
   }
 
+  // --- ring stations, hourly (for the upwind signal) ---
+  const ringT = {}; // ringT[st][day][hour] = last whole-°F temp in that hour
+  try {
+    const rq = Object.keys(RING).map((s2) => `station=${s2}`).join("&") + `&data=tmpf&year1=${yr - YEARS}&month1=1&day1=1&year2=${yr}&month2=12&day2=31&tz=Etc/GMT%2B5&format=onlycomma&latlon=no&missing=empty&report_type=3`;
+    const rc = await text("https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?" + rq);
+    for (const ln of rc.trim().split("\n").slice(1)) {
+      const [st, valid, tf] = ln.split(","), T = parseFloat(tf); if (isNaN(T)) continue;
+      const d = valid.slice(0, 10), dd = Math.abs(doy(d) - t); if (Math.min(dd, 365 - dd) > WIN || d >= todayS) continue;
+      ((ringT[st] ||= {})[d] ||= {})[+valid.slice(11, 13)] = Math.round(T);
+    }
+  } catch (e) { console.log("ring history failed:", e.message); }
+  // usual station-minus-KMIA difference by hour (removes siting bias)
+  const bsum = {};
+  for (const [d, obs] of Object.entries(days)) for (const o of obs) for (const st in ringT) {
+    const T = ringT[st][d]?.[o.h]; if (T == null || o.m < 40) continue;
+    const k = ((bsum[st] ||= {})[o.h] ||= [0, 0]); k[0] += T - o.T; k[1]++;
+  }
+  const upwindBias = {};
+  for (const st in bsum) { upwindBias[st] = {}; for (const h in bsum[st]) if (bsum[st][h][1] >= 30) upwindBias[st][h] = Math.round((bsum[st][h][0] / bsum[st][h][1]) * 10) / 10; }
+  const upPairs = []; // [hour, delta, rise, cellKey]
+
   const rise = {}, spike = {}, nc = {}, spikeG = { gusty: [], calm: [] }, peakH = {}; // rise[sector][hour] = [CLI - maxSoFar]; spike[sector] = [CLI - dayMaxHourly]
   const push = (o, k, v) => (o[k] ||= []).push(v);
   let used = 0;
@@ -77,12 +98,30 @@ export async function train({ logPath = "forecast_log.json" } = {}) {
       if (cur.h < h - 1 || !prev) continue;
       const tb = trendBucket(cur.T - prev.T);
       for (const k of [`${tb}|${cur.sky}`, `${tb}|*`, `*|${cur.sky}`]) { (nc[h] ||= {}); push(nc[h], k, r); }
+      if (h >= 9 && h <= 15 && cur.sk > 0 && !isNaN(cur.dr)) {
+        const temps = {}; for (const st in ringT) temps[st] = ringT[st][d]?.[h] ?? null;
+        const u = upwindDelta(cur.T, cur.dr, temps, upwindBias, h);
+        if (u?.delta != null) upPairs.push([h, u.delta, r, [`${tb}|${cur.sky}`, `${tb}|*`, `*|${cur.sky}`]]);
+      }
     }
   }
   const pacing = {};
   for (const s in rise) { pacing[s] = {}; for (const h in rise[s]) if (rise[s][h].length >= 25) pacing[s][h] = pmf(rise[s][h], -1, 15); }
   const nowcast = {};
   for (const h in nc) { nowcast[h] = {}; for (const k in nc[h]) if (nc[h][k].length >= 30) nowcast[h][k] = pmf(nc[h][k], -1, 15); }
+  // upwind effect: slope of (rise - its nowcast-cell mean) on the upwind anomaly
+  let upwind = null;
+  {
+    const xs = [], ys = [];
+    for (const [h, dl, r, keys] of upPairs) { const k = keys.find((k2) => nowcast[h]?.[k2]); if (!k) continue; xs.push(dl); ys.push(r - nowcast[h][k].mean); }
+    if (xs.length >= 100) {
+      const mx = xs.reduce((a, b) => a + b) / xs.length, my = ys.reduce((a, b) => a + b) / ys.length;
+      const sxx = xs.reduce((a, x) => a + (x - mx) ** 2, 0), sxy = xs.reduce((a, x, i) => a + (x - mx) * (ys[i] - my), 0), syy = ys.reduce((a, y) => a + (y - my) ** 2, 0);
+      const b = sxy / sxx, rr = sxy / Math.sqrt(sxx * syy), se = Math.sqrt(Math.max(0, (syy - b * sxy) / (xs.length - 2)) / sxx);
+      // only use it if it's clearly real (|t| > 2); shrink toward 0 otherwise
+      upwind = { b: Math.abs(b / se) > 2 ? Math.round(b * 100) / 100 : 0, raw: Math.round(b * 100) / 100, t: Math.round((b / se) * 10) / 10, r: Math.round(rr * 100) / 100, n: xs.length, sdDelta: Math.round(Math.sqrt(sxx / xs.length) * 10) / 10 };
+    }
+  }
   const qt = (a, p) => { const b = [...a].sort((x, y) => x - y); return Math.round(b[Math.min(b.length - 1, Math.floor(p * b.length))] * 10) / 10; };
   const peak = {}; for (const s in peakH) if (peakH[s].length >= 25) peak[s] = { p25: qt(peakH[s], 0.25), p50: qt(peakH[s], 0.5), p75: qt(peakH[s], 0.75), p90: qt(peakH[s], 0.9), n: peakH[s].length };
   const spikeGust = {}; for (const k in spikeG) if (spikeG[k].length >= 25) { const a = spikeG[k]; spikeGust[k] = { ...pmf(a, -2, 4), ge1: Math.round((a.filter((x) => x >= 1).length / a.length) * 100) / 100 }; }
@@ -104,7 +143,7 @@ export async function train({ logPath = "forecast_log.json" } = {}) {
 
   const out = {
     trained: new Date().toISOString(), station: STATION.icao, window: `±${WIN} days of ${todayS.slice(5)}, ${yr - YEARS}–${yr}`, daysUsed: used,
-    pacing, spike: spikeOut, nowcast, peak, spikeGust,
+    pacing, spike: spikeOut, nowcast, peak, spikeGust, upwind, upwindBias,
     selfcal: { today: cal((e) => e.morning || e.first), tomorrow: cal((e) => e.first) },
   };
   return out;

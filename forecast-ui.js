@@ -87,6 +87,7 @@ function render() {
       ["Last hour", pc.trend == null ? "—" : `${sg(pc.trend)} °F`],
       ["Sky now", pc.sky],
       ["Gusts", pc.gust ? `${pc.gust} kt` : "none"],
+      ["Upwind air", pc.upwind?.delta == null ? (pc.upwind ? "ocean (no station)" : "—") : `${sg(pc.upwind.delta)} °F · ${pc.upwind.used.join(" ")}`],
       ["Late peak by", hl(pc.peakBy)],
     ].map(([k, v]) => `<div class="fact"><div class="k">${k}</div><div class="v" style="font-size:14px">${esc(v)}</div></div>`).join("");
     const fin = Object.fromEntries((f.dist || []).map((d) => [d.k, d.p]));
@@ -123,6 +124,9 @@ function render() {
     ["NWS rain chance", f.nws?.popMid != null ? `${f.nws.popMid}%` : "—"], ["Spread", `±${f.sd} °F`]];
   $("kv-reg").innerHTML = kv.map(([k, v]) => `<div class="fact"><div class="k">${k}</div><div class="v" style="font-size:14px">${esc(v)}</div></div>`).join("");
   $("notes").innerHTML = (reg.notes || []).map((n) => `<li>${esc(n)}</li>`).join("");
+  // soundings (Skew-T numbers)
+  const snd = f.sounding || {};
+  $("tb-snd").innerHTML = Object.entries(snd).map(([m, x]) => `<tr><td>${m}</td><td>${x.t925}/${x.t850}</td><td title="°C/km between 925 and 850 hPa: ${esc(x.cap)}">${x.lapse} <span class="dim">${esc(x.cap.split(" ")[0])}</span></td><td title="${esc(x.moist)}">${x.rh925 ?? "—"}/${x.rh850 ?? "—"}%</td><td>${esc(x.wind925 || "—")}</td><td><b>${x.mix925}°</b></td></tr>`).join("") || `<tr><td colspan="6" class="dim">no sounding data</td></tr>`;
 
   // observations
   $("obs-panel").style.display = DAY === "today" ? "" : "none";

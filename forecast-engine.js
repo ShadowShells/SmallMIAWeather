@@ -43,7 +43,68 @@ export const CFG = {
 };
 
 const HOURLY = ["temperature_2m", "temperature_2m_previous_day1", "dew_point_2m", "cloud_cover_low",
-  "cloud_cover", "wind_speed_10m", "wind_direction_10m", "cape", "precipitation", "temperature_850hPa"];
+  "cloud_cover", "wind_speed_10m", "wind_direction_10m", "cape", "precipitation", "temperature_850hPa",
+  "temperature_925hPa", "relative_humidity_925hPa", "relative_humidity_850hPa", "wind_direction_925hPa", "wind_speed_925hPa"];
+
+/* Sounding-derived members: the high you get by mixing 925 hPa air dry-adiabatically to the
+   ground (what you read off a Skew-T), from HRRR and GFS. Scored against the CLI like a model. */
+export const MIX_MODELS = { hrrr_mix: ["ncep_hrrr_conus", "HRRR 925 mix"], gfs_mix: ["gfs_global", "GFS 925 mix"] };
+export const ALL_MODELS = { ...MODELS, ...Object.fromEntries(Object.entries(MIX_MODELS).map(([k, v]) => [k, v[1]])) };
+const mixDown = (tF, p) => { if (tF == null) return null; const k = ((tF - 32) * 5 / 9 + 273.15) * (1015 / p) ** 0.2857 - 273.15; return k * 9 / 5 + 32; };
+export function addMixSeries(series) {
+  for (const [k, [src]] of Object.entries(MIX_MODELS)) {
+    const t = series[src]?.temperature_925hPa; if (!t) continue;
+    const mix = t.map((v) => (v == null ? null : r1(mixDown(v, 925))));
+    // pressure-level data has no "previous day" run on Open-Meteo, so this member is scored on its
+    // own past-day values (near-analysis): it learns how far the mix-down high sits from the CLI
+    series[k] = { temperature_2m: mix, temperature_2m_previous_day1: mix, mix: true };
+  }
+}
+
+/** Skew-T numbers for the 11 AM-4 PM window: 925/850 temps, the lapse rate between them (cap or
+ *  well mixed), moisture in the cloud layer, 925 wind, and the mix-down highs. */
+export function sounding(times, series, day) {
+  const idx = cliIdx(times, day).filter((i) => times[i].getUTCHours() >= 11 && times[i].getUTCHours() <= 16), out = {};
+  for (const [m, lab] of [["ncep_hrrr_conus", "HRRR"], ["gfs_global", "GFS"]]) {
+    const S = series[m]; if (!S?.temperature_925hPa) continue;
+    const g = (v) => idx.map((i) => S[v]?.[i]).filter((x) => x != null);
+    const t925 = g("temperature_925hPa"), t850 = g("temperature_850hPa"); if (!t925.length || !t850.length) continue;
+    const C = (f) => (f - 32) * 5 / 9, lapse = (C(mean(t925)) - C(mean(t850))) / 0.75; // °C/km over ~750 m
+    const rh925 = g("relative_humidity_925hPa"), rh850 = g("relative_humidity_850hPa");
+    const wd = g("wind_direction_925hPa"), ws = g("wind_speed_925hPa");
+    out[lab] = { t925: r1(mean(t925)), t850: r1(mean(t850)), lapse: r1(lapse),
+      mix925: r1(Math.max(...t925.map((v) => mixDown(v, 925)))), mix850: r1(Math.max(...t850.map((v) => mixDown(v, 850)))),
+      rh925: rh925.length ? Math.round(mean(rh925)) : null, rh850: rh850.length ? Math.round(mean(rh850)) : null,
+      wind925: wd.length ? `${compass(vecDir(wd, ws))} ${Math.round(mean(ws))} kt` : null,
+      cap: lapse < 3 ? "capped / stable" : lapse < 6.5 ? "partly mixed" : "well mixed",
+      moist: Math.max(rh925.length ? mean(rh925) : 0, rh850.length ? mean(rh850) : 0) >= 85 ? "moist cloud layer" : "dry above" };
+  }
+  return out;
+}
+
+/* Upwind ring: ASOS stations around KMIA. With the wind blowing from a station's direction,
+   it shows the air that arrives next. Bias-corrected per station/hour from history. */
+export const RING = { FLL: [26.0787, -80.1622], HWO: [25.9996, -80.2412], OPF: [25.9102, -80.2828], TMB: [25.6479, -80.4328], HST: [25.4884, -80.3837], FXE: [26.2, -80.17] };
+export const bearing = (lat1, lon1, lat2, lon2) => { const R = Math.PI / 180, y = Math.sin((lon2 - lon1) * R) * Math.cos(lat2 * R), x = Math.cos(lat1 * R) * Math.sin(lat2 * R) - Math.sin(lat1 * R) * Math.cos(lat2 * R) * Math.cos((lon2 - lon1) * R); return (Math.atan2(y, x) / R + 360) % 360; };
+/** weighted mean of (station - KMIA - usual difference) over stations within 60° of upwind */
+export function upwindDelta(kmiaF, wdir, temps, bias, hour) {
+  if (kmiaF == null || wdir == null || isNaN(wdir)) return null;
+  let sw = 0, sd = 0; const used = [];
+  for (const [st, T] of Object.entries(temps)) {
+    if (T == null || !RING[st]) continue;
+    const b = bearing(STATION.lat, STATION.lon, ...RING[st]), diff = Math.abs(((b - wdir + 540) % 360) - 180);
+    if (diff > 60) continue;
+    const w = Math.cos(diff * Math.PI / 180) ** 2, corr = bias?.[st]?.[hour] ?? 0;
+    sw += w; sd += w * (T - kmiaF - corr); used.push(st);
+  }
+  return sw ? { delta: r1(sd / sw), used } : { delta: null, used: [] };
+}
+export async function fetchRing() {
+  const d = await getJSON("https://mesonet.agron.iastate.edu/api/1/currents.json?network=FL_ASOS");
+  const out = {};
+  for (const r of d.data || []) if (RING[r.station] && r.tmpf != null && Date.now() - Date.parse(r.utc_valid) < 90 * 60e3) out[r.station] = { T: r.tmpf, t: r.utc_valid, wd: r.drct };
+  return out;
+}
 
 /* ---------------- time helpers (fixed EST clock) ---------------- */
 const OFF = STATION.utcOffset * 3600e3;
@@ -254,7 +315,8 @@ const cliIdx = (times, day) => { const a = dayStart(day).getTime(); return times
 
 export function scoreModels(times, series, cli, today) {
   const sc = {};
-  for (const m of Object.keys(MODELS)) {
+  for (const m of Object.keys(ALL_MODELS)) {
+    if (!series[m]) continue;
     const errs = [], pv = series[m].temperature_2m_previous_day1;
     for (let k = 1; k <= CFG.scoreDays && pv; k++) {
       const d = addDays(today, -k), act = cli[ymd(d)];
@@ -357,7 +419,7 @@ export const skyState = (covers, basesFt, wx) => {
 
 /** Nowcast: last-hour trend, current rate, sky/rain and gusts now -> historical distribution of
  *  the final high from here, plus the climb each bracket still needs before the usual peak hour. */
-export function nowcast(learned, ob, sector, floor, brackets, hNow) {
+export function nowcast(learned, ob, sector, floor, brackets, hNow, ring) {
   const td = ob?._td; if (!td?.length || !learned?.nowcast) return null;
   const last = td[td.length - 1], tNow = last.t.getTime(), F = (o) => c2f(o.tC);
   const h = Math.min(16, Math.max(7, last.t.getUTCHours()));
@@ -392,6 +454,22 @@ export function nowcast(learned, ob, sector, floor, brackets, hNow) {
   const base = Math.max(ob.maxMetar ?? -999, ob.nowFit != null ? Math.round(ob.nowFit) : -999, ob.maxMetar == null ? Math.floor(ob.maxSoFar + 0.5) : -999), fi = floor != null ? Math.floor(floor + 0.5) : -999, emp = {}; let et = 0;
   for (const [r, p] of Object.entries(tab.p)) { const k = base + +r; if (p > 0 && k >= fi) { emp[k] = (emp[k] || 0) + p; et += p; } }
   for (const k in emp) emp[k] /= et || 1;
+  // upwind air: shift the distribution by the learned effect of the upwind-station anomaly
+  let up = null;
+  const wdObs = [...td].reverse().find((o) => typeof o.wdir === "number" && o.wspd > 0);
+  if (ring && Object.keys(ring).length && wdObs) {
+    const temps = Object.fromEntries(Object.entries(ring).map(([k, v]) => [k, v.T]));
+    up = upwindDelta(ob.nowFit ?? F(last), wdObs.wdir, temps, learned.upwindBias, h);
+    const U = learned.upwind;
+    if (up?.delta != null && U?.b != null) {
+      const sh = Math.max(-1.5, Math.min(1.5, U.b * up.delta)); up.shift = r1(sh);
+      if (Math.abs(sh) >= 0.1) {
+        const fl = Math.floor(sh), fr = sh - fl, nw = {}; let t2 = 0;
+        for (const [k, p] of Object.entries(emp)) for (const [kk, pp] of [[+k + fl, p * (1 - fr)], [+k + fl + 1, p * fr]]) if (kk >= fi && pp > 0) { nw[kk] = (nw[kk] || 0) + pp; t2 += pp; }
+        for (const k in emp) delete emp[k]; for (const k in nw) emp[k] = nw[k] / (t2 || 1);
+      }
+    }
+  }
   // aim for the late end of the usual peak window (90th pct of the hourly-high time for this wind)
   const pk = learned.peak?.[sector] || learned.peak?.all, peakBy = pk ? (pk.p90 ?? pk.p75 + 1) + 0.1 : 15;
   const left = peakBy - hNow, nowF = ob.nowFit ?? r1(F(last));
@@ -404,7 +482,7 @@ export function nowcast(learned, ob, sector, floor, brackets, hNow) {
     return { label: b.label, lo: b.lo, hist, needRate: nr, status };
   });
   return { hour: h, trend, trendBucket: tb, rate, sky, skyTxt, gust, gusty: gust >= 18, key, n: tab.n, meanRise: tab.mean, base, emp,
-    peakBy: r1(peakBy), hoursLeft: r1(Math.max(0, left)), nowF, reach, spikeGust: learned.spikeGust?.[gust >= 18 ? "gusty" : "calm"] || null };
+    peakBy: r1(peakBy), hoursLeft: r1(Math.max(0, left)), nowF, reach, upwind: up, spikeGust: learned.spikeGust?.[gust >= 18 ? "gusty" : "calm"] || null };
 }
 /** Empirical pacing: given the hourly-METAR high so far at this hour and today's wind sector, the
  *  historical distribution of the final CLI high (whole °F). */
@@ -417,11 +495,13 @@ export function pacingDist(learned, sector, hour, maxSoFar) {
   return { hour: h, sector: tab === own ? sector : "all", n: tab.n, base, meanRise: tab.mean, dist };
 }
 
-export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana, learned, reg, wethr }) {
+export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana, learned, reg, wethr, ring }) {
   const idx = cliIdx(times, day), isToday = ymd(day) === ymd(now);
   const hourNow = new Date(Math.floor(now.getTime() / 3600e3) * 3600e3);
   const rows = [];
-  for (const [m, lab] of Object.entries(MODELS)) {
+  for (const [m, lab] of Object.entries(ALL_MODELS)) {
+    if (!series[m] || !scores[m]) continue;
+    const isMix = !!series[m].mix;
     const t2 = series[m].temperature_2m || [];
     const use = isToday ? idx.filter((i) => times[i] >= hourNow) : idx;
     const vals = use.map((i) => t2[i]).filter((v) => v != null);
@@ -429,7 +509,9 @@ export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana
     const raw = Math.max(...vals), pi = use.find((i) => t2[i] === raw), sc = scores[m];
     const row = { model: lab, raw: r1(raw), peak: hh(times[pi]), bias: sc.bias, mae: sc.mae, n: sc.n, pace: null };
     let corr = raw + sc.bias;
-    if (isToday && ob) {
+    let wScale = 1;
+    if (isToday && ob && isMix) { const h = ob.nowT.getUTCHours(); wScale = h < 10 ? 1 : h < 13 ? 0.6 : 0.3; } // a potential, not paced to obs
+    else if (isToday && ob) {
       const oh = Math.floor(ob.nowT.getTime() / 3600e3) * 3600e3;
       const oi = times.findIndex((t) => t.getTime() === oh);
       if (oi >= 0 && t2[oi] != null) {
@@ -439,7 +521,7 @@ export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana
         corr = raw + (1 - carry) * sc.bias + carry * pace; // pace already carries the model's usual bias
       }
     }
-    row.corr = r1(corr); row.w = 1 / (sc.mae ** 2 + 0.5);
+    row.corr = r1(corr); row.w = wScale / (sc.mae ** 2 + 0.5);
     rows.push(row);
   }
   if (!rows.length) return { error: "No model data for this day yet." };
@@ -473,7 +555,7 @@ export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana
   // blend in the nowcast: history conditioned on the last-hour trend and current sky (fallback: pacing table)
   let pacing = null;
   if (isToday && ob && learned) {
-    const nc = nowcast(learned, ob, reg?.sector || "all", floor, kal?.brackets, hNow);
+    const nc = nowcast(learned, ob, reg?.sector || "all", floor, kal?.brackets, hNow, ring);
     if (nc) {
       const keys = new Set([...Object.keys(dist), ...Object.keys(nc.emp)]);
       if (wEmp > 0 && Object.keys(nc.emp).length) for (const k of keys) dist[k] = (1 - wEmp) * (dist[k] || 0) + wEmp * (nc.emp[k] || 0);
@@ -527,11 +609,12 @@ export function summarize(fc, reg) {
 export async function runForecast({ inBrowser, kalshi, learned, wethr }) {
   const now = estNow(), today = dayStart(now), tomorrow = addDays(today, 1), errors = [];
   const safe = async (name, p, dflt) => { try { return await p; } catch (e) { errors.push(`${name}: ${e.message}`); return dflt; } };
-  const [mod, cli, obs, nws, hist] = await Promise.all([
+  const [mod, cli, obs, nws, hist, ring] = await Promise.all([
     fetchModels(), safe("cli", fetchCliHighs(), {}), safe("obs", fetchObs(inBrowser), []),
-    safe("nws", fetchNws(), {}), safe("history", fetchHistory(tomorrow), []),
+    safe("nws", fetchNws(), {}), safe("history", fetchHistory(tomorrow), []), safe("ring", fetchRing(), {}),
   ]);
   const { times, series } = mod;
+  addMixSeries(series);
   // merge wethr's 5-min obs (fresher than the NWS API) into the METAR list
   if (wethr?.obs?.length) {
     const have = new Set(obs.map((o) => Math.round(o.t.getTime() / 60e3)));
@@ -550,8 +633,8 @@ export async function runForecast({ inBrowser, kalshi, learned, wethr }) {
     const reg = regime(times, series, day);
     const ana = analogs(hist, day, reg);
     const ob = lab === "today" ? obsToday(obs, day) : null;
-    const fc = forecastDay({ day, now, times, series, scores, nws, kal, ob, ana, learned, reg, wethr });
-    Object.assign(fc, { regime: reg, analogs: ana, obs: ob, summary: summarize(fc, reg) });
+    const fc = forecastDay({ day, now, times, series, scores, nws, kal, ob, ana, learned, reg, wethr, ring: lab === "today" ? ring : null });
+    Object.assign(fc, { sounding: sounding(times, series, day), ring: lab === "today" ? ring : null, regime: reg, analogs: ana, obs: ob, summary: summarize(fc, reg) });
     out[lab] = fc;
   }
   return out;
