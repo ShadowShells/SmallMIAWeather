@@ -1,6 +1,6 @@
 {
  "date": "2026-11-22",
- "fetched_utc": "2026-11-22T14:25:15.177Z",
+ "fetched_utc": "2026-11-22T14:40:49.718Z",
  "high": 78,
  "potential": 78,
  "time": "9:16 AM",
@@ -15,11 +15,11 @@
   "date": "2026-11-22",
   "wethr_high": 78,
   "wethr_low": 72,
-  "time_of_high_utc": "2026-11-22 14:22:00",
+  "time_of_high_utc": "2026-11-22 14:38:00",
   "time_of_low_utc": "2026-11-22 11:41:00",
   "potential_high": 78,
   "potential_low": 72,
-  "potential_high_time_utc": "2026-11-22 14:22:00",
+  "potential_high_time_utc": "2026-11-22 14:38:00",
   "potential_low_time_utc": "2026-11-22 11:41:00",
   "divergence": {
    "high": false,
@@ -38,11 +38,11 @@
   "wethr_high_source_detail": {
    "omo": {
     "first_confirmed_utc": "2026-11-22 14:16:00",
-    "count": 7
+    "count": 23
    },
    "hf_metar": {
     "first_confirmed_utc": "2026-11-22 14:20:00",
-    "count": 1
+    "count": 4
    }
   },
   "wethr_low_source_detail": {
@@ -93,16 +93,16 @@
        }
       ],
       "missing_runs_truncated": false,
-      "as_of_utc": "2026-11-22 14:24:01"
+      "as_of_utc": "2026-11-22 14:40:02"
      }
     ]
    }
   }
  },
  "extra": {
-  "time_of_high_utc": "2026-11-22 14:22:00",
+  "time_of_high_utc": "2026-11-22 14:38:00",
   "time_of_low_utc": "2026-11-22 11:41:00",
-  "potential_high_time_utc": "2026-11-22 14:22:00",
+  "potential_high_time_utc": "2026-11-22 14:38:00",
   "potential_low_time_utc": "2026-11-22 11:41:00"
  },
  "obs": [
@@ -1560,6 +1560,42 @@
   },
   {
    "t": "2026-11-22T14:20:00Z",
+   "c": 26,
+   "f": 78.8,
+   "lo": 78,
+   "hi": 79,
+   "dew": 22,
+   "wd": 0,
+   "ws": 0,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-22T14:25:00Z",
+   "c": 26,
+   "f": 78.8,
+   "lo": 78,
+   "hi": 79,
+   "dew": 23,
+   "wd": 0,
+   "ws": 0,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-22T14:30:00Z",
+   "c": 26,
+   "f": 78.8,
+   "lo": 78,
+   "hi": 79,
+   "dew": 22,
+   "wd": 290,
+   "ws": 4,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-22T14:35:00Z",
    "c": 26,
    "f": 78.8,
    "lo": 78,
