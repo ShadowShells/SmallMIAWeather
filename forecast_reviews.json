@@ -1,0 +1,1181 @@
+{
+ "2026-11-15": {
+  "date": "2026-11-15",
+  "actual": 80,
+  "reviewed": "2026-11-22T23:51:34.700Z",
+  "peak": "11:53 AM",
+  "peakH": 11.9,
+  "maxHourly": 79,
+  "spike": 1,
+  "sector": "E/onshore",
+  "wind": "ENE 9 kt",
+  "cloudAM": 0,
+  "cloudPM": 0,
+  "dew8": 55,
+  "dew13": 56,
+  "dewChg": 1,
+  "rain": 0,
+  "gust": 18,
+  "tags": [
+   "onshore E flow",
+   "sunny",
+   "1-min spike +1",
+   "gusty"
+  ],
+  "summary": "High 80°F at 11:53 AM (1-minute data, 1° above the best hourly reading). onshore E flow (ENE 9 kt); sunny, gusty. Closest: GEM, HRRR, GFS, NBM. Too cool: UKMO, ECMWF.",
+  "sources": [
+   {
+    "name": "HRRR · day before",
+    "val": 78.4,
+    "miss": -1.6,
+    "kind": "model"
+   },
+   {
+    "name": "HRRR · same day",
+    "val": 80.3,
+    "miss": 0.3,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · day before",
+    "val": 78.3,
+    "miss": -1.7,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · same day",
+    "val": 79.3,
+    "miss": -0.7,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · day before",
+    "val": 78.7,
+    "miss": -1.3,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · same day",
+    "val": 79.2,
+    "miss": -0.8,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · day before",
+    "val": 77.4,
+    "miss": -2.6,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · same day",
+    "val": 77.8,
+    "miss": -2.2,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · day before",
+    "val": 76.8,
+    "miss": -3.2,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · same day",
+    "val": 78.1,
+    "miss": -1.9,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · day before",
+    "val": 78.2,
+    "miss": -1.8,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · same day",
+    "val": 80.1,
+    "miss": 0.1,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · day before",
+    "val": 77.7,
+    "miss": -2.3,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · same day",
+    "val": 78,
+    "miss": -2,
+    "kind": "model"
+   }
+  ],
+  "models": {
+   "ncep_hrrr_conus": {
+    "day0": 80.3,
+    "day1": 78.4
+   },
+   "gfs_global": {
+    "day0": 79.3,
+    "day1": 78.3
+   },
+   "ncep_nbm_conus": {
+    "day0": 79.2,
+    "day1": 78.7
+   },
+   "ecmwf_ifs025": {
+    "day0": 77.8,
+    "day1": 77.4
+   },
+   "icon_seamless": {
+    "day0": 78.1,
+    "day1": 76.8
+   },
+   "gem_seamless": {
+    "day0": 80.1,
+    "day1": 78.2
+   },
+   "ukmo_seamless": {
+    "day0": 78,
+    "day1": 77.7
+   }
+  },
+  "final": true
+ },
+ "2026-11-16": {
+  "date": "2026-11-16",
+  "actual": 81,
+  "reviewed": "2026-11-22T23:51:37.891Z",
+  "peak": "11:53 AM",
+  "peakH": 11.9,
+  "maxHourly": 80,
+  "spike": 1,
+  "sector": "E/onshore",
+  "wind": "ENE 12.4 kt",
+  "cloudAM": 0,
+  "cloudPM": 20,
+  "dew8": 59,
+  "dew13": 57,
+  "dewChg": -2,
+  "rain": 1.04,
+  "gust": 26,
+  "tags": [
+   "onshore E flow",
+   "sunny",
+   "1-min spike +1",
+   "gusty"
+  ],
+  "summary": "High 81°F at 11:53 AM (1-minute data, 1° above the best hourly reading). onshore E flow (ENE 12.4 kt); sunny, gusty. Closest: ECMWF, ICON, GFS, GEM. Too cool: NBM.",
+  "sources": [
+   {
+    "name": "HRRR · day before",
+    "val": 82.2,
+    "miss": 1.2,
+    "kind": "model"
+   },
+   {
+    "name": "HRRR · same day",
+    "val": 82.8,
+    "miss": 1.8,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · day before",
+    "val": 78.4,
+    "miss": -2.6,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · same day",
+    "val": 80.4,
+    "miss": -0.6,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · day before",
+    "val": 81,
+    "miss": 0,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · same day",
+    "val": 78.8,
+    "miss": -2.2,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · day before",
+    "val": 78.3,
+    "miss": -2.7,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · same day",
+    "val": 80.6,
+    "miss": -0.4,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · day before",
+    "val": 77.6,
+    "miss": -3.4,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · same day",
+    "val": 80.5,
+    "miss": -0.5,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · day before",
+    "val": 78.8,
+    "miss": -2.2,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · same day",
+    "val": 81.6,
+    "miss": 0.6,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · day before",
+    "val": 77.8,
+    "miss": -3.2,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · same day",
+    "val": 79.2,
+    "miss": -1.8,
+    "kind": "model"
+   }
+  ],
+  "models": {
+   "ncep_hrrr_conus": {
+    "day0": 82.8,
+    "day1": 82.2
+   },
+   "gfs_global": {
+    "day0": 80.4,
+    "day1": 78.4
+   },
+   "ncep_nbm_conus": {
+    "day0": 78.8,
+    "day1": 81
+   },
+   "ecmwf_ifs025": {
+    "day0": 80.6,
+    "day1": 78.3
+   },
+   "icon_seamless": {
+    "day0": 80.5,
+    "day1": 77.6
+   },
+   "gem_seamless": {
+    "day0": 81.6,
+    "day1": 78.8
+   },
+   "ukmo_seamless": {
+    "day0": 79.2,
+    "day1": 77.8
+   }
+  },
+  "final": true
+ },
+ "2026-11-17": {
+  "date": "2026-11-17",
+  "actual": 81,
+  "reviewed": "2026-11-22T23:51:41.084Z",
+  "peak": "10:53 AM",
+  "peakH": 10.9,
+  "maxHourly": 81,
+  "spike": 0,
+  "sector": "E/onshore",
+  "wind": "E 18.4 kt",
+  "cloudAM": 60,
+  "cloudPM": 63,
+  "dew8": 68,
+  "dew13": 68,
+  "dewChg": 0,
+  "rain": 1.052,
+  "gust": 30,
+  "tags": [
+   "onshore E flow",
+   "afternoon cloud cap",
+   "shower cooled it",
+   "early peak",
+   "gusty"
+  ],
+  "summary": "High 81°F at 10:53 AM. onshore E flow (E 18.4 kt); afternoon cloud cap, shower cooled it, early peak, gusty. Closest: HRRR, GEM. Too cool: GFS, NBM.",
+  "sources": [
+   {
+    "name": "HRRR · day before",
+    "val": 77.6,
+    "miss": -3.4,
+    "kind": "model"
+   },
+   {
+    "name": "HRRR · same day",
+    "val": 81.8,
+    "miss": 0.8,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · day before",
+    "val": 77.8,
+    "miss": -3.2,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · same day",
+    "val": 79,
+    "miss": -2,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · day before",
+    "val": 76.9,
+    "miss": -4.1,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · same day",
+    "val": 77.9,
+    "miss": -3.1,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · day before",
+    "val": 78.2,
+    "miss": -2.8,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · same day",
+    "val": 79.1,
+    "miss": -1.9,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · day before",
+    "val": 77.9,
+    "miss": -3.1,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · same day",
+    "val": 79.6,
+    "miss": -1.4,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · day before",
+    "val": 73.7,
+    "miss": -7.3,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · same day",
+    "val": 81.8,
+    "miss": 0.8,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · day before",
+    "val": 79.1,
+    "miss": -1.9,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · same day",
+    "val": 79.5,
+    "miss": -1.5,
+    "kind": "model"
+   }
+  ],
+  "models": {
+   "ncep_hrrr_conus": {
+    "day0": 81.8,
+    "day1": 77.6
+   },
+   "gfs_global": {
+    "day0": 79,
+    "day1": 77.8
+   },
+   "ncep_nbm_conus": {
+    "day0": 77.9,
+    "day1": 76.9
+   },
+   "ecmwf_ifs025": {
+    "day0": 79.1,
+    "day1": 78.2
+   },
+   "icon_seamless": {
+    "day0": 79.6,
+    "day1": 77.9
+   },
+   "gem_seamless": {
+    "day0": 81.8,
+    "day1": 73.7
+   },
+   "ukmo_seamless": {
+    "day0": 79.5,
+    "day1": 79.1
+   }
+  },
+  "final": true
+ },
+ "2026-11-18": {
+  "date": "2026-11-18",
+  "actual": 78,
+  "reviewed": "2026-11-22T23:51:44.391Z",
+  "peak": "12:53 AM",
+  "peakH": 0.9,
+  "maxHourly": 77,
+  "spike": 1,
+  "sector": "E/onshore",
+  "wind": "E 20.8 kt",
+  "cloudAM": 100,
+  "cloudPM": 100,
+  "dew8": 70,
+  "dew13": 69,
+  "dewChg": -1,
+  "rain": 3.63,
+  "gust": 43,
+  "tags": [
+   "onshore E flow",
+   "afternoon cloud cap",
+   "showers around",
+   "early peak",
+   "1-min spike +1",
+   "gusty"
+  ],
+  "summary": "High 78°F at 12:53 AM (1-minute data, 1° above the best hourly reading). onshore E flow (E 20.8 kt); afternoon cloud cap, showers around, early peak, gusty. Closest: GFS, GEM. Too cool: UKMO, HRRR.",
+  "sources": [
+   {
+    "name": "HRRR · day before",
+    "val": 78.5,
+    "miss": 0.5,
+    "kind": "model"
+   },
+   {
+    "name": "HRRR · same day",
+    "val": 74.9,
+    "miss": -3.1,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · day before",
+    "val": 77.7,
+    "miss": -0.3,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · same day",
+    "val": 78,
+    "miss": 0,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · day before",
+    "val": 78.1,
+    "miss": 0.1,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · same day",
+    "val": 76.3,
+    "miss": -1.7,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · day before",
+    "val": 75.8,
+    "miss": -2.2,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · same day",
+    "val": 76.5,
+    "miss": -1.5,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · day before",
+    "val": 80.3,
+    "miss": 2.3,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · same day",
+    "val": 76.2,
+    "miss": -1.8,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · day before",
+    "val": 77.2,
+    "miss": -0.8,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · same day",
+    "val": 79,
+    "miss": 1,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · day before",
+    "val": 76.5,
+    "miss": -1.5,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · same day",
+    "val": 75.7,
+    "miss": -2.3,
+    "kind": "model"
+   }
+  ],
+  "models": {
+   "ncep_hrrr_conus": {
+    "day0": 74.9,
+    "day1": 78.5
+   },
+   "gfs_global": {
+    "day0": 78,
+    "day1": 77.7
+   },
+   "ncep_nbm_conus": {
+    "day0": 76.3,
+    "day1": 78.1
+   },
+   "ecmwf_ifs025": {
+    "day0": 76.5,
+    "day1": 75.8
+   },
+   "icon_seamless": {
+    "day0": 76.2,
+    "day1": 80.3
+   },
+   "gem_seamless": {
+    "day0": 79,
+    "day1": 77.2
+   },
+   "ukmo_seamless": {
+    "day0": 75.7,
+    "day1": 76.5
+   }
+  },
+  "final": true
+ },
+ "2026-11-19": {
+  "date": "2026-11-19",
+  "actual": 82,
+  "reviewed": "2026-11-22T23:51:47.932Z",
+  "peak": "9:25 AM",
+  "peakH": 9.4,
+  "maxHourly": 80,
+  "spike": 2,
+  "sector": "E/onshore",
+  "wind": "ESE 5.7 kt",
+  "cloudAM": 100,
+  "cloudPM": 67,
+  "dew8": 73,
+  "dew13": 73,
+  "dewChg": 0,
+  "rain": 0.18100000000000002,
+  "gust": 19,
+  "tags": [
+   "onshore E flow",
+   "afternoon cloud cap",
+   "showers around",
+   "early peak",
+   "1-min spike +2",
+   "gusty"
+  ],
+  "summary": "High 82°F at 9:25 AM (1-minute data, 2° above the best hourly reading). onshore E flow (ESE 5.7 kt); afternoon cloud cap, showers around, early peak, gusty. Closest: GEM, GFS. Too cool: NBM, ICON, ECMWF, UKMO, HRRR.",
+  "sources": [
+   {
+    "name": "HRRR · day before",
+    "val": 77.5,
+    "miss": -4.5,
+    "kind": "model"
+   },
+   {
+    "name": "HRRR · same day",
+    "val": 78.6,
+    "miss": -3.4,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · day before",
+    "val": 81,
+    "miss": -1,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · same day",
+    "val": 81.4,
+    "miss": -0.6,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · day before",
+    "val": 80.1,
+    "miss": -1.9,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · same day",
+    "val": 79.9,
+    "miss": -2.1,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · day before",
+    "val": 79.3,
+    "miss": -2.7,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · same day",
+    "val": 79.3,
+    "miss": -2.7,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · day before",
+    "val": 79.6,
+    "miss": -2.4,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · same day",
+    "val": 79.5,
+    "miss": -2.5,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · day before",
+    "val": 80.5,
+    "miss": -1.5,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · same day",
+    "val": 82.1,
+    "miss": 0.1,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · day before",
+    "val": 77.5,
+    "miss": -4.5,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · same day",
+    "val": 78.8,
+    "miss": -3.2,
+    "kind": "model"
+   }
+  ],
+  "models": {
+   "ncep_hrrr_conus": {
+    "day0": 78.6,
+    "day1": 77.5
+   },
+   "gfs_global": {
+    "day0": 81.4,
+    "day1": 81
+   },
+   "ncep_nbm_conus": {
+    "day0": 79.9,
+    "day1": 80.1
+   },
+   "ecmwf_ifs025": {
+    "day0": 79.3,
+    "day1": 79.3
+   },
+   "icon_seamless": {
+    "day0": 79.5,
+    "day1": 79.6
+   },
+   "gem_seamless": {
+    "day0": 82.1,
+    "day1": 80.5
+   },
+   "ukmo_seamless": {
+    "day0": 78.8,
+    "day1": 77.5
+   }
+  },
+  "final": true
+ },
+ "2026-11-20": {
+  "date": "2026-11-20",
+  "actual": 82,
+  "reviewed": "2026-11-22T23:51:51.574Z",
+  "peak": "2:53 PM",
+  "peakH": 14.9,
+  "maxHourly": 82,
+  "spike": 0,
+  "sector": "S/SW",
+  "wind": "SSE 4.2 kt",
+  "cloudAM": 100,
+  "cloudPM": 50,
+  "dew8": 71,
+  "dew13": 69,
+  "dewChg": -2,
+  "rain": 0,
+  "gust": 0,
+  "tags": [
+   "S/SW flow",
+   "afternoon cloud cap",
+   "late peak"
+  ],
+  "summary": "High 82°F at 2:53 PM. S/SW flow (SSE 4.2 kt); afternoon cloud cap, late peak. Morning call 82° to 83° hit (mean 82.5, off +0.5). Closest: NBM, ICON, GEM, GFS, UKMO. Too cool: HRRR.",
+  "callHit": true,
+  "sources": [
+   {
+    "name": "Page · night before",
+    "val": 82.1,
+    "miss": 0.1,
+    "kind": "page"
+   },
+   {
+    "name": "Page · morning",
+    "val": 82.5,
+    "miss": 0.5,
+    "kind": "page"
+   },
+   {
+    "name": "HRRR · day before",
+    "val": 78.4,
+    "miss": -3.6,
+    "kind": "model"
+   },
+   {
+    "name": "HRRR · same day",
+    "val": 79.3,
+    "miss": -2.7,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · day before",
+    "val": 84.2,
+    "miss": 2.2,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · same day",
+    "val": 83,
+    "miss": 1,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · day before",
+    "val": 82.3,
+    "miss": 0.3,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · same day",
+    "val": 81.7,
+    "miss": -0.3,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · day before",
+    "val": 80.4,
+    "miss": -1.6,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · same day",
+    "val": 80.2,
+    "miss": -1.8,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · day before",
+    "val": 82.1,
+    "miss": 0.1,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · same day",
+    "val": 81.4,
+    "miss": -0.6,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · day before",
+    "val": 83.7,
+    "miss": 1.7,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · same day",
+    "val": 81.1,
+    "miss": -0.9,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · day before",
+    "val": 78.6,
+    "miss": -3.4,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · same day",
+    "val": 81,
+    "miss": -1,
+    "kind": "model"
+   }
+  ],
+  "models": {
+   "ncep_hrrr_conus": {
+    "day0": 79.3,
+    "day1": 78.4
+   },
+   "gfs_global": {
+    "day0": 83,
+    "day1": 84.2
+   },
+   "ncep_nbm_conus": {
+    "day0": 81.7,
+    "day1": 82.3
+   },
+   "ecmwf_ifs025": {
+    "day0": 80.2,
+    "day1": 80.4
+   },
+   "icon_seamless": {
+    "day0": 81.4,
+    "day1": 82.1
+   },
+   "gem_seamless": {
+    "day0": 81.1,
+    "day1": 83.7
+   },
+   "ukmo_seamless": {
+    "day0": 81,
+    "day1": 78.6
+   }
+  },
+  "final": true
+ },
+ "2026-11-21": {
+  "date": "2026-11-21",
+  "actual": 82,
+  "reviewed": "2026-11-22T23:51:55.010Z",
+  "peak": "1:53 PM",
+  "peakH": 13.9,
+  "maxHourly": 81,
+  "spike": 1,
+  "sector": "S/SW",
+  "wind": "SSW 3.6 kt",
+  "cloudAM": 40,
+  "cloudPM": 60,
+  "dew8": 72,
+  "dew13": 72,
+  "dewChg": 0,
+  "rain": 2.04,
+  "gust": 16,
+  "tags": [
+   "S/SW flow",
+   "afternoon cloud cap",
+   "shower cooled it",
+   "1-min spike +1"
+  ],
+  "summary": "High 82°F at 1:53 PM (1-minute data, 1° above the best hourly reading). S/SW flow (SSW 3.6 kt); afternoon cloud cap, shower cooled it. Morning call 80° to 81° missed (mean 81.4, off -0.6). Closest: NBM, GEM, UKMO. Too cool: HRRR, ICON, ECMWF. Too warm: GFS.",
+  "callHit": false,
+  "sources": [
+   {
+    "name": "Page · night before",
+    "val": 82.6,
+    "miss": 0.6,
+    "kind": "page"
+   },
+   {
+    "name": "Page · morning",
+    "val": 81.4,
+    "miss": -0.6,
+    "kind": "page"
+   },
+   {
+    "name": "HRRR · day before",
+    "val": 78.7,
+    "miss": -3.3,
+    "kind": "model"
+   },
+   {
+    "name": "HRRR · same day",
+    "val": 79.7,
+    "miss": -2.3,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · day before",
+    "val": 86.7,
+    "miss": 4.7,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · same day",
+    "val": 85.7,
+    "miss": 3.7,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · day before",
+    "val": 81.4,
+    "miss": -0.6,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · same day",
+    "val": 81.9,
+    "miss": -0.1,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · day before",
+    "val": 76.6,
+    "miss": -5.4,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · same day",
+    "val": 75.8,
+    "miss": -6.2,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · day before",
+    "val": 80.9,
+    "miss": -1.1,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · same day",
+    "val": 79.7,
+    "miss": -2.3,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · day before",
+    "val": 85.1,
+    "miss": 3.1,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · same day",
+    "val": 81.3,
+    "miss": -0.7,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · day before",
+    "val": 81.3,
+    "miss": -0.7,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · same day",
+    "val": 81.1,
+    "miss": -0.9,
+    "kind": "model"
+   }
+  ],
+  "models": {
+   "ncep_hrrr_conus": {
+    "day0": 79.7,
+    "day1": 78.7
+   },
+   "gfs_global": {
+    "day0": 85.7,
+    "day1": 86.7
+   },
+   "ncep_nbm_conus": {
+    "day0": 81.9,
+    "day1": 81.4
+   },
+   "ecmwf_ifs025": {
+    "day0": 75.8,
+    "day1": 76.6
+   },
+   "icon_seamless": {
+    "day0": 79.7,
+    "day1": 80.9
+   },
+   "gem_seamless": {
+    "day0": 81.3,
+    "day1": 85.1
+   },
+   "ukmo_seamless": {
+    "day0": 81.1,
+    "day1": 81.3
+   }
+  },
+  "final": true
+ },
+ "2026-11-22": {
+  "date": "2026-11-22",
+  "actual": 85,
+  "reviewed": "2026-11-22T23:51:58.208Z",
+  "peak": "2:53 PM",
+  "peakH": 14.9,
+  "maxHourly": 85,
+  "spike": 0,
+  "sector": "W/land",
+  "wind": "W 4.6 kt",
+  "cloudAM": 0,
+  "cloudPM": 20,
+  "dew8": 72,
+  "dew13": 69,
+  "dewChg": -3,
+  "rain": 0,
+  "gust": 0,
+  "tags": [
+   "W land breeze",
+   "sunny",
+   "drying mid-day",
+   "late peak"
+  ],
+  "summary": "High 85°F at 2:53 PM. W land breeze (W 4.6 kt); sunny, drying mid-day, late peak. Dewpoint 72→69°F by 1 PM. Morning call 85° to 86° hit (mean 85.2, off +0.2). Closest: GEM. Too cool: ECMWF, HRRR. Too warm: GFS.",
+  "callHit": true,
+  "sources": [
+   {
+    "name": "Page · night before",
+    "val": 85.2,
+    "miss": 0.2,
+    "kind": "page"
+   },
+   {
+    "name": "Page · morning",
+    "val": 85.2,
+    "miss": 0.2,
+    "kind": "page"
+   },
+   {
+    "name": "HRRR · day before",
+    "val": 79.9,
+    "miss": -5.1,
+    "kind": "model"
+   },
+   {
+    "name": "HRRR · same day",
+    "val": 82.1,
+    "miss": -2.9,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · day before",
+    "val": 86.6,
+    "miss": 1.6,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · same day",
+    "val": 88,
+    "miss": 3,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · day before",
+    "val": 84.1,
+    "miss": -0.9,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · same day",
+    "val": 83.9,
+    "miss": -1.1,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · day before",
+    "val": 82.4,
+    "miss": -2.6,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · same day",
+    "val": 82.4,
+    "miss": -2.6,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · day before",
+    "val": 81.5,
+    "miss": -3.5,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · same day",
+    "val": 83.5,
+    "miss": -1.5,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · day before",
+    "val": 85.8,
+    "miss": 0.8,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · same day",
+    "val": 84.3,
+    "miss": -0.7,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · day before",
+    "val": 83.4,
+    "miss": -1.6,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · same day",
+    "val": 83.2,
+    "miss": -1.8,
+    "kind": "model"
+   }
+  ],
+  "models": {
+   "ncep_hrrr_conus": {
+    "day0": 82.1,
+    "day1": 79.9
+   },
+   "gfs_global": {
+    "day0": 88,
+    "day1": 86.6
+   },
+   "ncep_nbm_conus": {
+    "day0": 83.9,
+    "day1": 84.1
+   },
+   "ecmwf_ifs025": {
+    "day0": 82.4,
+    "day1": 82.4
+   },
+   "icon_seamless": {
+    "day0": 83.5,
+    "day1": 81.5
+   },
+   "gem_seamless": {
+    "day0": 84.3,
+    "day1": 85.8
+   },
+   "ukmo_seamless": {
+    "day0": 83.2,
+    "day1": 83.4
+   }
+  },
+  "final": false
+ }
+}

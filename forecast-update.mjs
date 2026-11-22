@@ -5,6 +5,7 @@
 import { writeFileSync, readFileSync, existsSync } from "node:fs";
 import { fetchKalshiDirect, runForecast, estNow, fetchCliHighs, STATION } from "./forecast-engine.js";
 import { train } from "./forecast-train.mjs";
+import { reviewDay } from "./forecast-review.mjs";
 
 const now = estNow();
 const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
@@ -93,13 +94,35 @@ if (fc) {
     const f = fc[k];
     if (!f || f.error) continue;
     const e = (log[f.date] ||= {});
-    const snap = { at: `${now.toISOString().slice(5, 10)} ${fc.generatedTxt}`, point: f.point, call: f.call, mean: f.mean, meanRaw: f.meanRaw, sector: f.regime?.sector, kalshi_peak: f.kalshi.peak };
+    const snap = { at: `${now.toISOString().slice(5, 10)} ${fc.generatedTxt}`, point: f.point, call: f.call, mean: f.mean, meanRaw: f.meanRaw, sector: f.regime?.sector,
+      kalshi_peak: f.kalshi.peak, kalshi_implied: f.kalshi.implied ?? null, nws: f.nws?.high ?? null, analog: f.analogs?.median ?? null };
     e.first ||= snap;
-    if (k === "today" && now.getUTCHours() < 11) e.morning = snap;
-    e.latest = snap;
+    const H = now.getUTCHours();
+    if (k === "today" && H < 11) e.morning = snap;
+    // freeze the "last" call at the usual peak (evening runs only see the cooling)
+    if (k !== "today" || H < 16 || !e.latest) e.latest = snap;
+    // nowcast checkpoints for the daily review
+    if (k === "today") for (const ch of [10, 12, 14]) if (H >= ch && H < ch + 2 && !e.nowcast?.[ch])
+      (e.nowcast ||= {})[ch] = { at: fc.generatedTxt, call: f.call, mean: f.mean, expected: f.expected, floor: f.floor, rate: f.pacing?.rate ?? null };
   }
 }
 const cli = fc?.cli || (await fetchCliHighs().catch(() => ({})));
 for (const [d, e] of Object.entries(log)) if (cli[d]) e.actual = cli[d].high;
 log = Object.fromEntries(Object.entries(log).sort().slice(-60));
 writeFileSync("forecast_log.json", JSON.stringify(log, null, 1));
+
+// ---- daily review: once the CLI high is in (preliminary ~5 PM, final after midnight) ----
+let reviews = {};
+try { reviews = JSON.parse(readFileSync("forecast_reviews.json", "utf8")); } catch { /* new */ }
+const recent = Object.keys(cli).filter((d) => d <= todayS).sort().slice(-4);
+for (const d of recent) {
+  const actual = cli[d].high, old = reviews[d];
+  if (d === todayS && now.getUTCHours() < 17) continue;            // not before the day is done
+  if (old && old.actual === actual && (old.final || d === todayS)) continue; // prelim once, then once more as final
+  try {
+    const r = await reviewDay(d, { actual, logEntry: log[d], wethr: wethr && !wethr.error ? wethr : null });
+    r.final = d < todayS; reviews[d] = r; console.log("reviewed", d, "|", r.tags.join(", "));
+  } catch (e) { console.log("review failed", d, e.message); }
+}
+reviews = Object.fromEntries(Object.entries(reviews).sort().slice(-90));
+writeFileSync("forecast_reviews.json", JSON.stringify(reviews, null, 1));

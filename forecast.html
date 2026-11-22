@@ -44,6 +44,8 @@
     .warnbox { background: #2A1A12; border: 1px solid #5A3420; color: #FFC9A8; border-radius: 8px; padding: 8px 12px; font-size: 12.5px; margin-bottom: 10px; display: none; }
     .hit { color: var(--good); } .miss { color: var(--bad); }
     main td:first-child { text-align: left; }
+    .tag { display: inline-block; font-family: var(--mono); font-size: 11px; border: 1px solid var(--line); border-radius: 12px; padding: 2px 9px; margin: 0 5px 5px 0; color: var(--official); }
+    @media (max-width: 940px) { #rv-panel .pbody { grid-template-columns: 1fr !important; } }
     @media (max-width: 940px) {
       #nc-chips { grid-template-columns: repeat(3, 1fr) !important; }
       .hero { grid-template-columns: 1fr; } .callbox { border-right: none; border-bottom: 1px dashed var(--line); padding: 0 0 12px; }
@@ -160,6 +162,16 @@
           <thead><tr><th>Date</th><th>High</th><th>Wind</th><th>Rain</th><th>Dew</th></tr></thead>
           <tbody id="tb-ana"></tbody>
         </table></div>
+      </div>
+    </section>
+
+    <section style="margin-bottom:10px">
+      <div class="panel" id="rv-panel" style="display:none">
+        <div class="panel-head"><span>Last day reviewed · what made it</span><span id="rv-h" class="legend"></span></div>
+        <div class="pbody" style="display:grid;grid-template-columns:1.4fr 1fr;gap:14px">
+          <div><div id="rv-tags" style="margin-bottom:8px"></div><div id="rv-sum" style="font-size:13.5px;line-height:1.5"></div></div>
+          <div class="tbl-wrap"><table><thead><tr><th>Who said</th><th>High</th><th>Miss</th></tr></thead><tbody id="tb-rv"></tbody></table></div>
+        </div>
       </div>
     </section>
 

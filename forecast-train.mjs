@@ -10,7 +10,7 @@
 // 3. selfcal — the dashboard's own recent misses (forecast_log.json): mean error of
 //              the morning and night-before calls, shrunk and clamped, fed back in.
 import { readFileSync, writeFileSync } from "node:fs";
-import { STATION, trendBucket, skyState, RING, upwindDelta } from "./forecast-engine.js";
+import { STATION, MODELS, trendBucket, skyState, RING, upwindDelta } from "./forecast-engine.js";
 
 const WIN = 30, YEARS = 12, HOURS = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 export const sectorOf = (wd) => wd == null ? "calm" : (wd >= 290 || wd < 20) ? "N/NW" : wd < 150 ? "E/onshore" : wd < 240 ? "S/SW" : "W/land";
@@ -130,6 +130,28 @@ export async function train({ logPath = "forecast_log.json" } = {}) {
     const a = spike[s]; spikeOut[s] = { ...pmf(a, -2, 4), ge1: Math.round((a.filter((x) => x >= 1).length / a.length) * 100) / 100 };
   }
 
+  // --- model bias by wind sector: each model's day-ahead high vs the CLI over the last ~45 days ---
+  const daySector = {};
+  for (const [d, obs] of Object.entries(days)) {
+    let u = 0, v = 0; for (const o of obs) if (o.h >= 10 && o.h <= 16 && o.sk > 0 && !isNaN(o.dr)) { u += o.sk * Math.sin(o.dr * Math.PI / 180); v += o.sk * Math.cos(o.dr * Math.PI / 180); }
+    daySector[d] = u === 0 && v === 0 ? "calm" : sectorOf((Math.atan2(u, v) * 180 / Math.PI + 360) % 360);
+  }
+  try { const rv = JSON.parse(readFileSync("forecast_reviews.json", "utf8")); for (const [d, r] of Object.entries(rv)) if (r.sector) daySector[d] = r.sector; } catch { /* none yet */ }
+  const modelSector = {};
+  try {
+    const end = new Date(Date.parse(todayS + "T00:00:00Z") - 86400e3), start = new Date(end.getTime() - 44 * 86400e3), iso = (x) => x.toISOString().slice(0, 10);
+    const mq = new URLSearchParams({ latitude: STATION.lat, longitude: STATION.lon, timezone: "Etc/GMT+5", start_date: iso(start), end_date: iso(end),
+      models: Object.keys(MODELS).join(","), hourly: "temperature_2m_previous_day1", temperature_unit: "fahrenheit" });
+    const mj = await json("https://previous-runs-api.open-meteo.com/v1/forecast?" + mq), tt = mj.hourly.time;
+    for (const m of Object.keys(MODELS)) {
+      const arr = mj.hourly[`temperature_2m_previous_day1_${m}`] || [], mx = {};
+      tt.forEach((t, i) => { const d = t.slice(0, 10); if (arr[i] != null) mx[d] = Math.max(mx[d] ?? -999, arr[i]); });
+      const acc = {};
+      for (const [d, x] of Object.entries(mx)) { const s2 = daySector[d], hi = cli[d]; if (!s2 || hi == null) continue; (acc[s2] ||= []).push(x - hi); }
+      modelSector[m] = Object.fromEntries(Object.entries(acc).map(([k, a]) => [k, { n: a.length, err: Math.round((a.reduce((x, y) => x + y, 0) / a.length) * 10) / 10 }]));
+    }
+  } catch (e) { console.log("model-by-sector failed:", e.message); }
+
   // --- self-calibration from the dashboard's own track record ---
   let log = {}; try { log = JSON.parse(readFileSync(logPath, "utf8")); } catch { /* none yet */ }
   const cal = (pick) => {
@@ -143,7 +165,7 @@ export async function train({ logPath = "forecast_log.json" } = {}) {
 
   const out = {
     trained: new Date().toISOString(), station: STATION.icao, window: `±${WIN} days of ${todayS.slice(5)}, ${yr - YEARS}–${yr}`, daysUsed: used,
-    pacing, spike: spikeOut, nowcast, peak, spikeGust, upwind, upwindBias,
+    pacing, spike: spikeOut, nowcast, peak, spikeGust, upwind, upwindBias, modelSector,
     selfcal: { today: cal((e) => e.morning || e.first), tomorrow: cal((e) => e.first) },
   };
   return out;

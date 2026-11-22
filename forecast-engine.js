@@ -506,8 +506,11 @@ export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana
     const use = isToday ? idx.filter((i) => times[i] >= hourNow) : idx;
     const vals = use.map((i) => t2[i]).filter((v) => v != null);
     if (vals.length < (isToday ? 3 : 18)) continue;
-    const raw = Math.max(...vals), pi = use.find((i) => t2[i] === raw), sc = scores[m];
-    const row = { model: lab, raw: r1(raw), peak: hh(times[pi]), bias: sc.bias, mae: sc.mae, n: sc.n, pace: null };
+    const raw = Math.max(...vals), pi = use.find((i) => t2[i] === raw), sc = { ...scores[m] };
+    // this model's miss in today's wind pattern (from the daily reviews / last ~45 days), shrunk toward its 7-day bias
+    const ms = learned?.modelSector?.[m]?.[reg?.sector];
+    if (ms && ms.n >= 3) { const sbs = (ms.n * -ms.err + 4 * sc.bias) / (ms.n + 4); sc.bias = r1(0.5 * sc.bias + 0.5 * sbs); sc.sector = { ...ms }; }
+    const row = { model: lab, raw: r1(raw), peak: hh(times[pi]), bias: sc.bias, mae: sc.mae, n: sc.n, pace: null, sectorErr: sc.sector ?? null };
     let corr = raw + sc.bias;
     let wScale = 1;
     if (isToday && ob && isMix) { const h = ob.nowT.getUTCHours(); wScale = h < 10 ? 1 : h < 13 ? 0.6 : 0.3; } // a potential, not paced to obs

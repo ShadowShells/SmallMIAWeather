@@ -18,6 +18,8 @@ async function load() {
   let kalshi = null, log = {};
   try { kalshi = await getJSON("kalshi.json"); dot("dot-kalshi", true); } catch { dot("dot-kalshi", false); }
   try { log = await getJSON("forecast_log.json"); } catch { /* none yet */ }
+  let reviews = {};
+  try { reviews = await getJSON("forecast_reviews.json"); } catch { /* none yet */ }
   let learned = null, wethr = null;
   try { learned = await getJSON("forecast_learned.json"); } catch { /* not trained yet */ }
   try {
@@ -34,7 +36,7 @@ async function load() {
   }
   if (!DATA) { $("meta").textContent = "No data — models and snapshot both unavailable."; return; }
   dot("dot-obs", !!DATA.today?.obs);
-  DATA.log = log; DATA.kalshiAt = kalshi?.fetched_utc; DATA.learned = learned; DATA.wethrFile = wethr;
+  DATA.log = log; DATA.reviews = reviews; DATA.kalshiAt = kalshi?.fetched_utc; DATA.learned = learned; DATA.wethrFile = wethr;
   const w = [];
   if (!live) w.push("Live model feed unavailable — showing the last scheduled snapshot.");
   if (!kalshi) w.push("Kalshi odds file missing — the scheduled job may not have run yet.");
@@ -145,6 +147,17 @@ function render() {
     return `<tr class="${f.call && br.includes(f.call) ? "callrow" : ""}"><td>${c.c} °C</td><td>${c.f}</td><td class="dim">${c.lo}–${c.hi}</td><td>${esc(s)}${br ? ` <span class="dim">(${esc(br)})</span>` : ""}</td></tr>`;
   }).join("");
   $("tgroups").innerHTML = (f.tgroups || []).length ? "METAR T-group needed:<br>" + f.tgroups.map((t) => `${esc(t.bracket)}: ≥ ${t.needF} °F → <b>${t.tgroup}</b> (6-h max group ≥ 1${t.tgroup.slice(1)}; a 1-min ${t.oneMinC} °C reading confirms it)`).join("<br>") : "";
+
+  // daily review: the most recent finished day
+  const rvDates = Object.keys(DATA.reviews || {}).sort(), rv = rvDates.length ? DATA.reviews[rvDates.at(-1)] : null;
+  $("rv-panel").style.display = rv ? "" : "none";
+  if (rv) {
+    $("rv-h").textContent = `${rv.date}${rv.final ? "" : " · preliminary"}`;
+    $("rv-tags").innerHTML = rv.tags.map((t) => `<span class="tag">${esc(t)}</span>`).join("");
+    $("rv-sum").textContent = rv.summary;
+    const pick = rv.sources.filter((x) => x.kind !== "model" || x.name.includes("same day")).sort((a2, b2) => Math.abs(a2.miss) - Math.abs(b2.miss));
+    $("tb-rv").innerHTML = pick.map((x) => `<tr><td>${esc(x.name.replace(" · same day", ""))}</td><td>${x.val}</td><td class="${Math.abs(x.miss) <= 1 ? "pos" : Math.abs(x.miss) >= 2 ? "neg" : ""}">${x.miss > 0 ? "+" : ""}${x.miss}</td></tr>`).join("");
+  }
 
   // analogs
   const a = f.analogs;

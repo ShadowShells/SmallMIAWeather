@@ -32,7 +32,7 @@ jobs:
         run: |
           git config user.name "forecast-bot"
           git config user.email "forecast-bot@users.noreply.github.com"
-          git add kalshi.json forecast_log.json
+          git add kalshi.json forecast_log.json forecast_reviews.json
           for f in forecast.json forecast_learned.json wethr.json; do if [ -f "$f" ]; then git add "$f"; fi; done
           if git diff --cached --quiet; then echo "no changes"; exit 0; fi
           git commit -m "forecast data $(date -u +%Y-%m-%dT%H:%MZ)"
