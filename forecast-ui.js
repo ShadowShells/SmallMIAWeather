@@ -1,6 +1,6 @@
 // forecast.html renderer: runs forecast-engine.js live in the browser; falls back to the
 // scheduled snapshot (forecast.json) if the model feed is unavailable.
-import { runForecast, estNow } from "./forecast-engine.js?v=20261123c";
+import { runForecast, estNow } from "./forecast-engine.js?v=20261123d";
 
 const $ = (id) => document.getElementById(id);
 const pct = (p) => (p == null ? "—" : `${Math.round(p * 100)}%`);
@@ -174,7 +174,7 @@ function render() {
 
   // links (peak hour for soundings)
   const lat = 25.79, lon = -80.29, ev = f.kalshi?.event || "";
-  $("links").innerHTML = [
+  if ($("links")) $("links").innerHTML = [
     [`https://www.tropicaltidbits.com/analysis/models/sounding/?model=hrrr&lat=${lat}&lon=${lon}&mode=regular`, "HRRR sounding"],
     [`https://www.tropicaltidbits.com/analysis/models/sounding/?model=gfs&lat=${lat}&lon=${lon}&mode=regular`, "GFS sounding"],
     ["https://www.tropicaltidbits.com/analysis/models/?model=gfs&region=seus&pkg=T2m", "GFS SE US maps"],
