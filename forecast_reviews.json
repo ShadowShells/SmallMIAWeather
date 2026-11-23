@@ -1177,5 +1177,194 @@
    }
   },
   "final": true
+ },
+ "2026-11-23": {
+  "date": "2026-11-23",
+  "actual": 77,
+  "reviewed": "2026-11-23T22:13:26.797Z",
+  "peak": "12:46 PM",
+  "peakH": 12.8,
+  "maxHourly": 77,
+  "spike": 0,
+  "sector": "N/NW",
+  "wind": "NNW 3.3 kt",
+  "cloudAM": 20,
+  "cloudPM": 0,
+  "dew8": 64,
+  "dew13": 64,
+  "dewChg": 0,
+  "rain": 0,
+  "gust": 15,
+  "tags": [
+   "N/NW flow",
+   "sunny"
+  ],
+  "summary": "High 77°F at 12:46 PM. N/NW flow (NNW 3.3 kt); sunny. Morning call 79° to 80° missed (mean 79.2, off +2.2). Closest: HRRR, ICON, ECMWF, UKMO. Too warm: GEM, GFS.",
+  "callHit": false,
+  "sources": [
+   {
+    "name": "Page · night before",
+    "val": 79.8,
+    "miss": 2.8,
+    "kind": "page"
+   },
+   {
+    "name": "Page · morning",
+    "val": 79.2,
+    "miss": 2.2,
+    "kind": "page"
+   },
+   {
+    "name": "Page · 10 AM nowcast",
+    "val": 78.1,
+    "miss": 1.1,
+    "kind": "page"
+   },
+   {
+    "name": "Page · 12 PM nowcast",
+    "val": 77.9,
+    "miss": 0.9,
+    "kind": "page"
+   },
+   {
+    "name": "Page · 2 PM nowcast",
+    "val": 77.9,
+    "miss": 0.9,
+    "kind": "page"
+   },
+   {
+    "name": "NWS",
+    "val": 80,
+    "miss": 3,
+    "kind": "other"
+   },
+   {
+    "name": "Similar days",
+    "val": 81,
+    "miss": 4,
+    "kind": "other"
+   },
+   {
+    "name": "Kalshi (morning)",
+    "val": 78.7,
+    "miss": 1.7,
+    "kind": "other"
+   },
+   {
+    "name": "HRRR · day before",
+    "val": 73.5,
+    "miss": -3.5,
+    "kind": "model"
+   },
+   {
+    "name": "HRRR · same day",
+    "val": 76.6,
+    "miss": -0.4,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · day before",
+    "val": 82.2,
+    "miss": 5.2,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · same day",
+    "val": 81.8,
+    "miss": 4.8,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · day before",
+    "val": 78.7,
+    "miss": 1.7,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · same day",
+    "val": 78.1,
+    "miss": 1.1,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · day before",
+    "val": 76.2,
+    "miss": -0.8,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · same day",
+    "val": 77.5,
+    "miss": 0.5,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · day before",
+    "val": 76.1,
+    "miss": -0.9,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · same day",
+    "val": 77.4,
+    "miss": 0.4,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · day before",
+    "val": 79.4,
+    "miss": 2.4,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · same day",
+    "val": 80.8,
+    "miss": 3.8,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · day before",
+    "val": 76.4,
+    "miss": -0.6,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · same day",
+    "val": 76.2,
+    "miss": -0.8,
+    "kind": "model"
+   }
+  ],
+  "models": {
+   "ncep_hrrr_conus": {
+    "day0": 76.6,
+    "day1": 73.5
+   },
+   "gfs_global": {
+    "day0": 81.8,
+    "day1": 82.2
+   },
+   "ncep_nbm_conus": {
+    "day0": 78.1,
+    "day1": 78.7
+   },
+   "ecmwf_ifs025": {
+    "day0": 77.5,
+    "day1": 76.2
+   },
+   "icon_seamless": {
+    "day0": 77.4,
+    "day1": 76.1
+   },
+   "gem_seamless": {
+    "day0": 80.8,
+    "day1": 79.4
+   },
+   "ukmo_seamless": {
+    "day0": 76.2,
+    "day1": 76.4
+   }
+  },
+  "final": false
  }
 }
