@@ -3,7 +3,7 @@
 // 2. Runs the full engine server-side -> forecast.json (fallback snapshot for the page).
 // 3. Keeps forecast_log.json: first / morning / latest call per day + the CLI actual.
 import { writeFileSync, readFileSync, existsSync } from "node:fs";
-import { fetchKalshiDirect, runForecast, estNow, fetchCliHighs, STATION } from "./forecast-engine.js";
+import { fetchKalshiDirect, runForecast, estNow, fetchCliHighs, fetchHistory, fetchRing, packHistory, STATION } from "./forecast-engine.js";
 import { train } from "./forecast-train.mjs";
 import { reviewDay } from "./forecast-review.mjs";
 
@@ -25,6 +25,22 @@ const trainedDay = learned ? new Date(Date.parse(learned.trained) + STATION.utcO
 if (!learned || trainedDay !== todayS || process.env.FORCE_TRAIN) {
   try { learned = await train(); writeFileSync("forecast_learned.json", JSON.stringify(learned)); console.log("retrained on", learned.daysUsed, "days"); }
   catch (e) { console.log("train failed (kept old):", e.message); }
+}
+
+// ---- IEM cache for the page (official highs, nearby stations, daily history for similar days) ----
+let iem = null;
+{
+  let old = {}; try { old = JSON.parse(readFileSync("iem.json", "utf8")); } catch { /* new */ }
+  const [cliNow, ringNow] = await Promise.all([fetchCliHighs().catch(() => ({})), fetchRing().catch(() => null)]);
+  let history = old.history || [], histDay = old.historyDay;
+  if (!history.length || histDay !== todayS) {
+    try { history = packHistory(await fetchHistory(new Date(today.getTime() + 86400e3))); histDay = todayS; } catch (e) { console.log("history failed (kept old):", e.message); }
+  }
+  let metars = [];
+  try { const r = await fetch(`https://aviationweather.gov/api/data/metar?ids=${STATION.icao}&hours=30&format=json`); if (r.ok) metars = (await r.json()).map((m) => ({ rawOb: m.rawOb, obsTime: m.obsTime, temp: m.temp, dewp: m.dewp, wdir: m.wdir, wspd: m.wspd, wgst: m.wgst, wxString: m.wxString, clouds: m.clouds })); } catch { /* skip */ }
+  iem = { fetched: new Date().toISOString(), metars, cli: Object.keys(cliNow).length ? cliNow : old.cli || {}, ring: ringNow || {}, history, historyDay: histDay };
+  writeFileSync("iem.json", JSON.stringify(iem));
+  console.log("iem cache:", Object.keys(iem.cli).length, "CLI days,", Object.keys(iem.ring).length, "ring,", history.length, "history days");
 }
 
 // ---- wethr.net: Wethr High with NWS logic (includes the 1-minute data) ----
@@ -78,7 +94,7 @@ if (KEY) {
 
 let fc = null;
 try {
-  fc = await runForecast({ inBrowser: false, kalshi, learned, wethr: wethr && !wethr.error ? wethr : null });
+  fc = await runForecast({ inBrowser: false, kalshi, learned, wethr: wethr && !wethr.error ? wethr : null, iem });
   writeFileSync("forecast.json", JSON.stringify(fc, null, 1));
   console.log("today:", fc.today.summary);
   console.log("tomorrow:", fc.tomorrow.summary);

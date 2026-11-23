@@ -18,6 +18,8 @@ async function load() {
   let kalshi = null, log = {};
   try { kalshi = await getJSON("kalshi.json"); dot("dot-kalshi", true); } catch { dot("dot-kalshi", false); }
   try { log = await getJSON("forecast_log.json"); } catch { /* none yet */ }
+  let iem = null;
+  try { iem = await getJSON("iem.json"); } catch { /* fall back to live IEM */ }
   let reviews = {};
   try { reviews = await getJSON("forecast_reviews.json"); } catch { /* none yet */ }
   let learned = null, wethr = null;
@@ -28,7 +30,7 @@ async function load() {
   } catch { /* no key set */ }
   let live = true;
   try {
-    DATA = await runForecast({ inBrowser: true, kalshi: kalshi || {}, learned, wethr: wethr && !wethr.stale ? wethr : null });
+    DATA = await runForecast({ inBrowser: true, kalshi: kalshi || {}, learned, wethr: wethr && !wethr.stale ? wethr : null, iem });
     dot("dot-models", true);
   } catch (e) {
     live = false; dot("dot-models", false);

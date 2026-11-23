@@ -244,16 +244,20 @@ function parseRaw(raw) {
 }
 
 /** METARs: Node uses aviationweather.gov; the browser uses api.weather.gov (CORS-enabled). */
+/** METARs from aviationweather.gov (T-group precision); the scheduled job caches these for browsers */
+export function obsFromAwc(d) {
+  return (d || []).map((m) => {
+    const p = parseRaw(m.rawOb || "");
+    return { t: new Date(m.obsTime * 1000 + OFF), tC: p.tC ?? m.temp, max6C: p.max6C, dewC: m.dewp, wdir: m.wdir, wspd: m.wspd, wgst: m.wgst,
+      wx: m.wxString, sky: (m.clouds || []).map((c) => `${c.cover}${String(Math.round(c.base / 100)).padStart(3, "0")}`).join(" ") || "CLR", raw: m.rawOb };
+  }).filter((o) => o.tC != null);
+}
+
 export async function fetchObs(inBrowser) {
   const obs = [];
   if (!inBrowser) {
     const d = await getJSON(`https://aviationweather.gov/api/data/metar?ids=${STATION.icao}&hours=30&format=json`);
-    for (const m of d) {
-      const p = parseRaw(m.rawOb || "");
-      const tC = p.tC ?? m.temp;
-      obs.push({ t: new Date(m.obsTime * 1000 + OFF), tC, max6C: p.max6C, dewC: m.dewp, wdir: m.wdir, wspd: m.wspd, wgst: m.wgst,
-        wx: m.wxString, sky: (m.clouds || []).map((c) => `${c.cover}${String(Math.round(c.base / 100)).padStart(3, "0")}`).join(" ") || "CLR", raw: m.rawOb });
-    }
+    obs.push(...obsFromAwc(d));
   } else {
     const d = await getJSON(`https://api.weather.gov/stations/${STATION.icao}/observations?limit=60`);
     for (const f of d.features) {
@@ -611,15 +615,35 @@ export function summarize(fc, reg) {
 }
 
 /* ---------------- one-shot run ---------------- */
-export async function runForecast({ inBrowser, kalshi, learned, wethr }) {
+/** IEM data the scheduled job caches (browsers get rate-limited by IEM if every page load pulls 20 years) */
+export const packHistory = (rows) => rows.map((r) => [r.day, r.hi, r.dew, r.pcp, r.dir, r.spd]);
+const unpackHistory = (a) => a.map(([day, hi, dew, pcp, dir, spd]) => ({ day, hi, dew, pcp, dir, spd }));
+
+export async function runForecast({ inBrowser, kalshi, learned, wethr, iem }) {
   const now = estNow(), today = dayStart(now), tomorrow = addDays(today, 1), errors = [];
   const safe = async (name, p, dflt) => { try { return await p; } catch (e) { errors.push(`${name}: ${e.message}`); return dflt; } };
+  // prefer the job's cache for IEM data; ring only if it's fresh (< 40 min)
+  const ringFresh = iem?.ring && Date.now() - Date.parse(iem.fetched) < 40 * 60e3;
   const [mod, cli, obs, nws, hist, ring] = await Promise.all([
-    fetchModels(), safe("cli", fetchCliHighs(), {}), safe("obs", fetchObs(inBrowser), []),
-    safe("nws", fetchNws(), {}), safe("history", fetchHistory(tomorrow), []), safe("ring", fetchRing(), {}),
+    fetchModels(),
+    iem?.cli && Object.keys(iem.cli).length ? iem.cli : safe("cli", fetchCliHighs(), {}),
+    safe("obs", fetchObs(inBrowser), []),
+    safe("nws", fetchNws(), {}),
+    iem?.history?.length ? unpackHistory(iem.history) : safe("history", fetchHistory(tomorrow), []),
+    ringFresh ? iem.ring : inBrowser ? {} : safe("ring", fetchRing(), {}),
   ]);
+  if (!Object.keys(cli).length) errors.push("cli: no official highs (model bias scoring off)");
   const { times, series } = mod;
   addMixSeries(series);
+  // browsers: the NWS API often lacks the raw METAR (no T-group) for recent hours, so merge the job's cached METARs
+  if (inBrowser && iem?.metars?.length) {
+    const byMin = new Map(obs.map((o) => [Math.round(o.t.getTime() / 60e3), o]));
+    for (const m of obsFromAwc(iem.metars)) {
+      const k = Math.round(m.t.getTime() / 60e3), cur = byMin.get(k);
+      if (!cur || cur.fromMetar === false) { if (cur) obs.splice(obs.indexOf(cur), 1); obs.push(m); byMin.set(k, m); }
+    }
+    obs.sort((a, b) => a.t - b.t);
+  }
   // merge wethr's 5-min obs (fresher than the NWS API) into the METAR list
   if (wethr?.obs?.length) {
     const have = new Set(obs.map((o) => Math.round(o.t.getTime() / 60e3)));

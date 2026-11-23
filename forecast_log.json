@@ -94,7 +94,7 @@
    "sector": "N/NW"
   },
   "latest": {
-   "at": "11-23 9:40 AM EST",
+   "at": "11-23 9:50 AM EST",
    "point": 79,
    "call": "79° to 80°",
    "mean": 79.2,
@@ -103,10 +103,10 @@
    "kalshi_peak": "79° to 80°",
    "kalshi_implied": 79,
    "nws": 80,
-   "analog": 81
+   "analog": 81.5
   },
   "morning": {
-   "at": "11-23 9:40 AM EST",
+   "at": "11-23 9:50 AM EST",
    "point": 79,
    "call": "79° to 80°",
    "mean": 79.2,
@@ -115,7 +115,7 @@
    "kalshi_peak": "79° to 80°",
    "kalshi_implied": 79,
    "nws": 80,
-   "analog": 81
+   "analog": 81.5
   }
  },
  "2026-11-24": {
@@ -131,7 +131,7 @@
    "analog": 83
   },
   "latest": {
-   "at": "11-23 9:40 AM EST",
+   "at": "11-23 9:50 AM EST",
    "point": 81,
    "call": "81° to 82°",
    "mean": 81.1,
