@@ -10,8 +10,8 @@
   "nwsGrid": "MFL/105,51",
   "utcOffset": -5
  },
- "generated": "2026-11-23T14:12:36.846Z",
- "generatedTxt": "2:12 PM EST",
+ "generated": "2026-11-23T14:26:05.291Z",
+ "generatedTxt": "2:26 PM EST",
  "scores": {
   "ncep_hrrr_conus": {
    "bias": 2,
@@ -4572,10 +4572,10 @@
   "date": "2026-11-23",
   "isToday": true,
   "call": "77° to 78°",
-  "callP": 0.8048089591512092,
+  "callP": 0.7167553725732578,
   "point": 78,
-  "mean": 77.8,
-  "meanRaw": 77.8,
+  "mean": 77.9,
+  "meanRaw": 77.9,
   "selfAdj": 0,
   "selfcal": {
    "n": 3,
@@ -4600,7 +4600,7 @@
    "hour": 14,
    "trend": -1,
    "trendBucket": "≤0",
-   "rate": 1.1,
+   "rate": 2.1,
    "sky": "fair",
    "skyTxt": "SCT085 SCT150 BKN250",
    "gust": 15,
@@ -4610,13 +4610,14 @@
    "meanRise": 0.8,
    "base": 77,
    "emp": {
-    "77": 0.32100000000000006,
-    "78": 0.5630000000000001,
-    "79": 0.11100000000000002,
-    "80": 0.005000000000000001
+    "77": 0.235614,
+    "78": 0.49862799999999996,
+    "79": 0.231232,
+    "80": 0.033196,
+    "81": 0.00133
    },
    "peakBy": 15,
-   "hoursLeft": 0.8,
+   "hoursLeft": 0.6,
    "nowF": 76.1,
    "reach": [
     {
@@ -4629,35 +4630,41 @@
     {
      "label": "79° to 80°",
      "lo": 79,
-     "hist": 0.11600000000000002,
-     "needRate": 6,
+     "hist": 0.265758,
+     "needRate": 8.5,
      "status": "behind"
     },
     {
      "label": "81° to 82°",
      "lo": 81,
-     "hist": 0,
-     "needRate": 11,
+     "hist": 0.00133,
+     "needRate": 15.5,
      "status": "behind"
     },
     {
      "label": "83° to 84°",
      "lo": 83,
      "hist": 0,
-     "needRate": 16,
+     "needRate": 22.6,
      "status": "behind"
     },
     {
      "label": "85° or above",
      "lo": 85,
      "hist": 0,
-     "needRate": 21,
+     "needRate": 29.6,
      "status": "behind"
     }
    ],
    "upwind": {
-    "delta": null,
-    "used": []
+    "delta": 1.9,
+    "used": [
+     "FXE",
+     "OPF",
+     "HWO",
+     "FLL"
+    ],
+    "shift": 0.3
    },
    "stalled": false,
    "stallMin": 0,
@@ -4695,7 +4702,7 @@
   },
   "wethr": {
    "date": "2026-11-23",
-   "fetched_utc": "2026-11-23T19:12:36.797Z",
+   "fetched_utc": "2026-11-23T19:26:05.159Z",
    "high": 77,
    "potential": 77,
    "time": "12:46 PM",
@@ -4712,11 +4719,11 @@
     "date": "2026-11-23",
     "wethr_high": 77,
     "wethr_low": 68,
-    "time_of_high_utc": "2026-11-23 19:10:00",
+    "time_of_high_utc": "2026-11-23 19:23:00",
     "time_of_low_utc": "2026-11-23 12:02:00",
     "potential_high": 77,
     "potential_low": 68,
-    "potential_high_time_utc": "2026-11-23 19:10:00",
+    "potential_high_time_utc": "2026-11-23 19:23:00",
     "potential_low_time_utc": "2026-11-23 12:02:00",
     "divergence": {
      "high": false,
@@ -4737,11 +4744,11 @@
     "wethr_high_source_detail": {
      "omo": {
       "first_confirmed_utc": "2026-11-23 17:46:00",
-      "count": 37
+      "count": 50
      },
      "hf_metar": {
       "first_confirmed_utc": "2026-11-23 17:50:00",
-      "count": 6
+      "count": 8
      },
      "metar": {
       "first_confirmed_utc": "2026-11-23 17:53:00",
@@ -4781,9 +4788,9 @@
     }
    },
    "extra": {
-    "time_of_high_utc": "2026-11-23 19:10:00",
+    "time_of_high_utc": "2026-11-23 19:23:00",
     "time_of_low_utc": "2026-11-23 12:02:00",
-    "potential_high_time_utc": "2026-11-23 19:10:00",
+    "potential_high_time_utc": "2026-11-23 19:23:00",
     "potential_low_time_utc": "2026-11-23 12:02:00"
    },
    "obs": [
@@ -7042,11 +7049,35 @@
      "ws": 6,
      "wg": null,
      "metar": false
+    },
+    {
+     "t": "2026-11-23T19:15:00Z",
+     "c": 25,
+     "f": 77,
+     "lo": 77,
+     "hi": 77,
+     "dew": 17,
+     "wd": 330,
+     "ws": 7,
+     "wg": null,
+     "metar": false
+    },
+    {
+     "t": "2026-11-23T19:20:00Z",
+     "c": 25,
+     "f": 77,
+     "lo": 77,
+     "hi": 77,
+     "dew": 18,
+     "wd": 330,
+     "ws": 5,
+     "wg": null,
+     "metar": false
     }
    ]
   },
-  "blend": 77.2,
-  "expected": 77.9,
+  "blend": 77.4,
+  "expected": 78,
   "sd": 1.16,
   "floor": 77,
   "models": [
@@ -7082,17 +7113,17 @@
    },
    {
     "model": "UKMO",
-    "raw": 75.1,
-    "peak": "4 PM",
+    "raw": 76.2,
+    "peak": "5 PM",
     "bias": 1.9,
     "mae": 1.6,
     "n": 7,
-    "pace": 2,
+    "pace": 1.8,
     "sectorErr": {
      "n": 3,
      "err": -2.3
     },
-    "corr": 77.1,
+    "corr": 78,
     "w": 0.152
    },
    {
@@ -7190,23 +7221,23 @@
   "dist": [
    {
     "k": 77,
-    "p": 0.3644106982726207
+    "p": 0.3041395794986556
    },
    {
     "k": 78,
-    "p": 0.4403982608785885
+    "p": 0.41261579307460217
    },
    {
     "k": 79,
-    "p": 0.1565272725995154
+    "p": 0.22398118076379883
    },
    {
     "k": 80,
-    "p": 0.03361633685312195
+    "p": 0.052367155199042906
    },
    {
     "k": 81,
-    "p": 0.004686665982977268
+    "p": 0.006427571171746319
    }
   ],
   "brackets": [
@@ -7218,33 +7249,33 @@
     "ask": 0.01,
     "last": 0.01,
     "mid": 0.005,
-    "p": 0.004950495049504951,
+    "p": 0.0049751243781094535,
     "model_p": 0,
-    "edge": -0.004950495049504951
+    "edge": -0.0049751243781094535
    },
    {
     "label": "77° to 78°",
     "lo": 77,
     "hi": 78,
-    "bid": 0.94,
-    "ask": 0.95,
-    "last": 0.95,
-    "mid": 0.945,
-    "p": 0.9356435643564358,
-    "model_p": 0.8048089591512092,
-    "edge": -0.1308346052052266
+    "bid": 0.75,
+    "ask": 0.83,
+    "last": 0.75,
+    "mid": 0.79,
+    "p": 0.7860696517412936,
+    "model_p": 0.7167553725732578,
+    "edge": -0.06931427916803579
    },
    {
     "label": "79° to 80°",
     "lo": 79,
     "hi": 80,
-    "bid": 0.02,
-    "ask": 0.05,
-    "last": 0.06,
-    "mid": 0.035,
-    "p": 0.03465346534653466,
-    "model_p": 0.19014360945263736,
-    "edge": 0.1554901441061027
+    "bid": 0.18,
+    "ask": 0.19,
+    "last": 0.17,
+    "mid": 0.185,
+    "p": 0.18407960199004977,
+    "model_p": 0.27634833596284175,
+    "edge": 0.09226873397279198
    },
    {
     "label": "81° to 82°",
@@ -7252,11 +7283,11 @@
     "hi": 82,
     "bid": 0.01,
     "ask": 0.02,
-    "last": 0.02,
+    "last": 0.01,
     "mid": 0.015,
-    "p": 0.014851485148514854,
-    "model_p": 0.005034501370750855,
-    "edge": -0.009816983777764
+    "p": 0.01492537313432836,
+    "model_p": 0.006878804197677125,
+    "edge": -0.008046568936651234
    },
    {
     "label": "83° to 84°",
@@ -7266,9 +7297,9 @@
     "ask": 0.01,
     "last": 0.01,
     "mid": 0.005,
-    "p": 0.004950495049504951,
-    "model_p": 0.00001292803649015184,
-    "edge": -0.0049375670130148
+    "p": 0.0049751243781094535,
+    "model_p": 0.000017484418177691196,
+    "edge": -0.004957639959931762
    },
    {
     "label": "85° or above",
@@ -7278,9 +7309,9 @@
     "ask": 0.01,
     "last": 0.01,
     "mid": 0.005,
-    "p": 0.004950495049504951,
-    "model_p": 1.9889125280059263e-9,
-    "edge": -0.004950493060592424
+    "p": 0.0049751243781094535,
+    "model_p": 2.848045639325392e-9,
+    "edge": -0.004975121530063814
    }
   ],
   "kalshi": {
@@ -7288,10 +7319,10 @@
    "peak": "77° to 78°",
    "window": {
     "from": "77° to 78°",
-    "to": "77° to 78°",
-    "cover": 0.9356435643564358
+    "to": "79° to 80°",
+    "cover": 0.9701492537313434
    },
-   "implied": 77.7
+   "implied": 78
   },
   "checkpoints": [
    {
@@ -7413,11 +7444,11 @@
   "regime": {
    "windDir": 341,
    "windTxt": "NNW",
-   "windKt": 5.4,
+   "windKt": 5.3,
    "rainIn": 0,
    "cape90": 34,
    "lowCloud": 14,
-   "totalCloud": 76,
+   "totalCloud": 75,
    "t850F": 61.7,
    "dewMax": 67,
    "notes": [
@@ -7499,10 +7530,10 @@
    "nowF": 77,
    "nowRange": "76–78",
    "nowSrc": "wethr 5-min",
-   "nowT": "2026-11-23T14:10:00.000Z",
-   "nowTime": "2:10 PM EST",
+   "nowT": "2026-11-23T14:20:00.000Z",
+   "nowTime": "2:20 PM EST",
    "dewF": 64,
-   "wind": "310 @ 6 kt",
+   "wind": "330 @ 5 kt",
    "wx": "",
    "sky": "",
    "raw": "",
@@ -8258,19 +8289,27 @@
     {
      "h": 14.166666666666666,
      "f": 77
+    },
+    {
+     "h": 14.25,
+     "f": 77
+    },
+    {
+     "h": 14.333333333333334,
+     "f": 77
     }
    ]
   },
-  "summary": "Call 78 (77° to 78°, 80%). Kalshi peak 77° to 78°, implied ~77.7. Bias-corrected blend 77.8 ± 1.16 °F. Observed high so far 77 °F (wethr, incl. 1-min). Nowcast 2 PM: +1.1 °F/h, last hour -1, fair; on 389 similar past days the CLI ended above 77 68% of the time (avg +0.8). Cheap: 79° to 80° (19% vs market 3%). Rich: 77° to 78° (80% vs market 94%)."
+  "summary": "Call 78 (77° to 78°, 72%). Kalshi peak 77° to 78°, implied ~78. Bias-corrected blend 77.9 ± 1.16 °F. Observed high so far 77 °F (wethr, incl. 1-min). Nowcast 2 PM: +2.1 °F/h, last hour -1, fair; on 389 similar past days the CLI ended above 77 76% of the time (avg +0.8). Cheap: 79° to 80° (28% vs market 18%)."
  },
  "tomorrow": {
   "date": "2026-11-24",
   "isToday": false,
   "call": "81° to 82°",
-  "callP": 0.3606529089955919,
+  "callP": 0.3919303570128124,
   "point": 81,
-  "mean": 81.4,
-  "meanRaw": 81.4,
+  "mean": 81.2,
+  "meanRaw": 81.2,
   "selfAdj": 0,
   "selfcal": {
    "n": 3,
@@ -8307,9 +8346,9 @@
    "ge1": 0.66
   },
   "wethr": null,
-  "blend": 81.7,
-  "expected": 81.4,
-  "sd": 2.13,
+  "blend": 81.1,
+  "expected": 81.2,
+  "sd": 1.92,
   "floor": null,
   "models": [
    {
@@ -8344,8 +8383,8 @@
    },
    {
     "model": "UKMO",
-    "raw": 82,
-    "peak": "3 PM",
+    "raw": 77.8,
+    "peak": "8 PM",
     "bias": 2.2,
     "mae": 1.6,
     "n": 7,
@@ -8354,7 +8393,7 @@
      "n": 23,
      "err": -2.7
     },
-    "corr": 84.2,
+    "corr": 80,
     "w": 0.13
    },
    {
@@ -8443,8 +8482,8 @@
    }
   ],
   "nws": {
-   "high": 81,
-   "text": "Mostly Cloudy then Chance Rain Showers",
+   "high": 82,
+   "text": "Mostly Cloudy",
    "hourlyMax": 81,
    "hourlyMaxTime": "4 PM",
    "popMid": 4
@@ -8452,51 +8491,47 @@
   "dist": [
    {
     "k": 76,
-    "p": 0.008115277274124285
+    "p": 0.005992520748018187
    },
    {
     "k": 77,
-    "p": 0.02332171006139874
+    "p": 0.02064663921417512
    },
    {
     "k": 78,
-    "p": 0.053976148174186805
+    "p": 0.05454690398659155
    },
    {
     "k": 79,
-    "p": 0.10061397942773838
+    "p": 0.110518195399449
    },
    {
     "k": 80,
-    "p": 0.15106288498483236
+    "p": 0.17174922456566644
    },
    {
     "k": 81,
-    "p": 0.18268917153625858
+    "p": 0.2047298151600026
    },
    {
     "k": 82,
-    "p": 0.17796373745933333
+    "p": 0.18720054185280985
    },
    {
     "k": 83,
-    "p": 0.13964107154397476
+    "p": 0.13129999353840174
    },
    {
     "k": 84,
-    "p": 0.0882567831047013
+    "p": 0.07063686251626017
    },
    {
     "k": 85,
-    "p": 0.044928335867249806
+    "p": 0.02914476954047849
    },
    {
     "k": 86,
-    "p": 0.018420434602898977
-   },
-   {
-    "k": 87,
-    "p": 0.006082149539329793
+    "p": 0.009221271683107976
    }
   ],
   "brackets": [
@@ -8508,9 +8543,9 @@
     "ask": 0.03,
     "last": 0.04,
     "mid": 0.025,
-    "p": 0.02577319587628866,
-    "model_p": 0.011011132790578634,
-    "edge": -0.014762063085710025
+    "p": 0.025252525252525252,
+    "model_p": 0.007586440584955456,
+    "edge": -0.017666084667569797
    },
    {
     "label": "77° to 78°",
@@ -8520,21 +8555,21 @@
     "ask": 0.23,
     "last": 0.22,
     "mid": 0.225,
-    "p": 0.23195876288659792,
-    "model_p": 0.07729785823558555,
-    "edge": -0.15466090465101237
+    "p": 0.22727272727272727,
+    "model_p": 0.07519354320076667,
+    "edge": -0.15207918407196058
    },
    {
     "label": "79° to 80°",
     "lo": 79,
     "hi": 80,
-    "bid": 0.42,
-    "ask": 0.43,
+    "bid": 0.44,
+    "ask": 0.45,
     "last": 0.43,
-    "mid": 0.425,
-    "p": 0.43814432989690716,
-    "model_p": 0.25167686441257076,
-    "edge": -0.1864674654843364
+    "mid": 0.445,
+    "p": 0.44949494949494945,
+    "model_p": 0.28226741996511545,
+    "edge": -0.167227529529834
    },
    {
     "label": "81° to 82°",
@@ -8544,9 +8579,9 @@
     "ask": 0.24,
     "last": 0.23,
     "mid": 0.235,
-    "p": 0.24226804123711337,
-    "model_p": 0.3606529089955919,
-    "edge": 0.11838486775847851
+    "p": 0.23737373737373735,
+    "model_p": 0.3919303570128124,
+    "edge": 0.15455661963907508
    },
    {
     "label": "83° to 84°",
@@ -8556,9 +8591,9 @@
     "ask": 0.06,
     "last": 0.06,
     "mid": 0.055,
-    "p": 0.056701030927835044,
-    "model_p": 0.22789785464867607,
-    "edge": 0.17119682372084102
+    "p": 0.05555555555555555,
+    "model_p": 0.2019368560546619,
+    "edge": 0.14638130049910636
    },
    {
     "label": "85° or above",
@@ -8568,9 +8603,9 @@
     "ask": 0.01,
     "last": 0.01,
     "mid": 0.005,
-    "p": 0.005154639175257732,
-    "model_p": 0.07146338091699712,
-    "edge": 0.0663087417417394
+    "p": 0.00505050505050505,
+    "model_p": 0.04108538318168813,
+    "edge": 0.036034878131183085
    }
   ],
   "kalshi": {
@@ -8579,7 +8614,7 @@
    "window": {
     "from": "77° to 78°",
     "to": "81° to 82°",
-    "cover": 0.9123711340206184
+    "cover": 0.9141414141414141
    },
    "implied": 79.7
   },
@@ -8687,27 +8722,27 @@
   },
   "ring": null,
   "regime": {
-   "windDir": 42,
+   "windDir": 39,
    "windTxt": "NE",
-   "windKt": 6.1,
+   "windKt": 6,
    "rainIn": 0.13,
-   "cape90": 1184,
-   "lowCloud": 14,
+   "cape90": 1156,
+   "lowCloud": 12,
    "totalCloud": 89,
-   "t850F": 59.4,
+   "t850F": 59.3,
    "dewMax": 70.8,
    "notes": [
     "Onshore E flow off the Atlantic moderates the high. Gusts mix city-heated air down, so 1-minute bursts can print above the hourly METARs.",
-    "Scattered showers possible (CAPE ~1184, ~0.13\" rain): timing vs the 11 AM–2 PM peak matters."
+    "Scattered showers possible (CAPE ~1156, ~0.13\" rain): timing vs the 11 AM–2 PM peak matters."
    ],
    "sector": "E/onshore",
    "storm": "moderate"
   },
   "analogs": {
    "n": 30,
-   "median": 80,
-   "p10": 74,
-   "p90": 85.1,
+   "median": 80.5,
+   "p10": 74.9,
+   "p90": 86,
    "top": [
     {
      "date": "2017-11-20",
@@ -8768,6 +8803,6 @@
    ]
   },
   "obs": null,
-  "summary": "Call 81 (81° to 82°, 36%). Kalshi peak 79° to 80°, implied ~79.7. Bias-corrected blend 81.4 ± 2.13 °F. Cheap: 83° to 84° (23% vs market 6%). Rich: 79° to 80° (25% vs market 44%)."
+  "summary": "Call 81 (81° to 82°, 39%). Kalshi peak 79° to 80°, implied ~79.7. Bias-corrected blend 81.2 ± 1.92 °F. Cheap: 81° to 82° (39% vs market 24%). Rich: 79° to 80° (28% vs market 45%)."
  }
 }
