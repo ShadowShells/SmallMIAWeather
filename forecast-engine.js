@@ -434,13 +434,19 @@ export function nowcast(learned, ob, sector, floor, brackets, hNow, ring) {
   const prev = pm;
   const trend = lm && pm && tNow - lm.t.getTime() <= 75 * 60e3 ? Math.round(F(lm)) - Math.round(F(pm)) : null;
   // rate: least-squares slope over the last 75 min of every reading (5-min + METAR)
-  const win = td.filter((o) => o.t.getTime() >= tNow - 75 * 60e3);
+  // 45 min so a stall shows up quickly; a 1 °C step at the start of the window would otherwise dominate
+  const win = td.filter((o) => o.t.getTime() >= tNow - 45 * 60e3);
   let rate = null;
   if (win.length >= 3) {
     const xs = win.map((o) => (o.t.getTime() - tNow) / 3600e3), ys = win.map(F), mx = xs.reduce((a, b) => a + b) / xs.length, my = ys.reduce((a, b) => a + b) / ys.length;
     const den = xs.reduce((s2, x) => s2 + (x - mx) ** 2, 0); if (den > 0) rate = r1(xs.reduce((s2, x, i) => s2 + (x - mx) * (ys[i] - my), 0) / den);
   }
   if (rate == null && lm && pm) rate = r1((F(lm) - F(pm)) / ((lm.t - pm.t) / 3600e3));
+  // stalled: every 5-min reading in the last 30 min shows the same whole °C
+  const last30 = td.filter((o) => o.fromMetar === false && o.t.getTime() >= tNow - 30 * 60e3);
+  const stalled = last30.length >= 5 && last30.every((o) => o.tC === last30[0].tC);
+  const stallMin = stalled ? Math.round((tNow - (td.filter((o) => o.fromMetar === false && o.tC !== last30[0].tC && o.t.getTime() < tNow).at(-1)?.t.getTime() ?? tNow - 30 * 60e3)) / 60e3) : 0;
+  if (stalled && rate != null) rate = Math.min(rate, 0.5);
   // sky + weather from the latest ob that carries them (METARs; wethr's 5-min rows don't)
   const sk = [...td].reverse().find((o) => o.sky || o.raw);
   let sky = "fair", skyTxt = "—";
@@ -481,12 +487,14 @@ export function nowcast(learned, ob, sector, floor, brackets, hNow, ring) {
     const need = b.lo - 0.5, hist = Object.entries(emp).filter(([k]) => +k >= b.lo).reduce((s2, [, p]) => s2 + p, 0);
     if (fi >= b.lo) return { label: b.label, lo: b.lo, hist: 1, needRate: null, status: "reached" };
     if (left <= 0.25) return { label: b.label, lo: b.lo, hist, needRate: null, status: "past late peak" };
-    const nr = r1((need - nowF) / left);
+    // heating slows toward the peak: assume the rate falls off linearly to 0 at the late-peak time,
+    // so the rate needed *now* is twice the straight-line average
+    const nr = r1((2 * (need - nowF)) / left);
     const status = rate == null ? "—" : nr <= 0 ? "at line now" : rate >= nr ? "on pace" : rate >= 0.6 * nr ? "close" : "behind";
     return { label: b.label, lo: b.lo, hist, needRate: nr, status };
   });
   return { hour: h, trend, trendBucket: tb, rate, sky, skyTxt, gust, gusty: gust >= 18, key, n: tab.n, meanRise: tab.mean, base, emp,
-    peakBy: r1(peakBy), hoursLeft: r1(Math.max(0, left)), nowF, reach, upwind: up, spikeGust: learned.spikeGust?.[gust >= 18 ? "gusty" : "calm"] || null };
+    peakBy: r1(peakBy), hoursLeft: r1(Math.max(0, left)), nowF, reach, upwind: up, stalled, stallMin, spikeGust: learned.spikeGust?.[gust >= 18 ? "gusty" : "calm"] || null };
 }
 /** Empirical pacing: given the hourly-METAR high so far at this hour and today's wind sector, the
  *  historical distribution of the final CLI high (whole °F). */

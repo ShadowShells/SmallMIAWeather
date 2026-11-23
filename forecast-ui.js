@@ -1,6 +1,6 @@
 // forecast.html renderer: runs forecast-engine.js live in the browser; falls back to the
 // scheduled snapshot (forecast.json) if the model feed is unavailable.
-import { runForecast, estNow } from "./forecast-engine.js?v=20261123b";
+import { runForecast, estNow } from "./forecast-engine.js?v=20261123c";
 
 const $ = (id) => document.getElementById(id);
 const pct = (p) => (p == null ? "—" : `${Math.round(p * 100)}%`);
@@ -87,7 +87,7 @@ function render() {
     const sg = (x) => (x == null ? "—" : (x > 0 ? "+" : "") + x);
     $("pace-h").textContent = `${pc.n} similar days · weight ${Math.round(pc.weight * 100)}%`;
     $("nc-chips").innerHTML = [
-      ["Rate (60 min)", pc.rate == null ? "—" : `${sg(pc.rate)} °F/h`],
+      ["Rate (45 min)", pc.rate == null ? "—" : pc.stalled ? `stalled ${pc.stallMin} min` : `${sg(pc.rate)} °F/h`],
       ["Last hour", pc.trend == null ? "—" : `${sg(pc.trend)} °F`],
       ["Sky now", pc.sky],
       ["Gusts", pc.gust ? `${pc.gust} kt` : "none"],
