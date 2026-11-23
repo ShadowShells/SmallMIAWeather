@@ -155,6 +155,34 @@ for (const [d, e] of Object.entries(log)) if (cli[d]) e.actual = cli[d].high;
 log = Object.fromEntries(Object.entries(log).sort().slice(-60));
 writeFileSync("forecast_log.json", JSON.stringify(log, null, 1));
 
+// ---- morning archive: save what was known at each call-model cutoff, so the model can later train on
+// same-morning model runs, LAMP and Virginia Key water temperature (none of these have a usable archive)
+{
+  let arc = {}; try { arc = JSON.parse(readFileSync("forecast_archive.json", "utf8")); } catch { /* new */ }
+  const HM = now.getUTCHours() * 60 + now.getUTCMinutes(), cut = [360, 480, 540, 630, 720, 810].filter((c) => HM >= c && HM < c + 60).pop();
+  if (cut != null && !arc[todayS]?.[cut]) {
+    const snap = { at: now.toISOString().slice(11, 16) };
+    try {
+      const q = new URLSearchParams({ latitude: STATION.lat, longitude: STATION.lon, timezone: "Etc/GMT+5", forecast_days: 1, temperature_unit: "fahrenheit",
+        models: "ncep_hrrr_conus,ncep_nbm_conus,gfs_global,ecmwf_ifs025,icon_seamless,gem_seamless", hourly: "temperature_2m" });
+      const j = await (await fetch("https://api.open-meteo.com/v1/forecast?" + q)).json();
+      snap.models = Object.fromEntries(Object.keys(j.hourly).filter((k) => k.startsWith("temperature_2m_")).map((k) => [k.slice(15), Math.max(...j.hourly[k].filter((x) => x != null))]));
+    } catch (e) { snap.modelsErr = e.message; }
+    try {
+      const d = (await (await fetch(`https://mesonet.agron.iastate.edu/api/1/mos.json?station=${STATION.icao}&model=LAV`)).json()).data || [];
+      const v = d.filter((r) => r.ftime.slice(0, 10) === todayS && +r.ftime.slice(11, 13) >= 12 && r.tmp != null).map((r) => +r.tmp);
+      if (v.length) { snap.lamp = Math.max(...v); snap.lampRun = d[0]?.runtime; }
+    } catch { /* skip */ }
+    try {
+      const w = await (await fetch("https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=water_temperature&station=8723214&date=latest&units=english&time_zone=lst&format=json")).json();
+      snap.waterVK = w.data?.[0] ? +w.data[0].v : null;
+    } catch { /* skip */ }
+    (arc[todayS] ||= {})[cut] = snap;
+    writeFileSync("forecast_archive.json", JSON.stringify(arc));
+    console.log("archived", todayS, cut, JSON.stringify(snap).slice(0, 160));
+  }
+}
+
 // ---- daily review: once the CLI high is in (preliminary ~5 PM, final after midnight) ----
 let reviews = {};
 try { reviews = JSON.parse(readFileSync("forecast_reviews.json", "utf8")); } catch { /* new */ }
