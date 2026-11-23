@@ -1026,7 +1026,7 @@
  "2026-11-22": {
   "date": "2026-11-22",
   "actual": 85,
-  "reviewed": "2026-11-22T23:51:58.208Z",
+  "reviewed": "2026-11-23T05:16:55.802Z",
   "peak": "2:53 PM",
   "peakH": 14.9,
   "maxHourly": 85,
@@ -1046,7 +1046,7 @@
    "drying mid-day",
    "late peak"
   ],
-  "summary": "High 85°F at 2:53 PM. W land breeze (W 4.6 kt); sunny, drying mid-day, late peak. Dewpoint 72→69°F by 1 PM. Morning call 85° to 86° hit (mean 85.2, off +0.2). Closest: GEM. Too cool: ECMWF, HRRR. Too warm: GFS.",
+  "summary": "High 85°F at 2:53 PM. W land breeze (W 4.6 kt); sunny, drying mid-day, late peak. Dewpoint 72→69°F by 1 PM. Morning call 85° to 86° hit (mean 85.2, off +0.2). Closest: GEM, UKMO. Too cool: ECMWF, HRRR. Too warm: GFS.",
   "callHit": true,
   "sources": [
    {
@@ -1081,8 +1081,8 @@
    },
    {
     "name": "GFS · same day",
-    "val": 88,
-    "miss": 3,
+    "val": 87,
+    "miss": 2,
     "kind": "model"
    },
    {
@@ -1105,8 +1105,8 @@
    },
    {
     "name": "ECMWF · same day",
-    "val": 82.4,
-    "miss": -2.6,
+    "val": 82.6,
+    "miss": -2.4,
     "kind": "model"
    },
    {
@@ -1141,8 +1141,8 @@
    },
    {
     "name": "UKMO · same day",
-    "val": 83.2,
-    "miss": -1.8,
+    "val": 84,
+    "miss": -1,
     "kind": "model"
    }
   ],
@@ -1152,7 +1152,7 @@
     "day1": 79.9
    },
    "gfs_global": {
-    "day0": 88,
+    "day0": 87,
     "day1": 86.6
    },
    "ncep_nbm_conus": {
@@ -1160,7 +1160,7 @@
     "day1": 84.1
    },
    "ecmwf_ifs025": {
-    "day0": 82.4,
+    "day0": 82.6,
     "day1": 82.4
    },
    "icon_seamless": {
@@ -1172,10 +1172,10 @@
     "day1": 85.8
    },
    "ukmo_seamless": {
-    "day0": 83.2,
+    "day0": 84,
     "day1": 83.4
    }
   },
-  "final": false
+  "final": true
  }
 }
