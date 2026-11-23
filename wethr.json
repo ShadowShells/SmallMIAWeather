@@ -1,6 +1,6 @@
 {
  "date": "2026-11-23",
- "fetched_utc": "2026-11-23T15:26:40.698Z",
+ "fetched_utc": "2026-11-23T15:41:14.766Z",
  "high": 73,
  "potential": 73,
  "time": "12:00 AM",
@@ -16,11 +16,11 @@
   "date": "2026-11-23",
   "wethr_high": 73,
   "wethr_low": 68,
-  "time_of_high_utc": "2026-11-23 15:24:00",
+  "time_of_high_utc": "2026-11-23 15:38:00",
   "time_of_low_utc": "2026-11-23 12:02:00",
   "potential_high": 73,
   "potential_low": 68,
-  "potential_high_time_utc": "2026-11-23 15:24:00",
+  "potential_high_time_utc": "2026-11-23 15:38:00",
   "potential_low_time_utc": "2026-11-23 12:02:00",
   "divergence": {
    "high": false,
@@ -40,11 +40,11 @@
   "wethr_high_source_detail": {
    "hf_metar": {
     "first_confirmed_utc": "2026-11-23 05:00:00",
-    "count": 4
+    "count": 7
    },
    "omo": {
     "first_confirmed_utc": "2026-11-23 05:00:00",
-    "count": 22
+    "count": 36
    },
    "dsm": {
     "first_confirmed_utc": "2026-11-23 05:19:00",
@@ -80,9 +80,9 @@
   }
  },
  "extra": {
-  "time_of_high_utc": "2026-11-23 15:24:00",
+  "time_of_high_utc": "2026-11-23 15:38:00",
   "time_of_low_utc": "2026-11-23 12:02:00",
-  "potential_high_time_utc": "2026-11-23 15:24:00",
+  "potential_high_time_utc": "2026-11-23 15:38:00",
   "potential_low_time_utc": "2026-11-23 12:02:00"
  },
  "obs": [
@@ -1736,6 +1736,42 @@
    "f": 71.6,
    "lo": 71,
    "hi": 72,
+   "dew": 18,
+   "wd": 320,
+   "ws": 5,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-23T15:25:00Z",
+   "c": 23,
+   "f": 73.4,
+   "lo": 73,
+   "hi": 74,
+   "dew": 18,
+   "wd": 340,
+   "ws": 6,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-23T15:30:00Z",
+   "c": 23,
+   "f": 73.4,
+   "lo": 73,
+   "hi": 74,
+   "dew": 18,
+   "wd": 330,
+   "ws": 4,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-23T15:35:00Z",
+   "c": 23,
+   "f": 73.4,
+   "lo": 73,
+   "hi": 74,
    "dew": 18,
    "wd": 320,
    "ws": 5,
