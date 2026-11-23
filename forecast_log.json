@@ -94,11 +94,11 @@
    "sector": "N/NW"
   },
   "latest": {
-   "at": "11-23 2:39 AM EST",
-   "point": 79,
+   "at": "11-23 3:21 AM EST",
+   "point": 80,
    "call": "79° to 80°",
-   "mean": 79.5,
-   "meanRaw": 79.5,
+   "mean": 79.6,
+   "meanRaw": 79.6,
    "sector": "N/NW",
    "kalshi_peak": "79° to 80°",
    "kalshi_implied": 79.9,
@@ -106,11 +106,11 @@
    "analog": 81
   },
   "morning": {
-   "at": "11-23 2:39 AM EST",
-   "point": 79,
+   "at": "11-23 3:21 AM EST",
+   "point": 80,
    "call": "79° to 80°",
-   "mean": 79.5,
-   "meanRaw": 79.5,
+   "mean": 79.6,
+   "meanRaw": 79.6,
    "sector": "N/NW",
    "kalshi_peak": "79° to 80°",
    "kalshi_implied": 79.9,
@@ -131,11 +131,11 @@
    "analog": 83
   },
   "latest": {
-   "at": "11-23 2:39 AM EST",
+   "at": "11-23 3:21 AM EST",
    "point": 81,
    "call": null,
-   "mean": 80.9,
-   "meanRaw": 80.9,
+   "mean": 81.1,
+   "meanRaw": 81.1,
    "sector": "E/onshore",
    "kalshi_implied": null,
    "nws": 81,
