@@ -507,7 +507,7 @@ export function pacingDist(learned, sector, hour, maxSoFar) {
   return { hour: h, sector: tab === own ? sector : "all", n: tab.n, base, meanRise: tab.mean, dist };
 }
 
-export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana, learned, reg, wethr, ring }) {
+export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana, learned, reg, wethr, ring, prevCall }) {
   const idx = cliIdx(times, day), isToday = ymd(day) === ymd(now);
   const hourNow = new Date(Math.floor(now.getTime() / 3600e3) * 3600e3);
   const rows = [];
@@ -583,7 +583,10 @@ export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana
     const mp = Object.entries(dist).filter(([k]) => +k >= L && +k <= H).reduce((s, [, p]) => s + p, 0);
     return { ...b, model_p: mp, edge: b.p == null ? null : mp - b.p };
   });
-  const call = brackets.length ? brackets.reduce((a, b) => (b.model_p > a.model_p ? b : a)) : null;
+  let call = brackets.length ? brackets.reduce((a, b) => (b.model_p > a.model_p ? b : a)) : null;
+  // hysteresis: keep the previous call unless another bracket is clearly ahead (5+ pts), so a near tie doesn't flip-flop
+  const prev = prevCall && brackets.find((b) => b.label === prevCall);
+  if (prev && call && prev !== call && prev.model_p >= call.model_p - 0.05) call = prev;
   // point = most likely whole degree inside the called bracket (so the big number matches the call)
   const inCall = Object.entries(dist).filter(([k]) => !call || (+k >= (call.lo ?? -999) && +k <= (call.hi ?? 999)));
   const point = +(inCall.length ? inCall : Object.entries(dist)).reduce((a, b) => (b[1] > a[1] ? b : a))[0];
@@ -627,7 +630,7 @@ export function summarize(fc, reg) {
 export const packHistory = (rows) => rows.map((r) => [r.day, r.hi, r.dew, r.pcp, r.dir, r.spd]);
 const unpackHistory = (a) => a.map(([day, hi, dew, pcp, dir, spd]) => ({ day, hi, dew, pcp, dir, spd }));
 
-export async function runForecast({ inBrowser, kalshi, learned, wethr, iem }) {
+export async function runForecast({ inBrowser, kalshi, learned, wethr, iem, log }) {
   const now = estNow(), today = dayStart(now), tomorrow = addDays(today, 1), errors = [];
   const safe = async (name, p, dflt) => { try { return await p; } catch (e) { errors.push(`${name}: ${e.message}`); return dflt; } };
   // prefer the job's cache for IEM data; ring only if it's fresh (< 40 min)
@@ -670,7 +673,8 @@ export async function runForecast({ inBrowser, kalshi, learned, wethr, iem }) {
     const reg = regime(times, series, day);
     const ana = analogs(hist, day, reg);
     const ob = lab === "today" ? obsToday(obs, day) : null;
-    const fc = forecastDay({ day, now, times, series, scores, nws, kal, ob, ana, learned, reg, wethr, ring: lab === "today" ? ring : null });
+    const fc = forecastDay({ day, now, times, series, scores, nws, kal, ob, ana, learned, reg, wethr, ring: lab === "today" ? ring : null,
+      prevCall: (() => { const e = log?.[ymd(day)]; return e?.changes?.at(-1)?.call ?? e?.latest?.call ?? null; })() });
     Object.assign(fc, { sounding: sounding(times, series, day), ring: lab === "today" ? ring : null, regime: reg, analogs: ana, obs: ob, summary: summarize(fc, reg) });
     out[lab] = fc;
   }

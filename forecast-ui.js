@@ -1,6 +1,6 @@
 // forecast.html renderer: runs forecast-engine.js live in the browser; falls back to the
 // scheduled snapshot (forecast.json) if the model feed is unavailable.
-import { runForecast, estNow } from "./forecast-engine.js?v=20261123e";
+import { runForecast, estNow } from "./forecast-engine.js?v=20261123f";
 
 const $ = (id) => document.getElementById(id);
 const pct = (p) => (p == null ? "—" : `${Math.round(p * 100)}%`);
@@ -30,7 +30,7 @@ async function load() {
   } catch { /* no key set */ }
   let live = true;
   try {
-    DATA = await runForecast({ inBrowser: true, kalshi: kalshi || {}, learned, wethr: wethr && !wethr.stale ? wethr : null, iem });
+    DATA = await runForecast({ inBrowser: true, kalshi: kalshi || {}, learned, wethr: wethr && !wethr.stale ? wethr : null, iem, log });
     dot("dot-models", true);
   } catch (e) {
     live = false; dot("dot-models", false);
@@ -170,9 +170,17 @@ function render() {
   const rows = Object.entries(DATA.log || {}).sort().reverse().slice(0, 14);
   // when each call was made (EST); the date is shown only if it's not the forecast day itself
   const when = (s, d) => { if (!s?.at) return ""; const [md, ...t] = s.at.split(" "); return `${md === d.slice(5) ? "" : md.replace("-", "/") + " "}${t.join(" ").replace(/ EST$/, "")} EST`; };
+  // call switches on the day itself, with what Kalshi charged for the new bracket at that moment
+  const inBr = (lab, act) => { const m = lab.match(/(\d+)\D+(\d+)/); if (m) return act >= +m[1] && act <= +m[2]; const n = +(lab.match(/\d+/) || [])[0]; return /below/.test(lab) ? act <= n : act >= n; };
+  const switches = (e, d) => {
+    const ch = (e.changes || []).filter((c) => c.at.startsWith(d.slice(5)) && /AM|PM/.test(c.at));
+    if (!ch.length) return "—";
+    return ch.slice(-4).map((c) => { const ok = e.actual == null ? "" : inBr(c.call, e.actual) ? "hit" : "miss";
+      return `<div style="white-space:nowrap"><span class="${ok}">${esc(c.call.replace(/°/g, ""))}</span> <span class="dim" style="font-size:11px">${esc(c.at.split(" ").slice(1).join(" ").replace(/ EST$/, ""))}${c.mkt != null ? ` · mkt ${c.mkt}¢` : ""}</span></div>`; }).join("");
+  };
   const cell = (s, act, d) => !s ? "—" : `<span class="${act == null ? "" : s.point === act ? "hit" : "miss"}">${s.point}</span> <span class="dim">${esc(s.call || "")}</span><div class="dim" style="font-size:11px">${esc(when(s, d))}</div>`;
-  $("tb-log").innerHTML = rows.map(([d, e]) => `<tr><td>${d}</td><td>${cell(e.first, e.actual, d)}</td><td>${cell(e.morning, e.actual, d)}</td><td>${cell(e.latest, e.actual, d)}</td><td class="dim">${esc(e.latest?.kalshi_peak || "")}</td><td><b>${e.actual ?? "—"}</b></td></tr>`).join("")
-    || `<tr><td colspan="6" class="dim">Builds up as the scheduled job runs.</td></tr>`;
+  $("tb-log").innerHTML = rows.map(([d, e]) => `<tr><td>${d}</td><td>${cell(e.first, e.actual, d)}</td><td>${cell(e.morning, e.actual, d)}</td><td>${cell(e.midday, e.actual, d)}</td><td>${switches(e, d)}</td><td class="dim">${esc(e.latest?.kalshi_peak || "")}</td><td><b>${e.actual ?? "—"}</b></td></tr>`).join("")
+    || `<tr><td colspan="7" class="dim">Builds up as the scheduled job runs.</td></tr>`;
 
   // links (peak hour for soundings)
   const lat = 25.79, lon = -80.29, ev = f.kalshi?.event || "";

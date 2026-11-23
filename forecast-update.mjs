@@ -94,7 +94,8 @@ if (KEY) {
 
 let fc = null;
 try {
-  fc = await runForecast({ inBrowser: false, kalshi, learned, wethr: wethr && !wethr.error ? wethr : null, iem });
+  let logPrev = {}; try { logPrev = JSON.parse(readFileSync("forecast_log.json", "utf8")); } catch { /* new */ }
+  fc = await runForecast({ inBrowser: false, kalshi, learned, wethr: wethr && !wethr.error ? wethr : null, iem, log: logPrev });
   writeFileSync("forecast.json", JSON.stringify(fc, null, 1));
   console.log("today:", fc.today.summary);
   console.log("tomorrow:", fc.tomorrow.summary);
@@ -114,7 +115,19 @@ if (fc) {
       kalshi_peak: f.kalshi.peak, kalshi_implied: f.kalshi.implied ?? null, nws: f.nws?.high ?? null, analog: f.analogs?.median ?? null };
     e.first ||= snap;
     const H = now.getUTCHours();
-    if (k === "today" && H < 11) e.morning = snap;
+    const HM = H * 60 + now.getUTCMinutes();
+    // trading-time calls: 9:30 AM (main trade) and 12:30 PM (nowcast check), first update at/after each
+    if (k === "today" && HM >= 570 && HM < 720 && !e.morning?.v2) e.morning = { ...snap, v2: true };
+    if (k === "today" && HM >= 750 && HM < 960 && !e.midday) e.midday = snap;
+    // every time the call changes: when, and what Kalshi was charging for the new bracket
+    if (f.call) {
+      const lastC = e.changes?.at(-1)?.call;
+      if (lastC !== f.call) {
+        const b = (f.brackets || []).find((x) => x.label === f.call);
+        (e.changes ||= []).push({ at: snap.at, call: f.call, p: b?.model_p != null ? Math.round(b.model_p * 100) : null, mkt: b?.mid != null ? Math.round(b.mid * 100) : null });
+        if (e.changes.length > 15) e.changes = e.changes.slice(-15);
+      }
+    }
     // freeze the "last" call at the usual peak (evening runs only see the cooling)
     if (k !== "today" || H < 16 || !e.latest) e.latest = snap;
     // nowcast checkpoints for the daily review
