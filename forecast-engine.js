@@ -412,6 +412,40 @@ export function obsToday(obs, day) {
     series: td.map((o) => ({ h: o.t.getUTCHours() + o.t.getUTCMinutes() / 60, f: r1(c2f(o.tC)) })) }, "_td", { value: td, enumerable: false });
 }
 
+/* ---------------- the trained call model (forecast-train-call.mjs) ----------------
+   Ridge regression fit on ~2 years of days: what was known at a given time of morning
+   (obs so far, sky, wind, models' day-ahead highs, GFS MOS, NBM text) -> the CLI high. */
+export const CALL_MODELS = ["ncep_hrrr_conus", "gfs_global", "ncep_nbm_conus", "ecmwf_ifs025", "icon_seamless", "gem_seamless"];
+export const CALL_FEATS = ["T", "Tmax", "rise", "rise1", "dew", "cld", "cld9", "wspd", "s_E", "s_NNW", "s_SSW", "s_W", "sdoy", "cdoy",
+  ...CALL_MODELS.map((m) => "m_" + m), "mav06", "nbs13"];
+export const CALL_CUTOFFS = [480, 540, 630, 720, 810]; // 8:00, 9:00, 10:30, 12:00, 1:30 local standard time
+const callSector = (wd) => (wd == null || isNaN(wd) || wd === 0 ? "calm" : (wd >= 290 || wd < 20) ? "NNW" : wd < 150 ? "E" : wd < 240 ? "SSW" : "W");
+/** rows: that day's hourly obs [{hm, T (whole °F), dew, cld 0/1, drct, sknt}] up to the cutoff */
+export function callFeatures({ rows, cut, models, mav06, nbs13, doy }) {
+  const pre = rows.filter((r) => r.hm <= cut && r.T != null);
+  if (pre.length < 4) return null;
+  const last = pre[pre.length - 1], at = (hm) => { const x = pre.filter((r) => r.hm <= hm); return x.length ? x[x.length - 1].T : null; };
+  const T7 = at(420), T1 = at(cut - 60), after8 = pre.filter((r) => r.hm >= 480);
+  const dir = [...pre].reverse().find((r) => r.hm >= 540 && r.drct != null && !isNaN(r.drct));
+  const sec = callSector(dir?.drct);
+  const ms = CALL_MODELS.map((m) => models?.[m]).filter((x) => x != null), mmean = ms.length ? ms.reduce((a, b) => a + b, 0) / ms.length : null;
+  if (mmean == null) return null;
+  const f = { T: last.T, Tmax: Math.max(...pre.map((r) => r.T)), rise: T7 != null ? last.T - T7 : 0, rise1: T1 != null ? last.T - T1 : 0,
+    dew: last.dew ?? 68, cld: last.cld ?? 0, cld9: after8.length ? after8.reduce((a, r) => a + (r.cld || 0), 0) / after8.length : (last.cld ?? 0),
+    wspd: after8.length ? after8.reduce((a, r) => a + (r.sknt || 0), 0) / after8.length : 7,
+    s_E: +(sec === "E"), s_NNW: +(sec === "NNW"), s_SSW: +(sec === "SSW"), s_W: +(sec === "W"),
+    sdoy: Math.sin(2 * Math.PI * doy / 365.25), cdoy: Math.cos(2 * Math.PI * doy / 365.25),
+    mav06: mav06 ?? mmean, nbs13: nbs13 ?? models?.ncep_nbm_conus ?? mmean };
+  for (const m of CALL_MODELS) f["m_" + m] = models?.[m] ?? mmean;
+  return f;
+}
+export function predictCall(M, f) {
+  if (!M || !f) return null;
+  let y = M.intercept;
+  M.feats.forEach((k, i) => { y += M.beta[i] * ((f[k] - M.mean[i]) / (M.std[i] || 1)); });
+  return { mu: r1(y), sd: M.sd };
+}
+
 /* ---------------- learning (forecast_learned.json from forecast-train.mjs) ---------------- */
 export const trendBucket = (d) => d == null ? null : d <= 0 ? "≤0" : d === 1 ? "+1" : d === 2 ? "+2" : "≥3";
 /** cloudy/wet = a BKN/OVC/VV layer at or below 5,000 ft, or rain/drizzle/thunder reported */
@@ -507,7 +541,7 @@ export function pacingDist(learned, sector, hour, maxSoFar) {
   return { hour: h, sector: tab === own ? sector : "all", n: tab.n, base, meanRise: tab.mean, dist };
 }
 
-export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana, learned, reg, wethr, ring, prevCall }) {
+export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana, learned, reg, wethr, ring, prevCall, mos }) {
   const idx = cliIdx(times, day), isToday = ymd(day) === ymd(now);
   const hourNow = new Date(Math.floor(now.getTime() / 3600e3) * 3600e3);
   const rows = [];
@@ -557,7 +591,28 @@ export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana
   const v = wmean(vals.map((x) => (x - mu) ** 2), ws);
   let base = CFG.sdTomorrow;
   if (isToday) { const left = Math.max(0, CFG.peakHour - hNow); base = hNow >= 16 ? 0.35 : 0.45 + 1.15 * Math.min(1, left / 8); }
-  const sd = Math.max(0.5, Math.sqrt(v * (isToday ? 0.6 : 1) + base ** 2));
+  let sd = Math.max(0.5, Math.sqrt(v * (isToday ? 0.6 : 1) + base ** 2));
+  // the trained call model takes over from 8 AM: it was fit on ~2 years of what was known at that time of morning
+  let callModel = null;
+  if (isToday && ob && learned?.callModel?.cutoffs) {
+    // use the latest cutoff model, with obs only up to that cutoff (as it was trained); stale after 90 min
+    const nowMin = Math.round(hNow * 60), cuts = Object.keys(learned.callModel.cutoffs).map(Number).filter((c) => c <= nowMin && nowMin - c <= 90);
+    if (cuts.length) {
+      const cut = Math.max(...cuts), M = learned.callModel.cutoffs[cut];
+      const rows = (ob._td || []).filter((o) => o.fromMetar !== false && !o.src).map((o) => {
+        const toks = (o.sky || "").split(/\s+/).filter(Boolean);
+        return { hm: o.t.getUTCHours() * 60 + o.t.getUTCMinutes(), T: Math.round(c2f(o.tC)), dew: o.dewC != null ? Math.round(c2f(o.dewC)) : null,
+          cld: skyState(toks.map((t) => t.replace(/\d+$/, "")), toks.map((t) => { const m = t.match(/(\d{3})$/); return m ? +m[1] * 100 : null; }), `${o.wx || ""}`) === "cloudy/wet" ? 1 : 0,
+          drct: typeof o.wdir === "number" ? o.wdir : null, sknt: o.wspd ?? null };
+      });
+      const models = {};
+      for (const m of CALL_MODELS) { const pv = series[m]?.temperature_2m_previous_day1; const v2 = idx.map((i) => pv?.[i]).filter((x) => x != null); if (v2.length) models[m] = Math.max(...v2); }
+      const doy = Math.floor((day - Date.UTC(day.getUTCFullYear(), 0, 0)) / 86400e3);
+      const f = callFeatures({ rows, cut, models, mav06: mos?.date === ymd(day) ? mos.mav06 : null, nbs13: mos?.date === ymd(day) && cut >= 570 ? mos.nbs13 : null, doy });
+      const pr = predictCall(M, f);
+      if (pr) { callModel = { ...pr, cutoff: cut, cvMAE: M.cvMAE, cvHit: M.cvHit, prevMu: r1(mu) }; mu = pr.mu; sd = Math.max(0.5, pr.sd); }
+    }
+  }
   let floor = isToday && ob ? ob.maxSoFar : null;
   const wh = isToday && wethr?.date === ymd(day) && wethr.high != null ? wethr.high : null;
   if (wh != null && (floor == null || wh > floor)) floor = wh;
@@ -601,7 +656,7 @@ export function forecastDay({ day, now, times, series, scores, nws, kal, ob, ana
     return { bracket: b.label, needF: need, tgroup: `T${tc < 0 ? 1 : 0}${String(Math.abs(Math.round(tc * 10))).padStart(3, "0")}`, oneMinC: Math.round(tc) - 0.5 >= tc ? Math.round(tc) : Math.ceil(tc) };
   });
   const spike = learned?.spike?.[reg?.sector] || learned?.spike?.all || null;
-  return { date: ymd(day), isToday, call: call?.label ?? null, callP: call?.model_p ?? null, point, mean: r1(mu), meanRaw, selfAdj: r1(selfAdj), selfcal: sc0 || null, pacing, spike, wethr: wh != null ? wethr : null, blend, expected: r1(expected), sd: Math.round(sd * 100) / 100, floor, models: rows, nws: n,
+  return { date: ymd(day), isToday, call: call?.label ?? null, callP: call?.model_p ?? null, point, mean: r1(mu), meanRaw, selfAdj: r1(selfAdj), selfcal: sc0 || null, callModel, pacing, spike, wethr: wh != null ? wethr : null, blend, expected: r1(expected), sd: Math.round(sd * 100) / 100, floor, models: rows, nws: n,
     dist: Object.entries(dist).filter(([, p]) => p >= 0.004).map(([k, p]) => ({ k: +k, p })), brackets, kalshi: { event: kal?.event, noMarket: kal?.noMarket, peak: kal?.peak, window: kal?.window, implied: kal?.implied, error: kal?.error }, checkpoints: cps, tgroups: tg };
 }
 
@@ -674,6 +729,7 @@ export async function runForecast({ inBrowser, kalshi, learned, wethr, iem, log 
     const ana = analogs(hist, day, reg);
     const ob = lab === "today" ? obsToday(obs, day) : null;
     const fc = forecastDay({ day, now, times, series, scores, nws, kal, ob, ana, learned, reg, wethr, ring: lab === "today" ? ring : null,
+      mos: iem?.mos || null,
       prevCall: (() => { const e = log?.[ymd(day)]; return e?.changes?.at(-1)?.call ?? e?.latest?.call ?? null; })() });
     Object.assign(fc, { sounding: sounding(times, series, day), ring: lab === "today" ? ring : null, regime: reg, analogs: ana, obs: ob, summary: summarize(fc, reg) });
     out[lab] = fc;

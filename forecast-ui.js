@@ -1,6 +1,6 @@
 // forecast.html renderer: runs forecast-engine.js live in the browser; falls back to the
 // scheduled snapshot (forecast.json) if the model feed is unavailable.
-import { runForecast, estNow } from "./forecast-engine.js?v=20261123g";
+import { runForecast, estNow } from "./forecast-engine.js?v=20261123h";
 
 const $ = (id) => document.getElementById(id);
 const pct = (p) => (p == null ? "—" : `${Math.round(p * 100)}%`);
@@ -56,7 +56,8 @@ function render() {
   if (f.error) { $("warn").style.display = "block"; $("warn").textContent = f.error; return; }
   $("point").textContent = f.point ?? "—";
   $("bracket").textContent = f.call || "no Kalshi brackets";
-  $("callp").textContent = f.callP != null ? `${pct(f.callP)} model · ${DAY === "today" ? "today" : "tomorrow"} ${f.date}` : f.date;
+  const cmTxt = f.callModel ? ` · ${Math.floor(f.callModel.cutoff / 60) % 12 || 12}:${String(f.callModel.cutoff % 60).padStart(2, "0")} model (${f.callModel.cvHit}% hit in testing)` : "";
+  $("callp").textContent = (f.callP != null ? `${pct(f.callP)} model · ${DAY === "today" ? "today" : "tomorrow"} ${f.date}` : f.date) + cmTxt;
   $("f-mean").textContent = `${f.mean} ± ${f.sd}`;
   $("f-kpeak").textContent = f.kalshi?.noMarket ? "not trading" : f.kalshi?.peak || "—";
   $("f-kimp").textContent = f.kalshi?.implied ?? "—";

@@ -6,6 +6,7 @@ import { writeFileSync, readFileSync, existsSync } from "node:fs";
 import { fetchKalshiDirect, runForecast, estNow, fetchCliHighs, fetchHistory, fetchRing, packHistory, STATION } from "./forecast-engine.js";
 import { train } from "./forecast-train.mjs";
 import { reviewDay } from "./forecast-review.mjs";
+import { trainCall } from "./forecast-train-call.mjs";
 
 const now = estNow();
 const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
@@ -27,6 +28,12 @@ if (!learned || trainedDay !== todayS || process.env.FORCE_TRAIN) {
   catch (e) { console.log("train failed (kept old):", e.message); }
 }
 
+// ---- the morning call model: retrain once a day on ~2 years of history ----
+if (learned && (!learned.callModel || new Date(Date.parse(learned.callModel.trained) + STATION.utcOffset * 3600e3).toISOString().slice(0, 10) !== todayS)) {
+  try { learned.callModel = await trainCall(); writeFileSync("forecast_learned.json", JSON.stringify(learned)); console.log("call model trained on", learned.callModel.days, "days"); }
+  catch (e) { console.log("call model training failed (kept old):", e.message); }
+}
+
 // ---- IEM cache for the page (official highs, nearby stations, daily history for similar days) ----
 let iem = null;
 {
@@ -38,7 +45,12 @@ let iem = null;
   }
   let metars = [];
   try { const r = await fetch(`https://aviationweather.gov/api/data/metar?ids=${STATION.icao}&hours=30&format=json`); if (r.ok) metars = (await r.json()).map((m) => ({ rawOb: m.rawOb, obsTime: m.obsTime, temp: m.temp, dewp: m.dewp, wdir: m.wdir, wspd: m.wspd, wgst: m.wgst, wxString: m.wxString, clouds: m.clouds })); } catch { /* skip */ }
-  iem = { fetched: new Date().toISOString(), metars, cli: Object.keys(cliNow).length ? cliNow : old.cli || {}, ring: ringNow || {}, history, historyDay: histDay };
+  // today's GFS MOS (06Z max) and NBM text (13Z afternoon temps): inputs to the call model
+  const mos = { date: todayS, mav06: old.mos?.date === todayS ? old.mos.mav06 : null, nbs13: old.mos?.date === todayS ? old.mos.nbs13 : null };
+  const mosRun = async (model, hh) => { const r = await fetch(`https://mesonet.agron.iastate.edu/api/1/mos.json?station=${STATION.icao}&model=${model}&runtime=${todayS}T${hh}:00:00Z`); return r.ok ? (await r.json()).data || [] : []; };
+  try { if (mos.mav06 == null) { const d = await mosRun("GFS", "06"); const x = d.find((r) => r.n_x != null && r.ftime.slice(11, 13) === "00" && r.ftime.slice(0, 10) > todayS); if (x) mos.mav06 = +x.n_x; } } catch { /* later */ }
+  try { if (mos.nbs13 == null) { const d = await mosRun("NBS", "13"); const v = d.filter((r) => r.ftime.slice(0, 10) === todayS && ["15", "18", "21"].includes(r.ftime.slice(11, 13)) && r.tmp != null).map((r) => +r.tmp); if (v.length) mos.nbs13 = Math.max(...v); } } catch { /* later */ }
+  iem = { fetched: new Date().toISOString(), mos, metars, cli: Object.keys(cliNow).length ? cliNow : old.cli || {}, ring: ringNow || {}, history, historyDay: histDay };
   writeFileSync("iem.json", JSON.stringify(iem));
   console.log("iem cache:", Object.keys(iem.cli).length, "CLI days,", Object.keys(iem.ring).length, "ring,", history.length, "history days");
 }
