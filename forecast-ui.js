@@ -1,6 +1,6 @@
 // forecast.html renderer: runs forecast-engine.js live in the browser; falls back to the
 // scheduled snapshot (forecast.json) if the model feed is unavailable.
-import { runForecast, estNow } from "./forecast-engine.js?v=20261123d";
+import { runForecast, estNow } from "./forecast-engine.js?v=20261123e";
 
 const $ = (id) => document.getElementById(id);
 const pct = (p) => (p == null ? "—" : `${Math.round(p * 100)}%`);
@@ -168,8 +168,10 @@ function render() {
 
   // track record
   const rows = Object.entries(DATA.log || {}).sort().reverse().slice(0, 14);
-  const cell = (s, act) => !s ? "—" : `<span class="${act == null ? "" : s.point === act ? "hit" : "miss"}">${s.point}</span> <span class="dim">${esc(s.call || "")}</span>`;
-  $("tb-log").innerHTML = rows.map(([d, e]) => `<tr><td>${d}</td><td>${cell(e.first, e.actual)}</td><td>${cell(e.morning, e.actual)}</td><td>${cell(e.latest, e.actual)}</td><td class="dim">${esc(e.latest?.kalshi_peak || "")}</td><td><b>${e.actual ?? "—"}</b></td></tr>`).join("")
+  // when each call was made (EST); the date is shown only if it's not the forecast day itself
+  const when = (s, d) => { if (!s?.at) return ""; const [md, ...t] = s.at.split(" "); return `${md === d.slice(5) ? "" : md.replace("-", "/") + " "}${t.join(" ").replace(/ EST$/, "")} EST`; };
+  const cell = (s, act, d) => !s ? "—" : `<span class="${act == null ? "" : s.point === act ? "hit" : "miss"}">${s.point}</span> <span class="dim">${esc(s.call || "")}</span><div class="dim" style="font-size:11px">${esc(when(s, d))}</div>`;
+  $("tb-log").innerHTML = rows.map(([d, e]) => `<tr><td>${d}</td><td>${cell(e.first, e.actual, d)}</td><td>${cell(e.morning, e.actual, d)}</td><td>${cell(e.latest, e.actual, d)}</td><td class="dim">${esc(e.latest?.kalshi_peak || "")}</td><td><b>${e.actual ?? "—"}</b></td></tr>`).join("")
     || `<tr><td colspan="6" class="dim">Builds up as the scheduled job runs.</td></tr>`;
 
   // links (peak hour for soundings)
