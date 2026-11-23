@@ -117,8 +117,11 @@ if (fc) {
     const H = now.getUTCHours();
     const HM = H * 60 + now.getUTCMinutes();
     // trading-time calls: 9:30 AM (main trade) and 12:30 PM (nowcast check), first update at/after each
-    if (k === "today" && HM >= 570 && HM < 720 && !e.morning?.v2) e.morning = { ...snap, v2: true };
-    if (k === "today" && HM >= 750 && HM < 960 && !e.midday) e.midday = snap;
+    // the trading call: first update at/after 10:30 AM EST, with Kalshi's price for that bracket then
+    if (k === "today" && HM >= 630 && HM < 900 && !e.call1030) {
+      const b = (f.brackets || []).find((x) => x.label === f.call);
+      e.call1030 = { ...snap, p: b?.model_p != null ? Math.round(b.model_p * 100) : null, mkt: b?.mid != null ? Math.round(b.mid * 100) : null };
+    }
     // every time the call changes: when, and what Kalshi was charging for the new bracket
     if (f.call) {
       const lastC = e.changes?.at(-1)?.call;

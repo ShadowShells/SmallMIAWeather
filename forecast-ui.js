@@ -1,6 +1,6 @@
 // forecast.html renderer: runs forecast-engine.js live in the browser; falls back to the
 // scheduled snapshot (forecast.json) if the model feed is unavailable.
-import { runForecast, estNow } from "./forecast-engine.js?v=20261123f";
+import { runForecast, estNow } from "./forecast-engine.js?v=20261123g";
 
 const $ = (id) => document.getElementById(id);
 const pct = (p) => (p == null ? "—" : `${Math.round(p * 100)}%`);
@@ -178,9 +178,9 @@ function render() {
     return ch.slice(-4).map((c) => { const ok = e.actual == null ? "" : inBr(c.call, e.actual) ? "hit" : "miss";
       return `<div style="white-space:nowrap"><span class="${ok}">${esc(c.call.replace(/°/g, ""))}</span> <span class="dim" style="font-size:11px">${esc(c.at.split(" ").slice(1).join(" ").replace(/ EST$/, ""))}${c.mkt != null ? ` · mkt ${c.mkt}¢` : ""}</span></div>`; }).join("");
   };
-  const cell = (s, act, d) => !s ? "—" : `<span class="${act == null ? "" : s.point === act ? "hit" : "miss"}">${s.point}</span> <span class="dim">${esc(s.call || "")}</span><div class="dim" style="font-size:11px">${esc(when(s, d))}</div>`;
-  $("tb-log").innerHTML = rows.map(([d, e]) => `<tr><td>${d}</td><td>${cell(e.first, e.actual, d)}</td><td>${cell(e.morning, e.actual, d)}</td><td>${cell(e.midday, e.actual, d)}</td><td>${switches(e, d)}</td><td class="dim">${esc(e.latest?.kalshi_peak || "")}</td><td><b>${e.actual ?? "—"}</b></td></tr>`).join("")
-    || `<tr><td colspan="7" class="dim">Builds up as the scheduled job runs.</td></tr>`;
+  const cell = (s, act, d) => !s ? "—" : `<span class="${act == null ? "" : (s.call ? inBr(s.call, act) : s.point === act) ? "hit" : "miss"}">${s.point}</span> <span class="dim">${esc(s.call || "")}</span><div class="dim" style="font-size:11px">${esc(when(s, d))}</div>`;
+  $("tb-log").innerHTML = rows.map(([d, e]) => `<tr><td>${d}</td><td>${cell(e.first, e.actual, d)}</td><td>${cell(e.call1030, e.actual, d)}</td><td class="dim">${e.call1030?.p != null ? e.call1030.p + "%" : "—"}</td><td class="dim">${e.call1030?.mkt != null ? e.call1030.mkt + "¢" : "—"}</td><td><b>${e.actual ?? "—"}</b></td></tr>`).join("")
+    || `<tr><td colspan="6" class="dim">Builds up as the scheduled job runs.</td></tr>`;
 
   // links (peak hour for soundings)
   const lat = 25.79, lon = -80.29, ev = f.kalshi?.event || "";
