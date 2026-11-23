@@ -94,28 +94,38 @@
    "sector": "N/NW"
   },
   "latest": {
-   "at": "11-23 9:56 AM EST",
-   "point": 80,
-   "call": "79° to 80°",
-   "mean": 79.8,
-   "meanRaw": 79.8,
+   "at": "11-23 10:16 AM EST",
+   "point": 78,
+   "call": "77° to 78°",
+   "mean": 78.6,
+   "meanRaw": 78.6,
    "sector": "N/NW",
    "kalshi_peak": "79° to 80°",
-   "kalshi_implied": 78.9,
+   "kalshi_implied": 78.8,
    "nws": 80,
-   "analog": 81.5
+   "analog": 81
   },
   "morning": {
-   "at": "11-23 9:56 AM EST",
-   "point": 80,
-   "call": "79° to 80°",
-   "mean": 79.8,
-   "meanRaw": 79.8,
+   "at": "11-23 10:16 AM EST",
+   "point": 78,
+   "call": "77° to 78°",
+   "mean": 78.6,
+   "meanRaw": 78.6,
    "sector": "N/NW",
    "kalshi_peak": "79° to 80°",
-   "kalshi_implied": 78.9,
+   "kalshi_implied": 78.8,
    "nws": 80,
-   "analog": 81.5
+   "analog": 81
+  },
+  "nowcast": {
+   "10": {
+    "at": "10:16 AM EST",
+    "call": "77° to 78°",
+    "mean": 78.6,
+    "expected": 78.1,
+    "floor": 73,
+    "rate": 2.1
+   }
   }
  },
  "2026-11-24": {
@@ -131,13 +141,14 @@
    "analog": 83
   },
   "latest": {
-   "at": "11-23 9:56 AM EST",
+   "at": "11-23 10:16 AM EST",
    "point": 81,
    "call": "81° to 82°",
    "mean": 81.1,
    "meanRaw": 81.1,
    "sector": "E/onshore",
-   "kalshi_implied": null,
+   "kalshi_peak": "79° to 80°",
+   "kalshi_implied": 79.7,
    "nws": 81,
    "analog": 80.5
   }
