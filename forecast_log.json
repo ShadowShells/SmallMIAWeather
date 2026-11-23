@@ -94,16 +94,16 @@
    "sector": "N/NW"
   },
   "latest": {
-   "at": "11-22 6:53 PM EST",
+   "at": "11-22 7:38 PM EST",
    "point": 80,
    "call": "79° to 80°",
    "mean": 79.7,
    "meanRaw": 79.7,
    "sector": "N/NW",
    "kalshi_peak": "79° to 80°",
-   "kalshi_implied": 79.6,
+   "kalshi_implied": 80,
    "nws": 80,
-   "analog": 81
+   "analog": 80.5
   }
  }
 }
