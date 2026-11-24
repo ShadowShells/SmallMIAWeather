@@ -1,12 +1,14 @@
 // forecast.html renderer: runs forecast-engine.js live in the browser; falls back to the
 // scheduled snapshot (forecast.json) if the model feed is unavailable.
-import { runForecast, estNow } from "./forecast-engine.js?v=20261123h";
+import { runForecast, estNow } from "./forecast-engine.js?v=20261124a";
 
 const $ = (id) => document.getElementById(id);
 const pct = (p) => (p == null ? "—" : `${Math.round(p * 100)}%`);
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 let DATA = null, DAY = "today";
-try { DAY = localStorage.getItem("smia_fc_tab") || "today"; } catch { /* private mode */ }
+// remember the Tomorrow tab only for the rest of the same day; a new day always opens on Today
+const estDay = () => new Date(Date.now() - 5 * 3600e3).toISOString().slice(0, 10);
+try { const [d, t] = (localStorage.getItem("smia_fc_tab") || "").split("|"); DAY = d === estDay() && t ? t : "today"; } catch { /* private mode */ }
 
 function dot(id, ok) { const d = $(id); if (d) d.className = "dot " + (ok === null ? "wait" : ok ? "ok" : "err"); }
 function tick() { const n = estNow(); let h = n.getUTCHours(); const ap = h >= 12 ? "PM" : "AM"; $("clock").textContent = `${h % 12 || 12}:${String(n.getUTCMinutes()).padStart(2, "0")} ${ap} EST`; }
@@ -216,7 +218,7 @@ function spark(series, f) {
 }
 
 document.querySelectorAll(".tabs button").forEach((b) => b.addEventListener("click", () => {
-  DAY = b.dataset.day; try { localStorage.setItem("smia_fc_tab", DAY); } catch { /* ignore */ }
+  DAY = b.dataset.day; try { localStorage.setItem("smia_fc_tab", `${estDay()}|${DAY}`); } catch { /* ignore */ }
   if (DATA) render();
 }));
 tick(); setInterval(tick, 15e3);
