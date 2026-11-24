@@ -1,35 +1,31 @@
 {
  "date": "2026-11-24",
- "fetched_utc": "2026-11-24T15:15:14.194Z",
- "high": 73,
- "potential": 73,
- "time": "9:34 AM",
+ "fetched_utc": "2026-11-24T15:27:07.612Z",
+ "high": 75,
+ "potential": 75,
+ "time": "10:23 AM",
  "sources": [
-  "omo",
-  "hf_metar",
-  "metar"
+  "omo"
  ],
  "low": 68,
  "lowTime": "7:34 AM",
  "raw": {
   "station_code": "KMIA",
   "date": "2026-11-24",
-  "wethr_high": 73,
+  "wethr_high": 75,
   "wethr_low": 68,
-  "time_of_high_utc": "2026-11-24 15:13:00",
+  "time_of_high_utc": "2026-11-24 15:24:00",
   "time_of_low_utc": "2026-11-24 12:34:00",
-  "potential_high": 73,
+  "potential_high": 75,
   "potential_low": 68,
-  "potential_high_time_utc": "2026-11-24 15:13:00",
+  "potential_high_time_utc": "2026-11-24 15:24:00",
   "potential_low_time_utc": "2026-11-24 12:34:00",
   "divergence": {
    "high": false,
    "low": false
   },
   "wethr_high_sources": [
-   "omo",
-   "hf_metar",
-   "metar"
+   "omo"
   ],
   "wethr_low_sources": [
    "omo",
@@ -40,16 +36,8 @@
   ],
   "wethr_high_source_detail": {
    "omo": {
-    "first_confirmed_utc": "2026-11-24 14:34:00",
-    "count": 40
-   },
-   "hf_metar": {
-    "first_confirmed_utc": "2026-11-24 14:35:00",
-    "count": 8
-   },
-   "metar": {
-    "first_confirmed_utc": "2026-11-24 14:53:00",
-    "count": 1
+    "first_confirmed_utc": "2026-11-24 15:23:00",
+    "count": 2
    }
   },
   "wethr_low_source_detail": {
@@ -85,9 +73,9 @@
   }
  },
  "extra": {
-  "time_of_high_utc": "2026-11-24 15:13:00",
+  "time_of_high_utc": "2026-11-24 15:24:00",
   "time_of_low_utc": "2026-11-24 12:34:00",
-  "potential_high_time_utc": "2026-11-24 15:13:00",
+  "potential_high_time_utc": "2026-11-24 15:24:00",
   "potential_low_time_utc": "2026-11-24 12:34:00"
  },
  "obs": [
@@ -1696,6 +1684,30 @@
    "dew": 21,
    "wd": 20,
    "ws": 4,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-24T15:15:00Z",
+   "c": 23,
+   "f": 73.4,
+   "lo": 73,
+   "hi": 74,
+   "dew": 21,
+   "wd": 10,
+   "ws": 5,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-24T15:20:00Z",
+   "c": 23,
+   "f": 73.4,
+   "lo": 73,
+   "hi": 74,
+   "dew": 21,
+   "wd": 360,
+   "ws": 3,
    "wg": null,
    "metar": false
   }
