@@ -1181,9 +1181,9 @@
  "2026-11-23": {
   "date": "2026-11-23",
   "actual": 77,
-  "reviewed": "2026-11-23T22:13:26.797Z",
-  "peak": "12:46 PM",
-  "peakH": 12.8,
+  "reviewed": "2026-11-24T05:17:15.339Z",
+  "peak": "12:53 PM",
+  "peakH": 12.9,
   "maxHourly": 77,
   "spike": 0,
   "sector": "N/NW",
@@ -1199,7 +1199,7 @@
    "N/NW flow",
    "sunny"
   ],
-  "summary": "High 77°F at 12:46 PM. N/NW flow (NNW 3.3 kt); sunny. Morning call 79° to 80° missed (mean 79.2, off +2.2). Closest: HRRR, ICON, ECMWF, UKMO. Too warm: GEM, GFS.",
+  "summary": "High 77°F at 12:53 PM. N/NW flow (NNW 3.3 kt); sunny. Morning call 79° to 80° missed (mean 79.2, off +2.2). Closest: HRRR, ICON, ECMWF. Too warm: GEM, GFS.",
   "callHit": false,
   "sources": [
    {
@@ -1270,8 +1270,8 @@
    },
    {
     "name": "GFS · same day",
-    "val": 81.8,
-    "miss": 4.8,
+    "val": 81.1,
+    "miss": 4.1,
     "kind": "model"
    },
    {
@@ -1318,8 +1318,8 @@
    },
    {
     "name": "GEM · same day",
-    "val": 80.8,
-    "miss": 3.8,
+    "val": 79.5,
+    "miss": 2.5,
     "kind": "model"
    },
    {
@@ -1330,8 +1330,8 @@
    },
    {
     "name": "UKMO · same day",
-    "val": 76.2,
-    "miss": -0.8,
+    "val": 78.4,
+    "miss": 1.4,
     "kind": "model"
    }
   ],
@@ -1341,7 +1341,7 @@
     "day1": 73.5
    },
    "gfs_global": {
-    "day0": 81.8,
+    "day0": 81.1,
     "day1": 82.2
    },
    "ncep_nbm_conus": {
@@ -1357,14 +1357,14 @@
     "day1": 76.1
    },
    "gem_seamless": {
-    "day0": 80.8,
+    "day0": 79.5,
     "day1": 79.4
    },
    "ukmo_seamless": {
-    "day0": 76.2,
+    "day0": 78.4,
     "day1": 76.4
    }
   },
-  "final": false
+  "final": true
  }
 }
