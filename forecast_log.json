@@ -406,14 +406,14 @@
    "analog": 83
   },
   "latest": {
-   "at": "11-24 4:16 AM EST",
+   "at": "11-24 4:39 AM EST",
    "point": 81,
    "call": "81° to 82°",
-   "mean": 80.4,
-   "meanRaw": 80.4,
+   "mean": 80.5,
+   "meanRaw": 80.5,
    "sector": "E/onshore",
    "kalshi_peak": "81° to 82°",
-   "kalshi_implied": 80.5,
+   "kalshi_implied": 80.4,
    "nws": 81,
    "analog": 84
   },
@@ -439,7 +439,7 @@
    "analog": 83
   },
   "latest": {
-   "at": "11-24 4:16 AM EST",
+   "at": "11-24 4:39 AM EST",
    "point": 78,
    "call": null,
    "mean": 78.2,
