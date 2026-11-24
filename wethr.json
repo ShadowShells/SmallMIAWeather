@@ -1,12 +1,13 @@
 {
  "date": "2026-11-24",
- "fetched_utc": "2026-11-24T21:14:25.623Z",
+ "fetched_utc": "2026-11-24T21:25:36.254Z",
  "high": 79,
  "potential": 79,
  "time": "2:53 PM",
  "sources": [
   "metar",
-  "dsm"
+  "dsm",
+  "cli"
  ],
  "low": 68,
  "lowTime": "7:34 AM",
@@ -27,14 +28,16 @@
   },
   "wethr_high_sources": [
    "metar",
-   "dsm"
+   "dsm",
+   "cli"
   ],
   "wethr_low_sources": [
    "omo",
    "hf_metar",
    "metar",
    "dsm",
-   "six_hour_low"
+   "six_hour_low",
+   "cli"
   ],
   "wethr_high_source_detail": {
    "metar": {
@@ -44,6 +47,10 @@
    "dsm": {
     "first_confirmed_utc": "2026-11-24 19:59:00",
     "count": 2
+   },
+   "cli": {
+    "first_confirmed_utc": "2026-11-24 20:55:00",
+    "count": 1
    }
   },
   "wethr_low_source_detail": {
@@ -66,6 +73,10 @@
    "six_hour_low": {
     "first_confirmed_utc": "2026-11-24 11:53:00",
     "count": 2
+   },
+   "cli": {
+    "first_confirmed_utc": "2026-11-24 12:34:00",
+    "count": 1
    }
   },
   "calculation_logic": "nws",
@@ -2638,6 +2649,30 @@
    "dew": 18,
    "wd": 60,
    "ws": 8,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-24T21:15:00Z",
+   "c": 26,
+   "f": 78.8,
+   "lo": 78,
+   "hi": 79,
+   "dew": 19,
+   "wd": 50,
+   "ws": 6,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-24T21:20:00Z",
+   "c": 26,
+   "f": 78.8,
+   "lo": 78,
+   "hi": 79,
+   "dew": 19,
+   "wd": 50,
+   "ws": 7,
    "wg": null,
    "metar": false
   }
