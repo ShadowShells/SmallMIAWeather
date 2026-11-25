@@ -1545,5 +1545,73 @@
    }
   },
   "final": true
+ },
+ "2026-11-25": {
+  "date": "2026-11-25",
+  "actual": 73,
+  "reviewed": "2026-11-25T22:15:21.479Z",
+  "peak": "12:00 AM",
+  "peakH": 0,
+  "maxHourly": 73,
+  "spike": 0,
+  "sector": "S/SW",
+  "wind": "S 1 kt",
+  "cloudAM": 100,
+  "cloudPM": 88,
+  "dew8": 69,
+  "dew13": 71,
+  "dewChg": 2,
+  "rain": 6.58,
+  "gust": 0,
+  "tags": [
+   "S/SW flow",
+   "afternoon cloud cap",
+   "showers around",
+   "early peak"
+  ],
+  "summary": "High 73°F at 12:00 AM. S/SW flow (S 1 kt); afternoon cloud cap, showers around, early peak.",
+  "callHit": null,
+  "sources": [
+   {
+    "name": "Page · night before",
+    "val": 78.1,
+    "miss": 5.1,
+    "kind": "page"
+   },
+   {
+    "name": "Page · 10 AM nowcast",
+    "val": 77.2,
+    "miss": 4.2,
+    "kind": "page"
+   },
+   {
+    "name": "Page · 12 PM nowcast",
+    "val": 75.5,
+    "miss": 2.5,
+    "kind": "page"
+   },
+   {
+    "name": "Page · 2 PM nowcast",
+    "val": 74.4,
+    "miss": 1.4,
+    "kind": "page"
+   },
+   {
+    "name": "NWS",
+    "val": 78,
+    "miss": 5,
+    "kind": "other"
+   },
+   {
+    "name": "Similar days",
+    "val": 83,
+    "miss": 10,
+    "kind": "other"
+   }
+  ],
+  "models": {
+   "error": "https://previous-runs-api.open-meteo.com/v1/forecast HTTP 429"
+  },
+  "final": false
  }
 }
