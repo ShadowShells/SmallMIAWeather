@@ -1,6 +1,6 @@
 {
  "date": "2026-11-25",
- "fetched_utc": "2026-11-25T06:24:32.998Z",
+ "fetched_utc": "2026-11-25T06:46:07.084Z",
  "high": 73,
  "potential": 73,
  "time": "12:00 AM",
@@ -15,11 +15,11 @@
   "date": "2026-11-25",
   "wethr_high": 73,
   "wethr_low": 72,
-  "time_of_high_utc": "2026-11-25 06:22:00",
+  "time_of_high_utc": "2026-11-25 06:44:00",
   "time_of_low_utc": "2026-11-25 05:59:00",
   "potential_high": 73,
   "potential_low": 72,
-  "potential_high_time_utc": "2026-11-25 06:22:00",
+  "potential_high_time_utc": "2026-11-25 06:44:00",
   "potential_low_time_utc": "2026-11-25 05:59:00",
   "divergence": {
    "high": false,
@@ -37,11 +37,11 @@
   "wethr_high_source_detail": {
    "hf_metar": {
     "first_confirmed_utc": "2026-11-25 05:00:00",
-    "count": 13
+    "count": 17
    },
    "omo": {
     "first_confirmed_utc": "2026-11-25 05:00:00",
-    "count": 60
+    "count": 82
    }
   },
   "wethr_low_source_detail": {
@@ -69,9 +69,9 @@
   }
  },
  "extra": {
-  "time_of_high_utc": "2026-11-25 06:22:00",
+  "time_of_high_utc": "2026-11-25 06:44:00",
   "time_of_low_utc": "2026-11-25 05:59:00",
-  "potential_high_time_utc": "2026-11-25 06:22:00",
+  "potential_high_time_utc": "2026-11-25 06:44:00",
   "potential_low_time_utc": "2026-11-25 05:59:00"
  },
  "obs": [
@@ -288,6 +288,54 @@
    "dew": 22,
    "wd": 20,
    "ws": 6,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-25T06:25:00Z",
+   "c": 23,
+   "f": 73.4,
+   "lo": 73,
+   "hi": 74,
+   "dew": 22,
+   "wd": 20,
+   "ws": 5,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-25T06:30:00Z",
+   "c": 23,
+   "f": 73.4,
+   "lo": 73,
+   "hi": 74,
+   "dew": 22,
+   "wd": 30,
+   "ws": 5,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-25T06:35:00Z",
+   "c": 23,
+   "f": 73.4,
+   "lo": 73,
+   "hi": 74,
+   "dew": 22,
+   "wd": 20,
+   "ws": 6,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-25T06:40:00Z",
+   "c": 23,
+   "f": 73.4,
+   "lo": 73,
+   "hi": 74,
+   "dew": 22,
+   "wd": 30,
+   "ws": 4,
    "wg": null,
    "metar": false
   }
