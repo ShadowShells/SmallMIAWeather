@@ -1,13 +1,14 @@
 {
  "date": "2026-11-24",
- "fetched_utc": "2026-11-24T23:39:30.489Z",
+ "fetched_utc": "2026-11-25T00:35:59.689Z",
  "high": 79,
  "potential": 79,
  "time": "2:53 PM",
  "sources": [
   "metar",
   "dsm",
-  "cli"
+  "cli",
+  "six_hour_high"
  ],
  "low": 68,
  "lowTime": "7:34 AM",
@@ -29,7 +30,8 @@
   "wethr_high_sources": [
    "metar",
    "dsm",
-   "cli"
+   "cli",
+   "six_hour_high"
   ],
   "wethr_low_sources": [
    "omo",
@@ -50,6 +52,10 @@
    },
    "cli": {
     "first_confirmed_utc": "2026-11-24 20:55:00",
+    "count": 1
+   },
+   "six_hour_high": {
+    "first_confirmed_utc": "2026-11-24 23:53:00",
     "count": 1
    }
   },
@@ -3021,6 +3027,150 @@
    "dew": 19,
    "wd": 50,
    "ws": 5,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-24T23:40:00Z",
+   "c": 25,
+   "f": 77,
+   "lo": 77,
+   "hi": 77,
+   "dew": 19,
+   "wd": 50,
+   "ws": 5,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-24T23:45:00Z",
+   "c": 25,
+   "f": 77,
+   "lo": 77,
+   "hi": 77,
+   "dew": 19,
+   "wd": 50,
+   "ws": 4,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-24T23:50:00Z",
+   "c": 25,
+   "f": 77,
+   "lo": 77,
+   "hi": 77,
+   "dew": 19,
+   "wd": 60,
+   "ws": 5,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-24T23:53:00Z",
+   "c": 25,
+   "f": 77,
+   "lo": 77,
+   "hi": 77,
+   "dew": 18.9,
+   "wd": 60,
+   "ws": 5,
+   "wg": null,
+   "metar": true
+  },
+  {
+   "t": "2026-11-24T23:55:00Z",
+   "c": 25,
+   "f": 77,
+   "lo": 77,
+   "hi": 77,
+   "dew": 19,
+   "wd": 60,
+   "ws": 5,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-25T00:00:00Z",
+   "c": 25,
+   "f": 77,
+   "lo": 77,
+   "hi": 77,
+   "dew": 19,
+   "wd": 50,
+   "ws": 6,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-25T00:05:00Z",
+   "c": 25,
+   "f": 77,
+   "lo": 77,
+   "hi": 77,
+   "dew": 19,
+   "wd": 50,
+   "ws": 5,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-25T00:10:00Z",
+   "c": 25,
+   "f": 77,
+   "lo": 77,
+   "hi": 77,
+   "dew": 19,
+   "wd": 50,
+   "ws": 4,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-25T00:15:00Z",
+   "c": 25,
+   "f": 77,
+   "lo": 77,
+   "hi": 77,
+   "dew": 19,
+   "wd": 50,
+   "ws": 5,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-25T00:20:00Z",
+   "c": 25,
+   "f": 77,
+   "lo": 77,
+   "hi": 77,
+   "dew": 19,
+   "wd": 30,
+   "ws": 4,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-25T00:25:00Z",
+   "c": 25,
+   "f": 77,
+   "lo": 77,
+   "hi": 77,
+   "dew": 19,
+   "wd": 30,
+   "ws": 4,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-25T00:30:00Z",
+   "c": 25,
+   "f": 77,
+   "lo": 77,
+   "hi": 77,
+   "dew": 19,
+   "wd": 30,
+   "ws": 4,
    "wg": null,
    "metar": false
   }
