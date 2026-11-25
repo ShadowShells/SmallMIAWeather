@@ -10,8 +10,8 @@
   "nwsGrid": "MFL/105,51",
   "utcOffset": -5
  },
- "generated": "2026-11-24T22:17:47.946Z",
- "generatedTxt": "10:17 PM EST",
+ "generated": "2026-11-24T22:40:19.497Z",
+ "generatedTxt": "10:40 PM EST",
  "scores": {
   "ncep_hrrr_conus": {
    "bias": 2.5,
@@ -4719,19 +4719,19 @@
   "obs": {
    "maxSoFar": 79,
    "maxMetar": 79,
-   "nowFit": 78.1,
+   "nowFit": 73,
    "maxSrc": "METAR",
    "maxTime": "2:53 PM",
-   "nowF": 78.8,
-   "nowRange": "78–80",
-   "nowSrc": "wethr 5-min",
-   "nowT": "2026-11-24T22:15:00.000Z",
-   "nowTime": "10:15 PM EST",
+   "nowF": 73,
+   "nowRange": null,
+   "nowSrc": "METAR",
+   "nowT": "2026-11-24T22:35:00.000Z",
+   "nowTime": "10:35 PM EST",
    "dewF": 70,
-   "wind": "70 @ 8 kt",
-   "wx": "",
-   "sky": "",
-   "raw": "",
+   "wind": "10 @ 14G21 kt",
+   "wx": "BR",
+   "sky": "FEW033 BKN150 OVC220",
+   "raw": "SPECI KMIA 250335Z 01014G21KT 340V040 1 3/4SM BR FEW033 BKN150 OVC220 23/21 A2997 RMK AO2 T02280211 $",
    "series": [
     {
      "h": 0,
@@ -5900,6 +5900,22 @@
     {
      "h": 22.25,
      "f": 78.8
+    },
+    {
+     "h": 22.333333333333332,
+     "f": 77
+    },
+    {
+     "h": 22.416666666666668,
+     "f": 75.2
+    },
+    {
+     "h": 22.5,
+     "f": 73.4
+    },
+    {
+     "h": 22.583333333333332,
+     "f": 73
     }
    ]
   },
@@ -6169,7 +6185,7 @@
     "hi": 74,
     "bid": 0.2,
     "ask": 0.21,
-    "last": 0.2,
+    "last": 0.21,
     "mid": 0.20500000000000002,
     "p": 0.21134020618556704,
     "model_p": 0.08260974982393865,
@@ -6179,25 +6195,25 @@
     "label": "75° to 76°",
     "lo": 75,
     "hi": 76,
-    "bid": 0.32,
-    "ask": 0.33,
-    "last": 0.33,
-    "mid": 0.325,
-    "p": 0.3350515463917526,
+    "bid": 0.33,
+    "ask": 0.34,
+    "last": 0.34,
+    "mid": 0.335,
+    "p": 0.3453608247422681,
     "model_p": 0.1467846957724026,
-    "edge": -0.18826685061935
+    "edge": -0.19857612896986548
    },
    {
     "label": "77° to 78°",
     "lo": 77,
     "hi": 78,
-    "bid": 0.35,
-    "ask": 0.36,
+    "bid": 0.34,
+    "ask": 0.35,
     "last": 0.35,
-    "mid": 0.355,
-    "p": 0.36597938144329895,
+    "mid": 0.345,
+    "p": 0.35567010309278346,
     "model_p": 0.23317791616193193,
-    "edge": -0.13280146528136702
+    "edge": -0.12249218693085154
    },
    {
     "label": "79° to 80°",
@@ -6432,6 +6448,6 @@
    ]
   },
   "obs": null,
-  "summary": "Call 78 (77° to 78°, 23%). Kalshi peak 77° to 78°, implied ~76.2. Bias-corrected blend 78.8 ± 3.09 °F. Cheap: 79° to 80° (25% vs market 7%). Rich: 75° to 76° (15% vs market 34%)."
+  "summary": "Call 78 (77° to 78°, 23%). Kalshi peak 77° to 78°, implied ~76.2. Bias-corrected blend 78.8 ± 3.09 °F. Cheap: 79° to 80° (25% vs market 7%). Rich: 75° to 76° (15% vs market 35%)."
  }
 }
