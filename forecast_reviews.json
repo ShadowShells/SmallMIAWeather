@@ -1724,5 +1724,185 @@
    }
   },
   "final": true
+ },
+ "2026-11-26": {
+  "date": "2026-11-26",
+  "actual": 79,
+  "reviewed": "2026-11-26T22:14:26.558Z",
+  "peak": "12:53 PM",
+  "peakH": 12.9,
+  "maxHourly": 78,
+  "spike": 1,
+  "sector": "W/land",
+  "wind": "WSW 10.7 kt",
+  "cloudAM": 0,
+  "cloudPM": 20,
+  "dew8": 63,
+  "dew13": 60,
+  "dewChg": -3,
+  "rain": 0.001,
+  "gust": 22,
+  "tags": [
+   "W land breeze",
+   "sunny",
+   "drying mid-day",
+   "1-min spike +1",
+   "gusty"
+  ],
+  "summary": "High 79°F at 12:53 PM (1-minute data, 1° above the best hourly reading). W land breeze (WSW 10.7 kt); sunny, drying mid-day, gusty. Dewpoint 63→60°F by 1 PM. Closest: ECMWF, UKMO. Too cool: NBM, HRRR, GEM. Too warm: GFS.",
+  "callHit": null,
+  "sources": [
+   {
+    "name": "Page · night before",
+    "val": 77.5,
+    "miss": -1.5,
+    "kind": "page"
+   },
+   {
+    "name": "Page · 10 AM nowcast",
+    "val": 78.6,
+    "miss": -0.4,
+    "kind": "page"
+   },
+   {
+    "name": "Page · 12 PM nowcast",
+    "val": 79.6,
+    "miss": 0.6,
+    "kind": "page"
+   },
+   {
+    "name": "Page · 2 PM nowcast",
+    "val": 79.5,
+    "miss": 0.5,
+    "kind": "page"
+   },
+   {
+    "name": "NWS",
+    "val": 80,
+    "miss": 1,
+    "kind": "other"
+   },
+   {
+    "name": "Similar days",
+    "val": 81,
+    "miss": 2,
+    "kind": "other"
+   },
+   {
+    "name": "HRRR · day before",
+    "val": 74.2,
+    "miss": -4.8,
+    "kind": "model"
+   },
+   {
+    "name": "HRRR · same day",
+    "val": 76.1,
+    "miss": -2.9,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · day before",
+    "val": 81.2,
+    "miss": 2.2,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · same day",
+    "val": 82,
+    "miss": 3,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · day before",
+    "val": 76.9,
+    "miss": -2.1,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · same day",
+    "val": 76.9,
+    "miss": -2.1,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · day before",
+    "val": 78.8,
+    "miss": -0.2,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · same day",
+    "val": 78.6,
+    "miss": -0.4,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · day before",
+    "val": 77.4,
+    "miss": -1.6,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · same day",
+    "val": 77.4,
+    "miss": -1.6,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · day before",
+    "val": 73.3,
+    "miss": -5.7,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · same day",
+    "val": 76,
+    "miss": -3,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · day before",
+    "val": 76.8,
+    "miss": -2.2,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · same day",
+    "val": 78.1,
+    "miss": -0.9,
+    "kind": "model"
+   }
+  ],
+  "models": {
+   "ncep_hrrr_conus": {
+    "day0": 76.1,
+    "day1": 74.2
+   },
+   "gfs_global": {
+    "day0": 82,
+    "day1": 81.2
+   },
+   "ncep_nbm_conus": {
+    "day0": 76.9,
+    "day1": 76.9
+   },
+   "ecmwf_ifs025": {
+    "day0": 78.6,
+    "day1": 78.8
+   },
+   "icon_seamless": {
+    "day0": 77.4,
+    "day1": 77.4
+   },
+   "gem_seamless": {
+    "day0": 76,
+    "day1": 73.3
+   },
+   "ukmo_seamless": {
+    "day0": 78.1,
+    "day1": 76.8
+   }
+  },
+  "final": false
  }
 }
