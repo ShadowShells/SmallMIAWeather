@@ -1549,9 +1549,9 @@
  "2026-11-25": {
   "date": "2026-11-25",
   "actual": 73,
-  "reviewed": "2026-11-25T22:15:21.479Z",
-  "peak": "12:00 AM",
-  "peakH": 0,
+  "reviewed": "2026-11-26T05:16:45.967Z",
+  "peak": "1:53 AM",
+  "peakH": 1.9,
   "maxHourly": 73,
   "spike": 0,
   "sector": "S/SW",
@@ -1561,15 +1561,15 @@
   "dew8": 69,
   "dew13": 71,
   "dewChg": 2,
-  "rain": 6.58,
-  "gust": 0,
+  "rain": 7.33,
+  "gust": 17,
   "tags": [
    "S/SW flow",
    "afternoon cloud cap",
    "showers around",
    "early peak"
   ],
-  "summary": "High 73°F at 12:00 AM. S/SW flow (S 1 kt); afternoon cloud cap, showers around, early peak.",
+  "summary": "High 73°F at 1:53 AM. S/SW flow (S 1 kt); afternoon cloud cap, showers around, early peak. Closest: HRRR, ICON. Too warm: NBM, UKMO, GFS.",
   "callHit": null,
   "sources": [
    {
@@ -1607,11 +1607,122 @@
     "val": 83,
     "miss": 10,
     "kind": "other"
+   },
+   {
+    "name": "HRRR · day before",
+    "val": 73.1,
+    "miss": 0.1,
+    "kind": "model"
+   },
+   {
+    "name": "HRRR · same day",
+    "val": 73.6,
+    "miss": 0.6,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · day before",
+    "val": 79.1,
+    "miss": 6.1,
+    "kind": "model"
+   },
+   {
+    "name": "GFS · same day",
+    "val": 77.5,
+    "miss": 4.5,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · day before",
+    "val": 75.1,
+    "miss": 2.1,
+    "kind": "model"
+   },
+   {
+    "name": "NBM · same day",
+    "val": 75.2,
+    "miss": 2.2,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · day before",
+    "val": 76.6,
+    "miss": 3.6,
+    "kind": "model"
+   },
+   {
+    "name": "ECMWF · same day",
+    "val": 74.4,
+    "miss": 1.4,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · day before",
+    "val": 74.3,
+    "miss": 1.3,
+    "kind": "model"
+   },
+   {
+    "name": "ICON · same day",
+    "val": 73.9,
+    "miss": 0.9,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · day before",
+    "val": 75.9,
+    "miss": 2.9,
+    "kind": "model"
+   },
+   {
+    "name": "GEM · same day",
+    "val": 74.3,
+    "miss": 1.3,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · day before",
+    "val": 73.9,
+    "miss": 0.9,
+    "kind": "model"
+   },
+   {
+    "name": "UKMO · same day",
+    "val": 76.8,
+    "miss": 3.8,
+    "kind": "model"
    }
   ],
   "models": {
-   "error": "https://previous-runs-api.open-meteo.com/v1/forecast HTTP 429"
+   "ncep_hrrr_conus": {
+    "day0": 73.6,
+    "day1": 73.1
+   },
+   "gfs_global": {
+    "day0": 77.5,
+    "day1": 79.1
+   },
+   "ncep_nbm_conus": {
+    "day0": 75.2,
+    "day1": 75.1
+   },
+   "ecmwf_ifs025": {
+    "day0": 74.4,
+    "day1": 76.6
+   },
+   "icon_seamless": {
+    "day0": 73.9,
+    "day1": 74.3
+   },
+   "gem_seamless": {
+    "day0": 74.3,
+    "day1": 75.9
+   },
+   "ukmo_seamless": {
+    "day0": 76.8,
+    "day1": 73.9
+   }
   },
-  "final": false
+  "final": true
  }
 }
