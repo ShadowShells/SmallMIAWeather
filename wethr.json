@@ -1,56 +1,57 @@
 {
  "date": "2026-11-26",
- "fetched_utc": "2026-11-26T05:39:44.637Z",
+ "fetched_utc": "2026-11-26T06:24:38.805Z",
  "high": 73,
  "potential": 73,
  "time": "12:00 AM",
  "sources": [
   "hf_metar",
-  "omo"
+  "omo",
+  "metar"
  ],
- "low": 74,
- "lowTime": "12:37 AM",
+ "low": 73,
+ "lowTime": "12:53 AM",
  "raw": {
   "station_code": "KMIA",
   "date": "2026-11-26",
   "wethr_high": 73,
-  "wethr_low": 74,
-  "time_of_high_utc": "2026-11-26 05:37:00",
-  "time_of_low_utc": "2026-11-26 05:37:00",
+  "wethr_low": 73,
+  "time_of_high_utc": "2026-11-26 06:22:00",
+  "time_of_low_utc": "2026-11-26 05:53:00",
   "potential_high": 73,
-  "potential_low": 74,
-  "potential_high_time_utc": "2026-11-26 05:37:00",
-  "potential_low_time_utc": "2026-11-26 05:37:00",
+  "potential_low": 73,
+  "potential_high_time_utc": "2026-11-26 06:22:00",
+  "potential_low_time_utc": "2026-11-26 05:53:00",
   "divergence": {
    "high": false,
    "low": false
   },
   "wethr_high_sources": [
    "hf_metar",
-   "omo"
+   "omo",
+   "metar"
   ],
   "wethr_low_sources": [
-   "hf_metar",
-   "omo"
+   "metar"
   ],
   "wethr_high_source_detail": {
    "hf_metar": {
     "first_confirmed_utc": "2026-11-26 05:00:00",
-    "count": 8
+    "count": 17
    },
    "omo": {
     "first_confirmed_utc": "2026-11-26 05:00:00",
-    "count": 38
+    "count": 83
+   },
+   "metar": {
+    "first_confirmed_utc": "2026-11-26 05:53:00",
+    "count": 1
    }
   },
   "wethr_low_source_detail": {
-   "hf_metar": {
-    "first_confirmed_utc": "2026-11-26 05:00:00",
-    "count": 8
-   },
-   "omo": {
-    "first_confirmed_utc": "2026-11-26 05:00:00",
-    "count": 38
+   "metar": {
+    "first_confirmed_utc": "2026-11-26 05:53:00",
+    "count": 1
    }
   },
   "calculation_logic": "nws",
@@ -64,10 +65,10 @@
   }
  },
  "extra": {
-  "time_of_high_utc": "2026-11-26 05:37:00",
-  "time_of_low_utc": "2026-11-26 05:37:00",
-  "potential_high_time_utc": "2026-11-26 05:37:00",
-  "potential_low_time_utc": "2026-11-26 05:37:00"
+  "time_of_high_utc": "2026-11-26 06:22:00",
+  "time_of_low_utc": "2026-11-26 05:53:00",
+  "potential_high_time_utc": "2026-11-26 06:22:00",
+  "potential_low_time_utc": "2026-11-26 05:53:00"
  },
  "obs": [
   {
@@ -164,6 +165,126 @@
    "wd": 260,
    "ws": 9,
    "wg": 14,
+   "metar": false
+  },
+  {
+   "t": "2026-11-26T05:40:00Z",
+   "c": 23,
+   "f": 73.4,
+   "lo": 73,
+   "hi": 74,
+   "dew": 22,
+   "wd": 260,
+   "ws": 13,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-26T05:45:00Z",
+   "c": 23,
+   "f": 73.4,
+   "lo": 73,
+   "hi": 74,
+   "dew": 22,
+   "wd": 260,
+   "ws": 12,
+   "wg": 17,
+   "metar": false
+  },
+  {
+   "t": "2026-11-26T05:50:00Z",
+   "c": 23,
+   "f": 73.4,
+   "lo": 73,
+   "hi": 74,
+   "dew": 22,
+   "wd": 270,
+   "ws": 14,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-26T05:53:00Z",
+   "c": 22.8,
+   "f": 73,
+   "lo": 73,
+   "hi": 73,
+   "dew": 21.7,
+   "wd": 260,
+   "ws": 12,
+   "wg": 21,
+   "metar": true
+  },
+  {
+   "t": "2026-11-26T05:55:00Z",
+   "c": 23,
+   "f": 73.4,
+   "lo": 73,
+   "hi": 74,
+   "dew": 22,
+   "wd": 260,
+   "ws": 13,
+   "wg": 19,
+   "metar": false
+  },
+  {
+   "t": "2026-11-26T06:00:00Z",
+   "c": 23,
+   "f": 73.4,
+   "lo": 73,
+   "hi": 74,
+   "dew": 22,
+   "wd": 270,
+   "ws": 10,
+   "wg": 15,
+   "metar": false
+  },
+  {
+   "t": "2026-11-26T06:05:00Z",
+   "c": 23,
+   "f": 73.4,
+   "lo": 73,
+   "hi": 74,
+   "dew": 22,
+   "wd": 260,
+   "ws": 11,
+   "wg": 18,
+   "metar": false
+  },
+  {
+   "t": "2026-11-26T06:10:00Z",
+   "c": 23,
+   "f": 73.4,
+   "lo": 73,
+   "hi": 74,
+   "dew": 22,
+   "wd": 260,
+   "ws": 11,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-26T06:15:00Z",
+   "c": 23,
+   "f": 73.4,
+   "lo": 73,
+   "hi": 74,
+   "dew": 22,
+   "wd": 270,
+   "ws": 12,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-26T06:20:00Z",
+   "c": 23,
+   "f": 73.4,
+   "lo": 73,
+   "hi": 74,
+   "dew": 22,
+   "wd": 260,
+   "ws": 10,
+   "wg": null,
    "metar": false
   }
  ]
