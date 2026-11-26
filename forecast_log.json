@@ -596,14 +596,14 @@
    "analog": 81
   },
   "latest": {
-   "at": "11-26 10:55 AM EST",
+   "at": "11-26 11:16 AM EST",
    "point": 79,
    "call": "78° to 79°",
    "mean": 78.9,
-   "meanRaw": 78.6,
+   "meanRaw": 77.7,
    "sector": "W/land",
    "kalshi_peak": "78° to 79°",
-   "kalshi_implied": 78.9,
+   "kalshi_implied": 78.6,
    "nws": 79,
    "analog": 82
   },
@@ -665,16 +665,16 @@
    "analog": 78
   },
   "latest": {
-   "at": "11-26 10:55 AM EST",
+   "at": "11-26 11:16 AM EST",
    "point": 71,
    "call": "71° or below",
-   "mean": 72.3,
-   "meanRaw": 73.2,
+   "mean": 72.1,
+   "meanRaw": 73.1,
    "sector": "N/NW",
    "kalshi_peak": "74° to 75°",
-   "kalshi_implied": 75.2,
+   "kalshi_implied": 75.1,
    "nws": 74,
-   "analog": 78
+   "analog": 77.5
   },
   "changes": [
    {
