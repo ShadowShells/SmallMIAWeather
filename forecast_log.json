@@ -596,14 +596,14 @@
    "analog": 81
   },
   "latest": {
-   "at": "11-26 2:25 PM EST",
-   "point": 79,
-   "call": "78° to 79°",
+   "at": "11-26 2:40 PM EST",
+   "point": 80,
+   "call": "80° to 81°",
    "mean": 79.6,
-   "meanRaw": 78.2,
+   "meanRaw": 78.6,
    "sector": "W/land",
    "kalshi_peak": "78° to 79°",
-   "kalshi_implied": 78.9,
+   "kalshi_implied": 78.7,
    "nws": 79,
    "analog": 82
   },
@@ -637,6 +637,12 @@
     "call": "78° to 79°",
     "p": 58,
     "mkt": 88
+   },
+   {
+    "at": "11-26 2:40 PM EST",
+    "call": "80° to 81°",
+    "p": 59,
+    "mkt": 8
    }
   ],
   "nowcast": {
@@ -693,7 +699,7 @@
    "analog": 78
   },
   "latest": {
-   "at": "11-26 2:25 PM EST",
+   "at": "11-26 2:40 PM EST",
    "point": 71,
    "call": "71° or below",
    "mean": 72.1,
