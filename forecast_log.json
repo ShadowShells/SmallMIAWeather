@@ -596,14 +596,14 @@
    "analog": 81
   },
   "latest": {
-   "at": "11-26 9:55 AM EST",
+   "at": "11-26 10:15 AM EST",
    "point": 79,
    "call": "78° to 79°",
    "mean": 79.1,
-   "meanRaw": 78,
+   "meanRaw": 77.5,
    "sector": "W/land",
    "kalshi_peak": "78° to 79°",
-   "kalshi_implied": 79.1,
+   "kalshi_implied": 78.9,
    "nws": 79,
    "analog": 82
   },
@@ -626,7 +626,17 @@
     "p": 46,
     "mkt": 63
    }
-  ]
+  ],
+  "nowcast": {
+   "10": {
+    "at": "10:15 AM EST",
+    "call": "78° to 79°",
+    "mean": 79.1,
+    "expected": 78.6,
+    "floor": 73,
+    "rate": -0.1
+   }
+  }
  },
  "2026-11-27": {
   "first": {
@@ -641,13 +651,14 @@
    "analog": 78
   },
   "latest": {
-   "at": "11-26 9:55 AM EST",
+   "at": "11-26 10:15 AM EST",
    "point": 71,
    "call": "71° or below",
    "mean": 72.3,
    "meanRaw": 73.2,
    "sector": "N/NW",
-   "kalshi_implied": null,
+   "kalshi_peak": "74° to 75°",
+   "kalshi_implied": 75.3,
    "nws": 74,
    "analog": 78
   },
