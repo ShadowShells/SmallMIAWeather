@@ -706,11 +706,11 @@
    "analog": 78
   },
   "latest": {
-   "at": "11-27 5:14 AM EST",
+   "at": "11-27 5:39 AM EST",
    "point": 72,
    "call": "72° to 73°",
-   "mean": 72.3,
-   "meanRaw": 73.1,
+   "mean": 72.1,
+   "meanRaw": 72.9,
    "sector": "N/NW",
    "kalshi_peak": "74° to 75°",
    "kalshi_implied": 74.7,
@@ -745,15 +745,23 @@
    "analog": 78.5
   },
   "latest": {
-   "at": "11-27 5:14 AM EST",
+   "at": "11-27 5:39 AM EST",
    "point": 72,
-   "call": null,
+   "call": "71° to 72°",
    "mean": 72.2,
    "meanRaw": 73,
    "sector": "N/NW",
    "kalshi_implied": null,
    "nws": 73,
    "analog": 78
-  }
+  },
+  "changes": [
+   {
+    "at": "11-27 5:39 AM EST",
+    "call": "71° to 72°",
+    "p": 33,
+    "mkt": 0
+   }
+  ]
  }
 }
