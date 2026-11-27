@@ -10,8 +10,8 @@
   "nwsGrid": "MFL/105,51",
   "utcOffset": -5
  },
- "generated": "2026-11-27T17:14:36.299Z",
- "generatedTxt": "5:14 PM EST",
+ "generated": "2026-11-27T17:25:43.615Z",
+ "generatedTxt": "5:25 PM EST",
  "scores": {
   "ncep_hrrr_conus": {
    "bias": 2.6,
@@ -4647,7 +4647,7 @@
    "hour": 16,
    "trend": 0,
    "trendBucket": "≤0",
-   "rate": -2.7,
+   "rate": -3.3,
    "sky": "fair",
    "skyTxt": "FEW045 BKN250",
    "gust": 0,
@@ -4745,7 +4745,7 @@
   },
   "wethr": {
    "date": "2026-11-27",
-   "fetched_utc": "2026-11-27T22:14:36.210Z",
+   "fetched_utc": "2026-11-27T22:25:43.536Z",
    "high": 74,
    "potential": 74,
    "time": "12:46 PM",
@@ -4854,7 +4854,7 @@
          }
         ],
         "missing_runs_truncated": false,
-        "as_of_utc": "2026-11-27 22:14:01"
+        "as_of_utc": "2026-11-27 22:25:02"
        }
       ]
      }
@@ -7590,6 +7590,30 @@
      "ws": null,
      "wg": null,
      "metar": false
+    },
+    {
+     "t": "2026-11-27T22:15:00Z",
+     "c": 22,
+     "f": 71.6,
+     "lo": 71,
+     "hi": 72,
+     "dew": 13,
+     "wd": 0,
+     "ws": 0,
+     "wg": null,
+     "metar": false
+    },
+    {
+     "t": "2026-11-27T22:20:00Z",
+     "c": 22,
+     "f": 71.6,
+     "lo": 71,
+     "hi": 72,
+     "dew": 13,
+     "wd": 0,
+     "ws": 0,
+     "wg": null,
+     "metar": false
     }
    ]
   },
@@ -8038,10 +8062,10 @@
    "nowF": 71.6,
    "nowRange": "71–72",
    "nowSrc": "wethr 5-min",
-   "nowT": "2026-11-27T17:10:00.000Z",
-   "nowTime": "5:10 PM EST",
+   "nowT": "2026-11-27T17:20:00.000Z",
+   "nowTime": "5:20 PM EST",
    "dewF": 55,
-   "wind": "VRB kt",
+   "wind": "0 @ 0 kt",
    "wx": "",
    "sky": "",
    "raw": "",
@@ -8953,10 +8977,18 @@
     {
      "h": 17.166666666666668,
      "f": 71.6
+    },
+    {
+     "h": 17.25,
+     "f": 71.6
+    },
+    {
+     "h": 17.333333333333332,
+     "f": 71.6
     }
    ]
   },
-  "summary": "Call 74 (74° to 75°, 97%). Kalshi peak 74° to 75°, implied ~74.5. Bias-corrected blend 72.5 ± 0.5 °F. Observed high so far 74 °F (wethr, incl. 1-min). Nowcast 4 PM: -2.7 °F/h, last hour +0, fair; on 576 similar past days the CLI ended above 73 100% of the time (avg +0.76). Self-correction -0.3 °F from recent misses."
+  "summary": "Call 74 (74° to 75°, 97%). Kalshi peak 74° to 75°, implied ~74.5. Bias-corrected blend 72.5 ± 0.5 °F. Observed high so far 74 °F (wethr, incl. 1-min). Nowcast 4 PM: -3.3 °F/h, last hour +0, fair; on 576 similar past days the CLI ended above 73 100% of the time (avg +0.76). Self-correction -0.3 °F from recent misses."
  },
  "tomorrow": {
   "date": "2026-11-28",
@@ -9226,7 +9258,7 @@
     "hi": 72,
     "bid": 0.08,
     "ask": 0.11,
-    "last": 0.11,
+    "last": 0.12,
     "mid": 0.095,
     "p": 0.09090909090909091,
     "model_p": 0.39490340416906283,
