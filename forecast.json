@@ -10,8 +10,8 @@
   "nwsGrid": "MFL/105,51",
   "utcOffset": -5
  },
- "generated": "2026-11-28T08:13:24.803Z",
- "generatedTxt": "8:13 AM EST",
+ "generated": "2026-11-28T08:25:12.707Z",
+ "generatedTxt": "8:25 AM EST",
  "scores": {
   "ncep_hrrr_conus": {
    "bias": 2.8,
@@ -4658,7 +4658,7 @@
    "hour": 8,
    "trend": 0,
    "trendBucket": "≤0",
-   "rate": 2.1,
+   "rate": 3.2,
    "sky": "fair",
    "skyTxt": "FEW030 BKN170 OVC250",
    "gust": 0,
@@ -4683,7 +4683,7 @@
     "80": 0.012254612185731394
    },
    "peakBy": 16,
-   "hoursLeft": 7.8,
+   "hoursLeft": 7.6,
    "nowF": 63.5,
    "reach": [
     {
@@ -4697,29 +4697,29 @@
      "label": "73° to 74°",
      "lo": 73,
      "hist": 0.2814448516749853,
-     "needRate": 2.3,
-     "status": "close"
+     "needRate": 2.4,
+     "status": "on pace"
     },
     {
      "label": "75° to 76°",
      "lo": 75,
      "hist": 0.13443062830589236,
-     "needRate": 2.8,
-     "status": "close"
+     "needRate": 2.9,
+     "status": "on pace"
     },
     {
      "label": "77° to 78°",
      "lo": 77,
      "hist": 0.028703756059196353,
-     "needRate": 3.3,
+     "needRate": 3.4,
      "status": "close"
     },
     {
      "label": "79° or above",
      "lo": 79,
      "hist": 0.01644914387346496,
-     "needRate": 3.9,
-     "status": "behind"
+     "needRate": 4,
+     "status": "close"
     }
    ],
    "upwind": {
@@ -4768,7 +4768,7 @@
   },
   "wethr": {
    "date": "2026-11-28",
-   "fetched_utc": "2026-11-28T13:13:24.758Z",
+   "fetched_utc": "2026-11-28T13:25:12.617Z",
    "high": 67,
    "potential": 67,
    "time": "12:53 AM",
@@ -6137,6 +6137,30 @@
      "ws": 5,
      "wg": 21,
      "metar": false
+    },
+    {
+     "t": "2026-11-28T13:15:00Z",
+     "c": 18,
+     "f": 64.4,
+     "lo": 64,
+     "hi": 65,
+     "dew": 14,
+     "wd": 30,
+     "ws": 3,
+     "wg": null,
+     "metar": false
+    },
+    {
+     "t": "2026-11-28T13:20:00Z",
+     "c": 18,
+     "f": 64.4,
+     "lo": 64,
+     "hi": 65,
+     "dew": 14,
+     "wd": 30,
+     "ws": 3,
+     "wg": null,
+     "metar": false
     }
    ]
   },
@@ -6339,7 +6363,7 @@
     "hi": 72,
     "bid": 0.04,
     "ask": 0.05,
-    "last": 0.04,
+    "last": 0.05,
     "mid": 0.045,
     "p": 0.04433497536945813,
     "model_p": 0.14385765523480268,
@@ -6351,7 +6375,7 @@
     "hi": 74,
     "bid": 0.72,
     "ask": 0.73,
-    "last": 0.73,
+    "last": 0.72,
     "mid": 0.725,
     "p": 0.7142857142857143,
     "model_p": 0.4818829864640881,
@@ -6363,7 +6387,7 @@
     "hi": 76,
     "bid": 0.21,
     "ask": 0.23,
-    "last": 0.23,
+    "last": 0.24,
     "mid": 0.22,
     "p": 0.21674876847290642,
     "model_p": 0.32258225633863646,
@@ -6622,10 +6646,10 @@
    "nowF": 64.4,
    "nowRange": "64–65",
    "nowSrc": "wethr 5-min",
-   "nowT": "2026-11-28T08:10:00.000Z",
-   "nowTime": "8:10 AM EST",
+   "nowT": "2026-11-28T08:20:00.000Z",
+   "nowTime": "8:20 AM EST",
    "dewF": 57,
-   "wind": "40 @ 5G21 kt",
+   "wind": "30 @ 3 kt",
    "wx": "",
    "sky": "",
    "raw": "",
@@ -7057,10 +7081,18 @@
     {
      "h": 8.166666666666666,
      "f": 64.4
+    },
+    {
+     "h": 8.25,
+     "f": 64.4
+    },
+    {
+     "h": 8.333333333333334,
+     "f": 64.4
     }
    ]
   },
-  "summary": "Call 74 (73° to 74°, 48%). Kalshi peak 73° to 74°, implied ~73.9. Bias-corrected blend 74 ± 1.46 °F. Observed high so far 67 °F (wethr, incl. 1-min). Nowcast 8 AM: +2.1 °F/h, last hour +0, fair; on 63 similar past days the CLI ended above 67 88% of the time (avg +4.16). Self-correction -0.7 °F from recent misses. Cheap: 75° to 76° (32% vs market 22%). Rich: 73° to 74° (48% vs market 71%)."
+  "summary": "Call 74 (73° to 74°, 48%). Kalshi peak 73° to 74°, implied ~73.9. Bias-corrected blend 74 ± 1.46 °F. Observed high so far 67 °F (wethr, incl. 1-min). Nowcast 8 AM: +3.2 °F/h, last hour +0, fair; on 63 similar past days the CLI ended above 67 88% of the time (avg +4.16). Self-correction -0.7 °F from recent misses. Cheap: 75° to 76° (32% vs market 22%). Rich: 73° to 74° (48% vs market 71%)."
  },
  "tomorrow": {
   "date": "2026-11-29",
