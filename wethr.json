@@ -1,31 +1,33 @@
 {
  "date": "2026-11-28",
- "fetched_utc": "2026-11-28T16:15:22.215Z",
- "high": 70,
- "potential": 70,
- "time": "10:53 AM",
+ "fetched_utc": "2026-11-28T16:25:40.854Z",
+ "high": 71,
+ "potential": 71,
+ "time": "11:17 AM",
  "sources": [
-  "metar"
+  "omo",
+  "hf_metar"
  ],
  "low": 63,
  "lowTime": "8:03 AM",
  "raw": {
   "station_code": "KMIA",
   "date": "2026-11-28",
-  "wethr_high": 70,
+  "wethr_high": 71,
   "wethr_low": 63,
-  "time_of_high_utc": "2026-11-28 15:53:00",
+  "time_of_high_utc": "2026-11-28 16:22:00",
   "time_of_low_utc": "2026-11-28 13:03:00",
-  "potential_high": 70,
+  "potential_high": 71,
   "potential_low": 63,
-  "potential_high_time_utc": "2026-11-28 15:53:00",
+  "potential_high_time_utc": "2026-11-28 16:22:00",
   "potential_low_time_utc": "2026-11-28 13:03:00",
   "divergence": {
    "high": false,
    "low": false
   },
   "wethr_high_sources": [
-   "metar"
+   "omo",
+   "hf_metar"
   ],
   "wethr_low_sources": [
    "omo",
@@ -34,8 +36,12 @@
    "six_hour_low"
   ],
   "wethr_high_source_detail": {
-   "metar": {
-    "first_confirmed_utc": "2026-11-28 15:53:00",
+   "omo": {
+    "first_confirmed_utc": "2026-11-28 16:17:00",
+    "count": 4
+   },
+   "hf_metar": {
+    "first_confirmed_utc": "2026-11-28 16:20:00",
     "count": 1
    }
   },
@@ -68,9 +74,9 @@
   }
  },
  "extra": {
-  "time_of_high_utc": "2026-11-28 15:53:00",
+  "time_of_high_utc": "2026-11-28 16:22:00",
   "time_of_low_utc": "2026-11-28 13:03:00",
-  "potential_high_time_utc": "2026-11-28 15:53:00",
+  "potential_high_time_utc": "2026-11-28 16:22:00",
   "potential_low_time_utc": "2026-11-28 13:03:00"
  },
  "obs": [
@@ -1823,6 +1829,30 @@
    "dew": 12,
    "wd": 350,
    "ws": 6,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-28T16:15:00Z",
+   "c": 21,
+   "f": 69.8,
+   "lo": 69,
+   "hi": 70,
+   "dew": 12,
+   "wd": null,
+   "ws": null,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-28T16:20:00Z",
+   "c": 22,
+   "f": 71.6,
+   "lo": 71,
+   "hi": 72,
+   "dew": 12,
+   "wd": 20,
+   "ws": 5,
    "wg": null,
    "metar": false
   }
