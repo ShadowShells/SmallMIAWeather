@@ -1,9 +1,9 @@
 {
  "date": "2026-11-28",
- "fetched_utc": "2026-11-28T15:13:39.539Z",
- "high": 68,
- "potential": 68,
- "time": "9:54 AM",
+ "fetched_utc": "2026-11-28T15:25:53.397Z",
+ "high": 69,
+ "potential": 69,
+ "time": "10:16 AM",
  "sources": [
   "omo",
   "hf_metar"
@@ -13,13 +13,13 @@
  "raw": {
   "station_code": "KMIA",
   "date": "2026-11-28",
-  "wethr_high": 68,
+  "wethr_high": 69,
   "wethr_low": 63,
-  "time_of_high_utc": "2026-11-28 15:11:00",
+  "time_of_high_utc": "2026-11-28 15:23:00",
   "time_of_low_utc": "2026-11-28 13:03:00",
-  "potential_high": 68,
+  "potential_high": 69,
   "potential_low": 63,
-  "potential_high_time_utc": "2026-11-28 15:11:00",
+  "potential_high_time_utc": "2026-11-28 15:23:00",
   "potential_low_time_utc": "2026-11-28 13:03:00",
   "divergence": {
    "high": false,
@@ -37,12 +37,12 @@
   ],
   "wethr_high_source_detail": {
    "omo": {
-    "first_confirmed_utc": "2026-11-28 14:54:00",
-    "count": 18
+    "first_confirmed_utc": "2026-11-28 15:16:00",
+    "count": 6
    },
    "hf_metar": {
-    "first_confirmed_utc": "2026-11-28 14:55:00",
-    "count": 4
+    "first_confirmed_utc": "2026-11-28 15:20:00",
+    "count": 1
    }
   },
   "wethr_low_source_detail": {
@@ -74,9 +74,9 @@
   }
  },
  "extra": {
-  "time_of_high_utc": "2026-11-28 15:11:00",
+  "time_of_high_utc": "2026-11-28 15:23:00",
   "time_of_low_utc": "2026-11-28 13:03:00",
-  "potential_high_time_utc": "2026-11-28 15:11:00",
+  "potential_high_time_utc": "2026-11-28 15:23:00",
   "potential_low_time_utc": "2026-11-28 13:03:00"
  },
  "obs": [
@@ -1673,6 +1673,30 @@
    "dew": 12,
    "wd": 360,
    "ws": 6,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-28T15:15:00Z",
+   "c": 20,
+   "f": 68,
+   "lo": 68,
+   "hi": 68,
+   "dew": 12,
+   "wd": 30,
+   "ws": 6,
+   "wg": null,
+   "metar": false
+  },
+  {
+   "t": "2026-11-28T15:20:00Z",
+   "c": 21,
+   "f": 69.8,
+   "lo": 69,
+   "hi": 70,
+   "dew": 12,
+   "wd": 20,
+   "ws": 4,
    "wg": null,
    "metar": false
   }
