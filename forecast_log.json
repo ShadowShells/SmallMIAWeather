@@ -792,7 +792,7 @@
    "analog": 78.5
   },
   "latest": {
-   "at": "11-28 2:39 AM EST",
+   "at": "11-28 3:17 AM EST",
    "point": 72,
    "call": "71° to 72°",
    "mean": 72,
@@ -825,11 +825,11 @@
    "analog": 84
   },
   "latest": {
-   "at": "11-28 2:39 AM EST",
+   "at": "11-28 3:17 AM EST",
    "point": 80,
    "call": null,
-   "mean": 79.8,
-   "meanRaw": 80.6,
+   "mean": 79.9,
+   "meanRaw": 80.7,
    "sector": "E/onshore",
    "kalshi_implied": null,
    "nws": 81,
