@@ -1908,9 +1908,9 @@
  "2026-11-27": {
   "date": "2026-11-27",
   "actual": 74,
-  "reviewed": "2026-11-27T22:14:37.429Z",
-  "peak": "12:46 PM",
-  "peakH": 12.8,
+  "reviewed": "2026-11-28T05:14:51.619Z",
+  "peak": "11:53 AM",
+  "peakH": 11.9,
   "maxHourly": 73,
   "spike": 1,
   "sector": "W/land",
@@ -1927,7 +1927,7 @@
    "sunny",
    "1-min spike +1"
   ],
-  "summary": "High 74°F at 12:46 PM (1-minute data, 1° above the best hourly reading). W land breeze (W 3.6 kt); sunny. Closest: ECMWF, ICON, NBM, UKMO. Too warm: GFS.",
+  "summary": "High 74°F at 11:53 AM (1-minute data, 1° above the best hourly reading). W land breeze (W 3.6 kt); sunny. Closest: ECMWF, UKMO, ICON, NBM.",
   "callHit": null,
   "sources": [
    {
@@ -1986,8 +1986,8 @@
    },
    {
     "name": "GFS · same day",
-    "val": 76.5,
-    "miss": 2.5,
+    "val": 75.8,
+    "miss": 1.8,
     "kind": "model"
    },
    {
@@ -2010,8 +2010,8 @@
    },
    {
     "name": "ECMWF · same day",
-    "val": 74.5,
-    "miss": 0.5,
+    "val": 73.9,
+    "miss": -0.1,
     "kind": "model"
    },
    {
@@ -2046,8 +2046,8 @@
    },
    {
     "name": "UKMO · same day",
-    "val": 73,
-    "miss": -1,
+    "val": 73.7,
+    "miss": -0.3,
     "kind": "model"
    }
   ],
@@ -2057,7 +2057,7 @@
     "day1": 69
    },
    "gfs_global": {
-    "day0": 76.5,
+    "day0": 75.8,
     "day1": 74.8
    },
    "ncep_nbm_conus": {
@@ -2065,7 +2065,7 @@
     "day1": 73.1
    },
    "ecmwf_ifs025": {
-    "day0": 74.5,
+    "day0": 73.9,
     "day1": 72.2
    },
    "icon_seamless": {
@@ -2077,10 +2077,10 @@
     "day1": 69.5
    },
    "ukmo_seamless": {
-    "day0": 73,
+    "day0": 73.7,
     "day1": 74.4
    }
   },
-  "final": false
+  "final": true
  }
 }

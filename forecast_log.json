@@ -792,11 +792,11 @@
    "analog": 78.5
   },
   "latest": {
-   "at": "11-27 11:39 PM EST",
+   "at": "11-28 12:14 AM EST",
    "point": 72,
    "call": "71° to 72°",
-   "mean": 72,
-   "meanRaw": 72.8,
+   "mean": 71.7,
+   "meanRaw": 72.3,
    "sector": "N/NW",
    "kalshi_peak": "73° to 74°",
    "kalshi_implied": 73.8,
@@ -811,5 +811,29 @@
     "mkt": 0
    }
   ]
+ },
+ "2026-11-29": {
+  "first": {
+   "at": "11-28 12:14 AM EST",
+   "point": 80,
+   "call": null,
+   "mean": 79.7,
+   "meanRaw": 80.4,
+   "sector": "E/onshore",
+   "kalshi_implied": null,
+   "nws": 80,
+   "analog": 84
+  },
+  "latest": {
+   "at": "11-28 12:14 AM EST",
+   "point": 80,
+   "call": null,
+   "mean": 79.7,
+   "meanRaw": 80.4,
+   "sector": "E/onshore",
+   "kalshi_implied": null,
+   "nws": 80,
+   "analog": 84
+  }
  }
 }
